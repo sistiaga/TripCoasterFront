@@ -1,0 +1,30 @@
+// main - MARSISCA - BEGIN 2025-10-11
+.logout-confirmation {
+  min-width: 350px;
+  padding: 1rem;
+
+  h2 {
+    margin: 0 0 1rem 0;
+    color: #333;
+  }
+}
+
+mat-dialog-content {
+  padding: 1rem 0;
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+  }
+}
+
+mat-dialog-actions {
+  padding: 1rem 0 0 0;
+  gap: 0.5rem;
+
+  button {
+    min-width: 100px;
+  }
+}
+// main - MARSISCA - END 2025-10-11

@@ -1,0 +1,66 @@
+<!-- main - MARSISCA - BEGIN 2025-10-11 -->
+<div class="login-modal">
+  <h2 mat-dialog-title>Login</h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email or Alias</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="emailOrAlias"
+          placeholder="user@example.com or username"
+          autocomplete="username"
+        />
+        @if (loginForm.get('emailOrAlias')?.invalid && loginForm.get('emailOrAlias')?.touched) {
+          <mat-error>{{ getEmailOrAliasError() }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+        />
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <mat-error>{{ getPasswordError() }}</mat-error>
+        }
+      </mat-form-field>
+
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button
+      mat-button
+      type="button"
+      (click)="onCancel()"
+      [disabled]="isLoading"
+    >
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSubmit()"
+      [disabled]="isLoading || loginForm.invalid"
+    >
+      @if (isLoading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      } @else {
+        Login
+      }
+    </button>
+  </mat-dialog-actions>
+</div>
+<!-- main - MARSISCA - END 2025-10-11 -->
