@@ -1,6 +1,7 @@
-// main - MARSISCA - BEGIN 2025-10-11
+// master - MARSISCA - BEGIN 2025-10-18
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
@@ -10,12 +11,13 @@ import { LogoutConfirmationComponent } from '../logout-confirmation/logout-confi
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, MatDialogModule, MatTooltipModule],
+  imports: [CommonModule, RouterModule, MatDialogModule, MatTooltipModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   userDisplayName = 'Sin iniciar';
+  isLoggedIn = false;
   private userSubscription?: Subscription;
 
   constructor(
@@ -24,8 +26,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.userSubscription = this.authService.currentUser$.subscribe(() => {
+    this.userSubscription = this.authService.currentUser$.subscribe((user) => {
       this.userDisplayName = this.authService.getUserDisplayName();
+      this.isLoggedIn = !!user;
     });
   }
 
@@ -69,4 +72,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 }
-// main - MARSISCA - END 2025-10-11
+// master - MARSISCA - END 2025-10-18

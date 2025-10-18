@@ -1,10 +1,14 @@
-// main - MARSISCA - BEGIN 2025-10-11
+// master - MARSISCA - BEGIN 2025-10-18
 .app-header {
   background-color: #ff6600;
   width: 100%;
   padding: 0;
   margin: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 .header-content {
@@ -13,6 +17,7 @@
   align-items: center;
   padding: 1rem 1.5rem;
   max-width: 100%;
+  gap: 2rem;
 }
 
 .app-name {
@@ -21,6 +26,30 @@
   font-weight: 600;
   margin: 0;
   letter-spacing: 0.5px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 1.5rem;
+  flex: 1;
+
+  a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
 }
 
 .user-icon {
@@ -46,4 +75,4 @@
     display: block;
   }
 }
-// main - MARSISCA - END 2025-10-11
+// master - MARSISCA - END 2025-10-18

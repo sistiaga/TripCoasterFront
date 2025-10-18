@@ -1,0 +1,21 @@
+// master - MARSISCA - BEGIN 2025-10-18
+.maps-page {
+  padding: 2rem;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 64px);
+  margin-top: 64px;
+
+  app-world-map {
+    display: block;
+    width: 100%;
+    max-width: 1400px;
+    height: calc(100vh - 64px - 4rem);
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+  }
+}
+// master - MARSISCA - END 2025-10-18

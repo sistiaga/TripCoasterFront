@@ -1,7 +1,15 @@
-<!-- main - MARSISCA - BEGIN 2025-10-11 -->
+<!-- master - MARSISCA - BEGIN 2025-10-18 -->
 <header class="app-header">
   <div class="header-content">
     <h1 class="app-name">GeoTriper</h1>
+
+    @if (isLoggedIn) {
+      <nav class="nav-menu">
+        <a routerLink="/general" routerLinkActive="active">General</a>
+        <a routerLink="/maps" routerLinkActive="active">Mapas</a>
+      </nav>
+    }
+
     <button
       class="user-icon"
       (click)="onUserIconClick()"
@@ -15,4 +23,4 @@
     </button>
   </div>
 </header>
-<!-- main - MARSISCA - END 2025-10-11 -->
+<!-- master - MARSISCA - END 2025-10-18 -->

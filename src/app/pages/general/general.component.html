@@ -1,0 +1,52 @@
+<!-- master - MARSISCA - BEGIN 2025-10-18 -->
+<div class="trips-container">
+  <div class="filters-sidebar">
+    <h2>Filtros</h2>
+    <div class="filter-option">Todos los años</div>
+    <div class="filter-option">Europa</div>
+    <div class="filter-option">Asia</div>
+  </div>
+
+  <div class="trips-content">
+    @if (isLoading) {
+      <div class="loading">Cargando viajes...</div>
+    }
+
+    @if (!isLoading && trips.length === 0) {
+      <div class="no-trips">No tienes viajes registrados</div>
+    }
+
+    @if (!isLoading && trips.length > 0) {
+      <div class="trips-list">
+        @for (trip of trips; track trip.id) {
+          <div class="trip-card">
+            <div class="trip-image">
+              <div class="image-placeholder"></div>
+            </div>
+            <div class="trip-details">
+              <h3>{{ trip.name }}</h3>
+              <p class="trip-description">{{ trip.description }}</p>
+              <p class="trip-dates">{{ formatDate(trip.startDate) }} — {{ formatDate(trip.endDate) }}</p>
+              <div class="trip-stats">
+                @if (trip.rating) {
+                  <span class="rating">⭐ {{ trip.rating }}/10</span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <button
+    mat-fab
+    color="primary"
+    class="fab-button"
+    (click)="openAddTripModal()"
+    aria-label="Add new trip"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<!-- master - MARSISCA - END 2025-10-18 -->
