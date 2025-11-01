@@ -1,4 +1,12 @@
-// master - MARSISCA - BEGIN 2025-10-11
+// master - MARSISCA - BEGIN 2025-11-01
+export interface TripPhoto {
+  id: number;
+  url: string;
+  filename: string;
+  tripId: number;
+  createdAt: string;
+}
+
 export interface Trip {
   id: number;
   name: string;
@@ -7,6 +15,7 @@ export interface Trip {
   endDate: string;
   rating: number | null;
   userId: number;
+  photos?: TripPhoto[];
   createdAt: string;
   updatedAt: string;
 }
@@ -16,4 +25,4 @@ export interface TripsResponse {
   message: string;
   data: Trip[];
 }
-// master - MARSISCA - END 2025-10-11
+// master - MARSISCA - END 2025-11-01

@@ -1,0 +1,15 @@
+<!-- master - MARSISCA - BEGIN 2025-11-01 -->
+<div class="star-rating" (mouseleave)="onMouseLeave()">
+  @for (star of stars; track star) {
+    <mat-icon
+      class="star"
+      [class.filled]="isStarFilled(star)"
+      [class.read-only]="readOnly"
+      (click)="onStarClick(star)"
+      (mouseenter)="onStarHover(star)"
+    >
+      {{ isStarFilled(star) ? 'star' : 'star_border' }}
+    </mat-icon>
+  }
+</div>
+<!-- master - MARSISCA - END 2025-11-01 -->

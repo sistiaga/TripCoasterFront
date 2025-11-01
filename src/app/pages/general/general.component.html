@@ -1,4 +1,4 @@
-<!-- master - MARSISCA - BEGIN 2025-10-18 -->
+<!-- master - MARSISCA - BEGIN 2025-11-01 -->
 <div class="trips-container">
   <div class="filters-sidebar">
     <h2>Filtros</h2>
@@ -19,7 +19,7 @@
     @if (!isLoading && trips.length > 0) {
       <div class="trips-list">
         @for (trip of trips; track trip.id) {
-          <div class="trip-card">
+          <div class="trip-card" (click)="openEditTripModal(trip)">
             <div class="trip-image">
               <div class="image-placeholder"></div>
             </div>
@@ -29,7 +29,18 @@
               <p class="trip-dates">{{ formatDate(trip.startDate) }} — {{ formatDate(trip.endDate) }}</p>
               <div class="trip-stats">
                 @if (trip.rating) {
-                  <span class="rating">⭐ {{ trip.rating }}/10</span>
+                  <app-star-rating
+                    [readOnly]="true"
+                    [maxStars]="5"
+                    [value]="trip.rating"
+                    class="rating"
+                  ></app-star-rating>
+                }
+                @if (trip.photos && trip.photos.length > 0) {
+                  <div class="photo-count">
+                    <mat-icon>photo_library</mat-icon>
+                    <span>{{ trip.photos.length }}</span>
+                  </div>
                 }
               </div>
             </div>
@@ -49,4 +60,4 @@
     <mat-icon>add</mat-icon>
   </button>
 </div>
-<!-- master - MARSISCA - END 2025-10-18 -->
+<!-- master - MARSISCA - END 2025-11-01 -->

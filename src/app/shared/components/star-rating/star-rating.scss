@@ -1,0 +1,29 @@
+// master - MARSISCA - BEGIN 2025-11-01
+.star-rating {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+
+  .star {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #ddd;
+    user-select: none;
+
+    &.filled {
+      color: #ffc107;
+    }
+
+    &:not(.read-only):hover {
+      transform: scale(1.2);
+    }
+
+    &.read-only {
+      cursor: default;
+    }
+  }
+}
+// master - MARSISCA - END 2025-11-01
