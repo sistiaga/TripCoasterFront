@@ -1,0 +1,150 @@
+<!-- master - MARSISCA - BEGIN 2025-11-15 -->
+<div class="trip-destinations">
+  <div class="destinations-content">
+    <!-- Search Section -->
+    <div class="search-section">
+      <h3>Add Destinations</h3>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Search for a city or town</mat-label>
+        <input
+          matInput
+          type="text"
+          [formControl]="searchControl"
+          [matAutocomplete]="auto"
+          placeholder="Start typing to search..."
+        />
+        @if (isSearching) {
+          <mat-spinner matSuffix diameter="20"></mat-spinner>
+        }
+        @if (searchControl.value && !isSearching) {
+          <button
+            matSuffix
+            mat-icon-button
+            type="button"
+            (click)="clearSearch()"
+            aria-label="Clear search"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onLocationSelected($event.option.value)"
+      >
+        @if (suggestions.length === 0 && searchControl.value && !isSearching) {
+          <mat-option [value]="null" disabled>
+            No locations found
+          </mat-option>
+        }
+        @for (suggestion of suggestions; track $index) {
+          <mat-option [value]="suggestion">
+            <div class="location-option">
+              <mat-icon class="location-icon">place</mat-icon>
+              <div class="location-details">
+                <div class="location-name">{{ suggestion.name }}</div>
+                <div class="location-country">{{ suggestion.country }}</div>
+              </div>
+            </div>
+          </mat-option>
+        }
+      </mat-autocomplete>
+
+      <!-- Selected Location Preview -->
+      @if (selectedLocation) {
+        <div class="selected-location-preview">
+          <div class="preview-content">
+            <mat-icon class="preview-icon">place</mat-icon>
+            <div class="preview-details">
+              <div class="preview-name">{{ selectedLocation.name }}</div>
+              <div class="preview-country">{{ selectedLocation.country }}</div>
+            </div>
+          </div>
+          <div class="preview-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="confirmAddLocation()"
+              [disabled]="isSaving"
+            >
+              <mat-icon>add</mat-icon>
+              Add
+            </button>
+            <button
+              mat-button
+              (click)="cancelSelection()"
+              [disabled]="isSaving"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Messages -->
+    @if (errorMessage) {
+      <div class="error-message">
+        <mat-icon>error</mat-icon>
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="success-message">
+        <mat-icon>check_circle</mat-icon>
+        {{ successMessage }}
+      </div>
+    }
+
+    <!-- Loading State -->
+    @if (isLoading) {
+      <div class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading destinations...</p>
+      </div>
+    }
+
+    <!-- Trip Locations List -->
+    @if (!isLoading) {
+      <div class="locations-section">
+        <h3>Trip Destinations</h3>
+        @if (tripLocations.length === 0) {
+          <div class="empty-state">
+            <mat-icon>map</mat-icon>
+            <p>No destinations added yet</p>
+            <p class="empty-state-hint">Search and add locations to plan your trip</p>
+          </div>
+        } @else {
+          <div class="locations-list">
+            @for (tripLocation of tripLocations; track tripLocation.id) {
+              <mat-chip-row
+                class="location-chip"
+                (removed)="removeLocation(tripLocation)"
+              >
+                <mat-icon matChipAvatar>place</mat-icon>
+                <div class="chip-content">
+                  <span class="chip-name">{{ tripLocation.location.name }}</span>
+                  <span class="chip-country">{{ tripLocation.location.country }}</span>
+                </div>
+                <button matChipRemove aria-label="Remove destination">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Saving Indicator -->
+    @if (isSaving) {
+      <div class="saving-overlay">
+        <mat-spinner diameter="30"></mat-spinner>
+        <span>Adding destination...</span>
+      </div>
+    }
+  </div>
+</div>
+<!-- master - MARSISCA - END 2025-11-15 -->

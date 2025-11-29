@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2025-11-01
+// master - MARSISCA - BEGIN 2025-11-15
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TripService } from '../../../core/services/trip.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { StarRating } from '../star-rating/star-rating';
+import { TripDestinations } from '../trip-destinations/trip-destinations';
 import { Trip } from '../../../core/models/trip.model';
 import moment from 'moment';
 
@@ -49,7 +50,8 @@ export interface TripFormData {
     MatNativeDateModule,
     MatTabsModule,
     MatIconModule,
-    StarRating
+    StarRating,
+    TripDestinations
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
@@ -367,4 +369,4 @@ export class TripFormModal implements OnInit {
     return '';
   }
 }
-// master - MARSISCA - END 2025-11-01
+// master - MARSISCA - END 2025-11-15

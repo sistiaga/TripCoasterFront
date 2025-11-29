@@ -1,4 +1,4 @@
-<!-- master - MARSISCA - BEGIN 2025-11-01 -->
+<!-- master - MARSISCA - BEGIN 2025-11-15 -->
 <div class="trip-form-modal">
   <h2 mat-dialog-title>{{ mode === 'create' ? 'Add New Trip' : 'Edit Trip' }}</h2>
 
@@ -74,6 +74,20 @@
               }
             </div>
           </form>
+        </div>
+      </mat-tab>
+
+      <!-- Destinations Tab -->
+      <mat-tab label="Destinations">
+        <div class="tab-content">
+          @if (mode === 'edit' && tripId) {
+            <app-trip-destinations [tripId]="tripId"></app-trip-destinations>
+          } @else {
+            <div class="info-message">
+              <mat-icon>info</mat-icon>
+              <p>Save the trip first to add destinations</p>
+            </div>
+          }
         </div>
       </mat-tab>
 
@@ -186,4 +200,4 @@
     </button>
   </mat-dialog-actions>
 </div>
-<!-- master - MARSISCA - END 2025-11-01 -->
+<!-- master - MARSISCA - END 2025-11-15 -->
