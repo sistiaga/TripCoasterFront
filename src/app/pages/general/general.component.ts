@@ -1,6 +1,7 @@
-// master - MARSISCA - BEGIN 2025-11-01
+// master - MARSISCA - BEGIN 2025-11-30
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,7 +25,8 @@ export class GeneralComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private tripService: TripService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +70,10 @@ export class GeneralComponent implements OnInit {
     });
   }
 
+  viewTripDetail(trip: Trip): void {
+    this.router.navigate(['/trip', trip.id]);
+  }
+
   openEditTripModal(trip: Trip): void {
     const dialogRef = this.dialog.open(TripFormModal, {
       width: '90vw',
@@ -91,4 +97,4 @@ export class GeneralComponent implements OnInit {
     return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 }
-// master - MARSISCA - END 2025-11-01
+// master - MARSISCA - END 2025-11-30

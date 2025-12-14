@@ -1,8 +1,8 @@
-// master - MARSISCA - BEGIN 2025-11-01
+// master - MARSISCA - BEGIN 2025-12-08
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { TripsResponse, Trip } from '../models/trip.model';
+import { TripsResponse, Trip, PhotoUpdateRequest, PhotoResponse } from '../models/trip.model';
 
 export interface CreateTripData {
   name: string;
@@ -57,15 +57,19 @@ export class TripService {
     photos.forEach(photo => {
       formData.append('photos', photo);
     });
-    return this.apiService.post(`/trips/${tripId}/photos`, formData);
+    return this.apiService.post(`/photos/trips/${tripId}/photos`, formData);
   }
 
   getTripPhotos(tripId: number): Observable<any> {
-    return this.apiService.get(`/trips/${tripId}/photos`);
+    return this.apiService.get(`/photos/trips/${tripId}/photos`);
+  }
+
+  updatePhoto(photoId: number, data: PhotoUpdateRequest): Observable<PhotoResponse> {
+    return this.apiService.put<PhotoResponse>(`/photos/${photoId}`, data);
   }
 
   deletePhoto(photoId: number): Observable<any> {
     return this.apiService.delete(`/photos/${photoId}`);
   }
 }
-// master - MARSISCA - END 2025-11-01
+// master - MARSISCA - END 2025-12-08

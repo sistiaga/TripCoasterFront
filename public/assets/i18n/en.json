@@ -9,9 +9,7 @@
   "SETTINGS": {
     "TITLE": "Settings",
     "DIARY_TYPES": "Diary Types",
-    "DIARY_TYPES_DESCRIPTION": "Manage your diary entry types to categorize your travel experiences",
-    "COUNTRIES": "Countries",
-    "COUNTRIES_DESCRIPTION": "Manage the countries you want to visit or have visited"
+    "DIARY_TYPES_DESCRIPTION": "Manage your diary entry types to categorize your travel experiences"
   },
   "DIARY_TYPES": {
     "ADD": "Add Diary Type",
@@ -46,10 +44,8 @@
   "DIARY_FORM": {
     "ADD_TITLE": "Add Diary Entry",
     "EDIT_TITLE": "Edit Diary Entry",
-    "DAY": "Day",
-    "DAY_PLACEHOLDER": "1",
-    "DAY_REQUIRED": "Day is required",
-    "DAY_MIN": "Day must be at least 1",
+    "DATE": "Date",
+    "DATE_REQUIRED": "Date is required",
     "TITLE": "Title",
     "TITLE_PLACEHOLDER": "e.g., Exploring the old town",
     "TITLE_REQUIRED": "Title is required",
@@ -79,34 +75,15 @@
     "NOT_FOUND": "Trip not found",
     "GO_BACK": "Go back to trips"
   },
-  "COUNTRIES": {
-    "ADD": "Add Country",
-    "ADD_TITLE": "Add Country",
-    "EDIT_TITLE": "Edit Country",
-    "NAME": "Name",
-    "NAME_PLACEHOLDER": "e.g., Spain, France, Italy",
-    "NAME_REQUIRED": "Name is required",
-    "NAME_MAX_LENGTH": "Name must not exceed 100 characters",
-    "LATITUDE": "Latitude",
-    "LATITUDE_PLACEHOLDER": "e.g., 40.4168",
-    "LATITUDE_REQUIRED": "Latitude is required",
-    "LATITUDE_RANGE": "Latitude must be between -90 and 90",
-    "LONGITUDE": "Longitude",
-    "LONGITUDE_PLACEHOLDER": "e.g., -3.7038",
-    "LONGITUDE_REQUIRED": "Longitude is required",
-    "LONGITUDE_RANGE": "Longitude must be between -180 and 180",
-    "CONTINENT": "Continent",
-    "CONTINENT_PLACEHOLDER": "e.g., Europe, Asia, Africa",
-    "CONTINENT_REQUIRED": "Continent is required",
-    "CONTINENT_MAX_LENGTH": "Continent must not exceed 50 characters",
-    "ACTIONS": "Actions",
-    "EDIT": "Edit",
+  "PHOTO_DETAIL": {
+    "TITLE": "Photo Details",
+    "FILENAME": "Filename",
+    "LOCATION": "Location",
+    "METADATA": "Metadata",
+    "IS_MAIN": "Set as main photo",
+    "MAIN_PHOTO": "Main Photo",
     "DELETE": "Delete",
-    "NO_DATA": "No countries found. Create your first one!"
-  },
-  "COMMON": {
     "CANCEL": "Cancel",
-    "CREATE": "Create",
-    "UPDATE": "Update"
+    "SAVE": "Save"
   }
 }

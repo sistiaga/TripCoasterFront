@@ -1,0 +1,108 @@
+// master - MARSISCA - BEGIN 2025-12-08
+.photo-detail-modal {
+  h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 16px 24px;
+
+    .close-button {
+      margin-right: -12px;
+    }
+  }
+
+  .photo-container {
+    width: 100%;
+    max-height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    .main-photo {
+      width: 100%;
+      height: auto;
+      max-height: 60vh;
+      object-fit: contain;
+    }
+  }
+
+  .photo-info {
+    margin-bottom: 20px;
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+
+      mat-icon {
+        color: rgba(0, 0, 0, 0.54);
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .label {
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.87);
+      }
+
+      .value {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .metadata {
+      margin-top: 8px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+
+      pre {
+        margin: 0;
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+    }
+  }
+
+  .photo-form {
+    padding: 16px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .main-photo-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: #fff3e0;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    color: #e65100;
+
+    mat-icon {
+      color: #ff9800;
+    }
+  }
+
+  .error-message {
+    color: #d32f2f;
+    padding: 12px;
+    background: #ffebee;
+    border-radius: 4px;
+    margin-top: 16px;
+  }
+}
+// master - MARSISCA - END 2025-12-08

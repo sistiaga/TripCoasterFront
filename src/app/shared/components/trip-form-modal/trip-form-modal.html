@@ -1,4 +1,4 @@
-<!-- master - MARSISCA - BEGIN 2025-11-15 -->
+<!-- master - MARSISCA - BEGIN 2025-12-08 -->
 <div class="trip-form-modal">
   <h2 mat-dialog-title>{{ mode === 'create' ? 'Add New Trip' : 'Edit Trip' }}</h2>
 
@@ -91,6 +91,20 @@
         </div>
       </mat-tab>
 
+      <!-- Diary Tab -->
+      <mat-tab label="Diary">
+        <div class="tab-content">
+          @if (mode === 'edit' && tripId) {
+            <app-trip-diary [tripId]="tripId" [tripStartDate]="tripStartDate" [tripEndDate]="tripEndDate"></app-trip-diary>
+          } @else {
+            <div class="info-message">
+              <mat-icon>info</mat-icon>
+              <p>Save the trip first to add diary entries</p>
+            </div>
+          }
+        </div>
+      </mat-tab>
+
       <!-- Photos Tab -->
       <mat-tab label="Photos">
         <div class="tab-content">
@@ -100,7 +114,7 @@
               <h3>Existing Photos</h3>
               <div class="photos-grid">
                 @for (photo of existingPhotos; track photo.id) {
-                  <div class="photo-preview" (click)="viewPhoto(photo.url)">
+                  <div class="photo-preview" (click)="viewPhoto(photo)">
                     <img [src]="photo.url" [alt]="photo.filename" />
                     <button
                       mat-icon-button
@@ -133,7 +147,7 @@
                 type="file"
                 #fileInput
                 multiple
-                accept="image/*"
+                accept="image/*,.heic,.heif"
                 (change)="onFilesSelected($event)"
                 style="display: none"
               />
@@ -200,4 +214,4 @@
     </button>
   </mat-dialog-actions>
 </div>
-<!-- master - MARSISCA - END 2025-11-15 -->
+<!-- master - MARSISCA - END 2025-12-08 -->

@@ -1,0 +1,58 @@
+<!-- master - MARSISCA - BEGIN 2025-12-08 -->
+<h2 mat-dialog-title>
+  {{ (isEditMode ? 'DIARY_FORM.EDIT_TITLE' : 'DIARY_FORM.ADD_TITLE') | translate }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="diary-entry-form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'DIARY_FORM.DATE' | translate }}</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" [min]="minDate" [max]="maxDate">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="form.get('date')?.hasError('required')">
+        {{ 'DIARY_FORM.DATE_REQUIRED' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'DIARY_FORM.TITLE' | translate }}</mat-label>
+      <input matInput formControlName="title" [placeholder]="'DIARY_FORM.TITLE_PLACEHOLDER' | translate">
+      <mat-error *ngIf="form.get('title')?.hasError('required')">
+        {{ 'DIARY_FORM.TITLE_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('title')?.hasError('maxlength')">
+        {{ 'DIARY_FORM.TITLE_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'DIARY_FORM.DESCRIPTION' | translate }}</mat-label>
+      <textarea matInput formControlName="description" rows="6" [placeholder]="'DIARY_FORM.DESCRIPTION_PLACEHOLDER' | translate"></textarea>
+      <mat-error *ngIf="form.get('description')?.hasError('required')">
+        {{ 'DIARY_FORM.DESCRIPTION_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('description')?.hasError('maxlength')">
+        {{ 'DIARY_FORM.DESCRIPTION_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'DIARY_FORM.DIARY_TYPE' | translate }}</mat-label>
+      <mat-select formControlName="diaryTypeId" [placeholder]="'DIARY_FORM.DIARY_TYPE_PLACEHOLDER' | translate">
+        <mat-option [value]="null">{{ 'DIARY_FORM.NO_TYPE' | translate }}</mat-option>
+        <mat-option *ngFor="let type of diaryTypes" [value]="type.id">
+          {{ type.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{ 'DIARY_FORM.CANCEL' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    {{ 'DIARY_FORM.SAVE' | translate }}
+  </button>
+</mat-dialog-actions>
+<!-- master - MARSISCA - END 2025-12-08 -->

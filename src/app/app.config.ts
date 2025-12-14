@@ -1,4 +1,4 @@
-// main - MARSISCA - BEGIN 2025-10-04
+// master - MARSISCA - BEGIN 2025-12-08
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
@@ -18,10 +18,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       TranslateModule.forRoot()
     ),
-    provideTranslateHttpLoader({
-      prefix: './assets/i18n/',
-      suffix: '.json'
-    })
+    provideTranslateHttpLoader()
   ]
 };
-// main - MARSISCA - END 2025-10-04
+// master - MARSISCA - END 2025-12-08

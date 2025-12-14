@@ -1,8 +1,8 @@
-// master - MARSISCA - BEGIN 2025-11-15
+// master - MARSISCA - BEGIN 2025-12-08
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +16,9 @@ import { TripService } from '../../../core/services/trip.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { StarRating } from '../star-rating/star-rating';
 import { TripDestinations } from '../trip-destinations/trip-destinations';
-import { Trip } from '../../../core/models/trip.model';
+import { TripDiary } from '../trip-diary/trip-diary';
+import { Trip, TripPhoto } from '../../../core/models/trip.model';
+import { PhotoDetailModal } from '../photo-detail-modal/photo-detail-modal';
 import moment from 'moment';
 
 export const EUROPEAN_DATE_FORMATS = {
@@ -51,7 +53,8 @@ export interface TripFormData {
     MatTabsModule,
     MatIconModule,
     StarRating,
-    TripDestinations
+    TripDestinations,
+    TripDiary
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
@@ -71,6 +74,8 @@ export class TripFormModal implements OnInit {
   errorMessage = '';
   mode: 'create' | 'edit' = 'create';
   tripId?: number;
+  tripStartDate?: string;
+  tripEndDate?: string;
   selectedFiles: File[] = [];
   photoPreviews: { file: File, url: string }[] = [];
   existingPhotos: any[] = [];
@@ -79,6 +84,7 @@ export class TripFormModal implements OnInit {
     private fb: FormBuilder,
     private tripService: TripService,
     private authService: AuthService,
+    private dialog: MatDialog,
     private dialogRef: MatDialogRef<TripFormModal>,
     @Inject(MAT_DIALOG_DATA) public data: TripFormData
   ) {
@@ -96,6 +102,8 @@ export class TripFormModal implements OnInit {
 
   ngOnInit(): void {
     if (this.mode === 'edit' && this.data?.trip) {
+      this.tripStartDate = this.data.trip.startDate;
+      this.tripEndDate = this.data.trip.endDate;
       this.populateForm(this.data.trip);
       this.loadExistingPhotos();
     }
@@ -250,17 +258,35 @@ export class TripFormModal implements OnInit {
   }
 
   private addFiles(files: File[]): void {
-    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+    // Accept image files and HEIC/HEIF files
+    const imageFiles = files.filter(file =>
+      file.type.startsWith('image/') ||
+      file.name.toLowerCase().endsWith('.heic') ||
+      file.name.toLowerCase().endsWith('.heif')
+    );
 
     imageFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
+      const isHeic = file.name.toLowerCase().endsWith('.heic') ||
+                     file.name.toLowerCase().endsWith('.heif');
+
+      if (isHeic) {
+        // For HEIC files, show a generic image icon placeholder
+        // The backend will convert to JPEG and extract metadata
         this.photoPreviews.push({
           file,
-          url: e.target?.result as string
+          url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SEVJQzwvdGV4dD48L3N2Zz4='
         });
-      };
-      reader.readAsDataURL(file);
+      } else {
+        // For regular image files, create preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.photoPreviews.push({
+            file,
+            url: e.target?.result as string
+          });
+        };
+        reader.readAsDataURL(file);
+      }
     });
 
     this.selectedFiles.push(...imageFiles);
@@ -287,8 +313,23 @@ export class TripFormModal implements OnInit {
     }
   }
 
-  viewPhoto(url: string): void {
-    window.open(url, '_blank');
+  viewPhoto(photo: TripPhoto): void {
+    const dialogRef = this.dialog.open(PhotoDetailModal, {
+      width: '90vw',
+      maxWidth: '800px',
+      data: {
+        photo,
+        tripId: this.tripId,
+        canEdit: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true || result === 'deleted') {
+        // Reload photos after changes
+        this.loadExistingPhotos();
+      }
+    });
   }
 
   private uploadPhotos(tripId: number): void {
@@ -369,4 +410,4 @@ export class TripFormModal implements OnInit {
     return '';
   }
 }
-// master - MARSISCA - END 2025-11-15
+// master - MARSISCA - END 2025-12-08

@@ -1,0 +1,38 @@
+<!-- master - MARSISCA - BEGIN 2025-11-30 -->
+<h2 mat-dialog-title>
+  {{ (isEditMode ? 'DIARY_TYPE_FORM.EDIT_TITLE' : 'DIARY_TYPE_FORM.ADD_TITLE') | translate }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="diary-type-form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'DIARY_TYPE_FORM.NAME' | translate }}</mat-label>
+      <input matInput formControlName="name" [placeholder]="'DIARY_TYPE_FORM.NAME_PLACEHOLDER' | translate">
+      <mat-error *ngIf="form.get('name')?.hasError('required')">
+        {{ 'DIARY_TYPE_FORM.NAME_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('name')?.hasError('maxlength')">
+        {{ 'DIARY_TYPE_FORM.NAME_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'DIARY_TYPE_FORM.DESCRIPTION' | translate }}</mat-label>
+      <textarea matInput formControlName="description" rows="4" [placeholder]="'DIARY_TYPE_FORM.DESCRIPTION_PLACEHOLDER' | translate"></textarea>
+      <mat-error *ngIf="form.get('description')?.hasError('required')">
+        {{ 'DIARY_TYPE_FORM.DESCRIPTION_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('description')?.hasError('maxlength')">
+        {{ 'DIARY_TYPE_FORM.DESCRIPTION_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{ 'DIARY_TYPE_FORM.CANCEL' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    {{ 'DIARY_TYPE_FORM.SAVE' | translate }}
+  </button>
+</mat-dialog-actions>
+<!-- master - MARSISCA - END 2025-11-30 -->

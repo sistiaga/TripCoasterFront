@@ -9,9 +9,7 @@
   "SETTINGS": {
     "TITLE": "Configuración",
     "DIARY_TYPES": "Tipos de Diario",
-    "DIARY_TYPES_DESCRIPTION": "Gestiona los tipos de entradas de diario para categorizar tus experiencias de viaje",
-    "COUNTRIES": "Países",
-    "COUNTRIES_DESCRIPTION": "Gestiona los países que deseas visitar o que ya has visitado"
+    "DIARY_TYPES_DESCRIPTION": "Gestiona los tipos de entradas de diario para categorizar tus experiencias de viaje"
   },
   "DIARY_TYPES": {
     "ADD": "Añadir Tipo de Diario",
@@ -46,10 +44,8 @@
   "DIARY_FORM": {
     "ADD_TITLE": "Añadir Entrada de Diario",
     "EDIT_TITLE": "Editar Entrada de Diario",
-    "DAY": "Día",
-    "DAY_PLACEHOLDER": "1",
-    "DAY_REQUIRED": "El día es obligatorio",
-    "DAY_MIN": "El día debe ser al menos 1",
+    "DATE": "Fecha",
+    "DATE_REQUIRED": "La fecha es obligatoria",
     "TITLE": "Título",
     "TITLE_PLACEHOLDER": "ej., Explorando el casco antiguo",
     "TITLE_REQUIRED": "El título es obligatorio",
@@ -79,34 +75,15 @@
     "NOT_FOUND": "Viaje no encontrado",
     "GO_BACK": "Volver a viajes"
   },
-  "COUNTRIES": {
-    "ADD": "Añadir País",
-    "ADD_TITLE": "Añadir País",
-    "EDIT_TITLE": "Editar País",
-    "NAME": "Nombre",
-    "NAME_PLACEHOLDER": "ej., España, Francia, Italia",
-    "NAME_REQUIRED": "El nombre es obligatorio",
-    "NAME_MAX_LENGTH": "El nombre no debe exceder los 100 caracteres",
-    "LATITUDE": "Latitud",
-    "LATITUDE_PLACEHOLDER": "ej., 40.4168",
-    "LATITUDE_REQUIRED": "La latitud es obligatoria",
-    "LATITUDE_RANGE": "La latitud debe estar entre -90 y 90",
-    "LONGITUDE": "Longitud",
-    "LONGITUDE_PLACEHOLDER": "ej., -3.7038",
-    "LONGITUDE_REQUIRED": "La longitud es obligatoria",
-    "LONGITUDE_RANGE": "La longitud debe estar entre -180 y 180",
-    "CONTINENT": "Continente",
-    "CONTINENT_PLACEHOLDER": "ej., Europa, Asia, África",
-    "CONTINENT_REQUIRED": "El continente es obligatorio",
-    "CONTINENT_MAX_LENGTH": "El continente no debe exceder los 50 caracteres",
-    "ACTIONS": "Acciones",
-    "EDIT": "Editar",
+  "PHOTO_DETAIL": {
+    "TITLE": "Detalles de la Foto",
+    "FILENAME": "Nombre del archivo",
+    "LOCATION": "Ubicación",
+    "METADATA": "Metadatos",
+    "IS_MAIN": "Establecer como foto principal",
+    "MAIN_PHOTO": "Foto Principal",
     "DELETE": "Eliminar",
-    "NO_DATA": "No se encontraron países. ¡Crea el primero!"
-  },
-  "COMMON": {
     "CANCEL": "Cancelar",
-    "CREATE": "Crear",
-    "UPDATE": "Actualizar"
+    "SAVE": "Guardar"
   }
 }

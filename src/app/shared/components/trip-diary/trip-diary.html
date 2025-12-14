@@ -1,0 +1,42 @@
+<!-- master - MARSISCA - BEGIN 2025-12-08 -->
+<div class="trip-diary-container">
+  <div class="header">
+    <button mat-raised-button color="primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      {{ 'DIARY.ADD_ENTRY' | translate }}
+    </button>
+  </div>
+
+  <div class="diary-entries" *ngIf="diaries.length > 0; else noEntries">
+    <mat-card *ngFor="let diary of diaries" class="diary-card">
+      <mat-card-header>
+        <mat-card-title>
+          <span class="day-badge">{{ formatDate(diary.day) }}</span>
+          {{ diary.title }}
+        </mat-card-title>
+        <div class="actions">
+          <button mat-icon-button (click)="openEditDialog(diary)" [title]="'DIARY.EDIT' | translate">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteDiary(diary)" [title]="'DIARY.DELETE' | translate">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="diary-description">{{ diary.description }}</p>
+        <mat-chip *ngIf="diary.diaryType" class="diary-type-chip">
+          {{ diary.diaryType.name }}
+        </mat-chip>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #noEntries>
+    <div class="no-entries">
+      <mat-icon>book</mat-icon>
+      <p>{{ 'DIARY.NO_ENTRIES' | translate }}</p>
+    </div>
+  </ng-template>
+</div>
+<!-- master - MARSISCA - END 2025-12-08 -->

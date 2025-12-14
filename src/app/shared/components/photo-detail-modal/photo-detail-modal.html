@@ -1,0 +1,80 @@
+<!-- master - MARSISCA - BEGIN 2025-12-08 -->
+<div class="photo-detail-modal">
+  <h2 mat-dialog-title>
+    {{ 'PHOTO_DETAIL.TITLE' | translate }}
+    <button mat-icon-button class="close-button" (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </h2>
+
+  <mat-dialog-content>
+    <div class="photo-container">
+      <img [src]="data.photo.url" [alt]="data.photo.filename" class="main-photo">
+    </div>
+
+    <div class="photo-info">
+      <div class="info-row">
+        <mat-icon>image</mat-icon>
+        <span class="label">{{ 'PHOTO_DETAIL.FILENAME' | translate }}:</span>
+        <span class="value">{{ data.photo.filename }}</span>
+      </div>
+
+      @if (data.photo.latitude && data.photo.longitude) {
+        <div class="info-row">
+          <mat-icon>location_on</mat-icon>
+          <span class="label">{{ 'PHOTO_DETAIL.LOCATION' | translate }}:</span>
+          <span class="value">{{ data.photo.latitude }}, {{ data.photo.longitude }}</span>
+        </div>
+      }
+
+      @if (data.photo.metadata) {
+        <div class="info-row">
+          <mat-icon>info</mat-icon>
+          <span class="label">{{ 'PHOTO_DETAIL.METADATA' | translate }}:</span>
+        </div>
+        <div class="metadata">
+          <pre>{{ data.photo.metadata | json }}</pre>
+        </div>
+      }
+    </div>
+
+    @if (data.canEdit) {
+      <form [formGroup]="photoForm" class="photo-form">
+        <mat-checkbox formControlName="isMain">
+          {{ 'PHOTO_DETAIL.IS_MAIN' | translate }}
+        </mat-checkbox>
+      </form>
+    } @else {
+      @if (data.photo.isMain) {
+        <div class="main-photo-badge">
+          <mat-icon>star</mat-icon>
+          <span>{{ 'PHOTO_DETAIL.MAIN_PHOTO' | translate }}</span>
+        </div>
+      }
+    }
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    @if (data.canEdit) {
+      <button mat-button color="warn" (click)="onDelete()" [disabled]="isLoading">
+        <mat-icon>delete</mat-icon>
+        {{ 'PHOTO_DETAIL.DELETE' | translate }}
+      </button>
+    }
+    <button mat-button (click)="onClose()" [disabled]="isLoading">
+      {{ 'PHOTO_DETAIL.CANCEL' | translate }}
+    </button>
+    @if (data.canEdit) {
+      <button mat-raised-button color="primary" (click)="onSave()" [disabled]="isLoading || photoForm.invalid">
+        {{ 'PHOTO_DETAIL.SAVE' | translate }}
+      </button>
+    }
+  </mat-dialog-actions>
+</div>
+<!-- master - MARSISCA - END 2025-12-08 -->

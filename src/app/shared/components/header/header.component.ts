@@ -1,9 +1,10 @@
-// master - MARSISCA - BEGIN 2025-10-18
+// master - MARSISCA - BEGIN 2025-11-30
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginModalComponent } from '../login-modal/login-modal.component';
@@ -11,7 +12,8 @@ import { LogoutConfirmationComponent } from '../logout-confirmation/logout-confi
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule, MatDialogModule, MatTooltipModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule, MatDialogModule, MatTooltipModule, TranslateModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -72,4 +74,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 }
-// master - MARSISCA - END 2025-10-18
+// master - MARSISCA - END 2025-11-30

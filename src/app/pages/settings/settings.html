@@ -1,0 +1,21 @@
+<!-- master - MARSISCA - BEGIN 2025-12-14 -->
+<div class="settings-container">
+  <h1>{{ 'SETTINGS.TITLE' | translate }}</h1>
+
+  <mat-tab-group [(selectedIndex)]="selectedTabIndex">
+    <mat-tab [label]="'SETTINGS.DIARY_TYPES' | translate">
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.DIARY_TYPES_DESCRIPTION' | translate }}</p>
+        <app-diary-types></app-diary-types>
+      </div>
+    </mat-tab>
+
+    <mat-tab [label]="'SETTINGS.COUNTRIES' | translate">
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.COUNTRIES_DESCRIPTION' | translate }}</p>
+        <app-countries></app-countries>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<!-- master - MARSISCA - END 2025-12-14 -->

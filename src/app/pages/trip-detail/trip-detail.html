@@ -1,0 +1,135 @@
+<!-- master - MARSISCA - BEGIN 2025-11-30 -->
+<div class="trip-detail-page" *ngIf="!isLoading && trip">
+  <!-- Hero Section -->
+  <div class="hero-section" [style.background-image]="'url(' + getHeroImage() + ')'">
+    <div class="hero-overlay">
+      <button mat-icon-button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="hero-content">
+        <h1 class="trip-title">{{ trip.name }}</h1>
+        <div class="trip-meta">
+          <span class="trip-dates">
+            <mat-icon>event</mat-icon>
+            {{ formatDate(trip.startDate) }} - {{ formatDate(trip.endDate) }}
+          </span>
+          <app-star-rating
+            *ngIf="trip.rating"
+            [readOnly]="true"
+            [maxStars]="5"
+            [value]="trip.rating"
+            class="hero-rating"
+          ></app-star-rating>
+        </div>
+      </div>
+      <button mat-fab color="primary" class="edit-fab" (click)="editTrip()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Content Sections -->
+  <div class="content-container">
+
+    <!-- Trip Info Section -->
+    <section class="info-section section">
+      <div class="section-header">
+        <mat-icon>info</mat-icon>
+        <h2>{{ 'TRIP_DETAIL.INFO' | translate }}</h2>
+      </div>
+      <div class="section-content">
+        <p class="trip-description" *ngIf="trip.description">{{ trip.description }}</p>
+        <p class="no-content" *ngIf="!trip.description">
+          {{ 'TRIP_DETAIL.NO_DESCRIPTION' | translate }}
+        </p>
+      </div>
+    </section>
+
+    <!-- Destinations Section -->
+    <section class="destinations-section section">
+      <div class="section-header">
+        <mat-icon>place</mat-icon>
+        <h2>{{ 'TRIP_DETAIL.DESTINATIONS' | translate }}</h2>
+      </div>
+      <div class="section-content">
+        <div class="destinations-grid" *ngIf="tripLocations.length > 0">
+          <div class="destination-card" *ngFor="let location of tripLocations">
+            <div class="destination-icon">
+              <mat-icon>location_on</mat-icon>
+            </div>
+            <div class="destination-info">
+              <h3>{{ location.location.name }}</h3>
+              <p>{{ location.location.country }}</p>
+              <span class="coordinates">
+                {{ location.location.latitude.toFixed(4) }}, {{ location.location.longitude.toFixed(4) }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" *ngIf="tripLocations.length === 0">
+          <mat-icon>add_location</mat-icon>
+          <p>{{ 'TRIP_DETAIL.NO_DESTINATIONS' | translate }}</p>
+          <button mat-raised-button color="primary" (click)="editTrip()">
+            {{ 'TRIP_DETAIL.ADD_DESTINATIONS' | translate }}
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diary Section -->
+    <section class="diary-section section">
+      <div class="section-header">
+        <mat-icon>book</mat-icon>
+        <h2>{{ 'TRIP_DETAIL.DIARY' | translate }}</h2>
+      </div>
+      <div class="section-content">
+        <app-trip-diary [tripId]="trip.id" [tripStartDate]="trip.startDate" [tripEndDate]="trip.endDate"></app-trip-diary>
+      </div>
+    </section>
+
+    <!-- Photos Section -->
+    <section class="photos-section section">
+      <div class="section-header">
+        <mat-icon>photo_library</mat-icon>
+        <h2>{{ 'TRIP_DETAIL.PHOTOS' | translate }}</h2>
+      </div>
+      <div class="section-content">
+        <div class="photos-grid" *ngIf="trip.photos && trip.photos.length > 0">
+          <div class="photo-item" *ngFor="let photo of getVisiblePhotos()">
+            <img [src]="photo.url" [alt]="photo.filename" (click)="openPhotoDetail(photo)">
+          </div>
+          <div class="more-photos" *ngIf="hasMorePhotos()" (click)="editTrip()">
+            <div class="more-photos-overlay">
+              <span>+{{ getMorePhotosCount() }}</span>
+              <p>{{ 'TRIP_DETAIL.MORE_PHOTOS' | translate }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" *ngIf="!trip.photos || trip.photos.length === 0">
+          <mat-icon>add_photo_alternate</mat-icon>
+          <p>{{ 'TRIP_DETAIL.NO_PHOTOS' | translate }}</p>
+          <button mat-raised-button color="primary" (click)="editTrip()">
+            {{ 'TRIP_DETAIL.ADD_PHOTOS' | translate }}
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="isLoading">
+  <mat-icon class="loading-icon">flight_takeoff</mat-icon>
+  <p>{{ 'TRIP_DETAIL.LOADING' | translate }}</p>
+</div>
+
+<!-- Not Found State -->
+<div class="not-found-container" *ngIf="!isLoading && !trip">
+  <mat-icon>error_outline</mat-icon>
+  <h2>{{ 'TRIP_DETAIL.NOT_FOUND' | translate }}</h2>
+  <button mat-raised-button color="primary" (click)="goBack()">
+    {{ 'TRIP_DETAIL.GO_BACK' | translate }}
+  </button>
+</div>
+<!-- master - MARSISCA - END 2025-11-30 -->

@@ -1,0 +1,427 @@
+/* master - MARSISCA - BEGIN 2025-11-30 */
+.trip-detail-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+// Hero Section
+.hero-section {
+  position: relative;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+
+      &:hover {
+        background: white;
+      }
+    }
+
+    .hero-content {
+      margin-top: auto;
+      margin-bottom: 40px;
+      color: white;
+
+      .trip-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin: 0 0 16px 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .trip-meta {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        flex-wrap: wrap;
+
+        .trip-dates {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 18px;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+          mat-icon {
+            font-size: 24px;
+            width: 24px;
+            height: 24px;
+          }
+        }
+
+        .hero-rating {
+          ::ng-deep .star {
+            font-size: 28px;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+    }
+
+    .edit-fab {
+      position: absolute;
+      bottom: -28px;
+      right: 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// Content Container
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px 40px;
+}
+
+// Section Styles
+.section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+  overflow: hidden;
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+
+  .section-content {
+    padding: 32px;
+  }
+}
+
+// Info Section
+.info-section {
+  .trip-description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  .no-content {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+  }
+}
+
+// Destinations Section
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+
+  .destination-card {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #667eea;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .destination-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        color: white;
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    .destination-info {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 4px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      p {
+        margin: 0 0 8px 0;
+        color: #666;
+        font-size: 14px;
+      }
+
+      .coordinates {
+        font-size: 12px;
+        color: #999;
+        font-family: monospace;
+      }
+    }
+  }
+}
+
+// Diary Section
+.diary-section {
+  .section-content {
+    padding: 16px 32px 32px;
+  }
+}
+
+// Photos Section
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+
+  .photo-item {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: #f0f0f0;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .more-photos {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .more-photos-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+
+      span {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Empty States
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: #ccc;
+    margin-bottom: 16px;
+  }
+
+  p {
+    color: #999;
+    font-size: 16px;
+    margin: 0 0 24px 0;
+  }
+}
+
+// Loading State
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f5f5f5;
+
+  .loading-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: #667eea;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  p {
+    margin-top: 16px;
+    font-size: 18px;
+    color: #666;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+// Not Found State
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f5f5f5;
+  text-align: center;
+  padding: 20px;
+
+  mat-icon {
+    font-size: 100px;
+    width: 100px;
+    height: 100px;
+    color: #f44336;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: 28px;
+    color: #333;
+    margin: 0 0 24px 0;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .hero-section {
+    height: 400px;
+
+    .hero-overlay {
+      .hero-content {
+        .trip-title {
+          font-size: 32px;
+        }
+
+        .trip-meta {
+          .trip-dates {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .edit-fab {
+        right: 20px;
+      }
+    }
+  }
+
+  .content-container {
+    padding: 40px 12px 20px;
+  }
+
+  .section {
+    .section-header {
+      padding: 20px 20px;
+    }
+
+    .section-content {
+      padding: 20px;
+    }
+  }
+
+  .destinations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .photos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+/* master - MARSISCA - END 2025-11-30 */

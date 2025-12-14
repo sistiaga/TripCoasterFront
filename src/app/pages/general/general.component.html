@@ -19,7 +19,7 @@
     @if (!isLoading && trips.length > 0) {
       <div class="trips-list">
         @for (trip of trips; track trip.id) {
-          <div class="trip-card" (click)="openEditTripModal(trip)">
+          <div class="trip-card" (click)="viewTripDetail(trip)">
             <div class="trip-image">
               <div class="image-placeholder"></div>
             </div>

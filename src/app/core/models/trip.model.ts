@@ -1,10 +1,23 @@
-// master - MARSISCA - BEGIN 2025-11-01
+// master - MARSISCA - BEGIN 2025-12-08
 export interface TripPhoto {
   id: number;
   url: string;
+  path?: string;
   filename: string;
+  originalName?: string;
   tripId: number;
+  isMain?: boolean;
+  latitude?: number;
+  longitude?: number;
+  metadata?: any;
+  mimeType?: string;
+  size?: number;
+  cameraMake?: string;
+  cameraModel?: string;
+  dateTaken?: string;
+  caption?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface Trip {
@@ -25,4 +38,14 @@ export interface TripsResponse {
   message: string;
   data: Trip[];
 }
-// master - MARSISCA - END 2025-11-01
+
+export interface PhotoUpdateRequest {
+  isMain?: boolean;
+}
+
+export interface PhotoResponse {
+  success: boolean;
+  message: string;
+  data?: TripPhoto;
+}
+// master - MARSISCA - END 2025-12-08

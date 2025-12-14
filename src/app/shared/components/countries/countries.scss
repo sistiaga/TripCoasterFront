@@ -1,0 +1,27 @@
+// master - MARSISCA - BEGIN 2025-12-14
+.countries-container {
+  padding: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-cell, .mat-header-cell {
+  padding: 0.5rem;
+}
+
+.mat-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.mat-icon-button {
+  margin: 0 0.25rem;
+}
+// master - MARSISCA - END 2025-12-14
