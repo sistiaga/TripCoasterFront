@@ -29,6 +29,9 @@ export interface Trip {
   rating: number | null;
   userId: number;
   photos?: TripPhoto[];
+  // master - MARSISCA - BEGIN 2024-12-24
+  mainPhoto?: TripPhoto | null;
+  // master - MARSISCA - END 2024-12-24
   createdAt: string;
   updatedAt: string;
 }

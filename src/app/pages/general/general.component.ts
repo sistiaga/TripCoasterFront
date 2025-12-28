@@ -10,6 +10,9 @@ import { AuthService } from '../../core/services/auth.service';
 import { TripService } from '../../core/services/trip.service';
 import { Trip } from '../../core/models/trip.model';
 import { StarRating } from '../../shared/components/star-rating/star-rating';
+// master - MARSISCA - BEGIN 2024-12-24
+import { environment } from '../../../environments/environment';
+// master - MARSISCA - END 2024-12-24
 
 @Component({
   selector: 'app-general',
@@ -96,5 +99,23 @@ export class GeneralComponent implements OnInit {
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
+
+  // master - MARSISCA - BEGIN 2024-12-24
+  getMainPhotoUrl(trip: Trip): string | null {
+    const baseUrl = environment.apiUrl.replace('/api', '');
+
+    if (trip.mainPhoto?.path) {
+      return `${baseUrl}${trip.mainPhoto.path}`;
+    }
+
+    if (trip.photos && trip.photos.length > 0) {
+      const mainPhoto = trip.photos.find(photo => photo.isMain);
+      const photoToUse = mainPhoto || trip.photos[0];
+      return photoToUse.path ? `${baseUrl}${photoToUse.path}` : photoToUse.url;
+    }
+
+    return null;
+  }
+  // master - MARSISCA - END 2024-12-24
 }
 // master - MARSISCA - END 2025-11-30

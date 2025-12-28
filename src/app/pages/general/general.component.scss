@@ -1,126 +1,178 @@
-// master - MARSISCA - BEGIN 2025-11-01
+// master - MARSISCA - BEGIN 2024-12-24
+@import '../../../variables';
+
 .trips-container {
-  display: flex;
   min-height: calc(100vh - 64px);
   margin-top: 64px;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, $accent-light 0%, #ffffff 100%);
   position: relative;
 }
 
-.filters-sidebar {
-  width: 250px;
-  background-color: white;
-  padding: 2rem 1.5rem;
-  border-right: 1px solid #e0e0e0;
-
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: #333;
-  }
-
-  .filter-option {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: #f0f0f0;
-    }
-  }
-}
-
 .trips-content {
-  flex: 1;
-  padding: 2rem;
+  padding: 3rem 2rem;
   overflow-y: auto;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .loading,
 .no-trips {
   text-align: center;
-  padding: 3rem;
-  font-size: 1.25rem;
-  color: #666;
+  padding: 4rem 2rem;
+  font-size: 1.5rem;
+  color: $text-secondary;
+  font-family: $font-primary-italic;
+  font-style: italic;
 }
 
-.trips-list {
+.trips-grid {
   display: grid;
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2.5rem;
+  padding-bottom: 2rem;
 }
 
 .trip-card {
-  display: flex;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 420px;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(255, 127, 0, 0.25);
+    transform: translateY(-8px) scale(1.02);
+
+    .trip-image {
+      transform: scale(1.1);
+    }
+
+    .trip-overlay {
+      background: linear-gradient(
+        to bottom,
+        rgba(8, 31, 92, 0.3) 0%,
+        rgba(44, 44, 44, 0.85) 100%
+      );
+    }
+  }
+
+  .trip-image-container {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    flex-shrink: 0;
   }
 
   .trip-image {
-    width: 300px;
-    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-    .image-placeholder {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 200px;
+    // master - MARSISCA - BEGIN 2024-12-24
+    &.has-photo {
+      background-blend-mode: normal;
+    }
+    // master - MARSISCA - END 2024-12-24
+  }
+
+  .trip-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(8, 31, 92, 0.2) 0%,
+      rgba(44, 44, 44, 0.75) 100%
+    );
+    transition: background 0.4s ease;
+  }
+
+  .trip-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.75rem 1.5rem;
+    z-index: 2;
+  }
+
+  .trip-title {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem 0;
+    font-family: $font-primary-italic;
+    font-style: italic;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .trip-description {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .trip-footer {
+    padding: 1.25rem 1.75rem;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .trip-dates {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-secondary;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    .date-icon {
+      color: $primary-color;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
-  .trip-details {
-    padding: 1.5rem;
-    flex: 1;
+  .trip-stats {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
 
-    h3 {
-      font-size: 1.5rem;
-      margin: 0 0 0.5rem 0;
-      color: #333;
-    }
-
-    .trip-description {
-      color: #666;
-      margin-bottom: 1rem;
-      line-height: 1.5;
-    }
-
-    .trip-dates {
-      color: #999;
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
-    }
-
-    .trip-stats {
+    .rating {
       display: flex;
-      gap: 1rem;
-      align-items: center;
-
-      .rating {
-        display: inline-flex;
-      }
-
-      .photo-count {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        color: #666;
-        font-size: 0.9rem;
-
-        mat-icon {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
-        }
-      }
     }
   }
 }
@@ -130,35 +182,87 @@
   bottom: 2rem;
   right: 2rem;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(255, 127, 0, 0.3);
+  width: 64px;
+  height: 64px;
 
   &:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 24px rgba(255, 127, 0, 0.45);
+    transform: scale(1.1) rotate(90deg);
+  }
+
+  mat-icon {
+    transition: transform 0.3s ease;
+  }
+}
+
+@media (max-width: 1200px) {
+  .trips-grid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .trips-container {
-    flex-direction: column;
+  .trips-content {
+    padding: 2rem 1rem;
   }
 
-  .filters-sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #e0e0e0;
+  .trips-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .trip-card {
-    flex-direction: column;
+    height: 380px;
 
-    .trip-image {
-      width: 100%;
+    .trip-image-container {
+      height: 260px;
+    }
+
+    .trip-title {
+      font-size: 1.75rem;
+    }
+
+    .trip-description {
+      font-size: 0.9rem;
+    }
+
+    .trip-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+    }
+
+    .trip-dates span {
+      white-space: normal;
     }
   }
 
   .fab-button {
     bottom: 1.5rem;
     right: 1.5rem;
+    width: 56px;
+    height: 56px;
   }
 }
-// master - MARSISCA - END 2025-11-01
+
+@media (max-width: 480px) {
+  .trips-content {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .trip-card {
+    border-radius: 12px;
+
+    .trip-content {
+      padding: 1.5rem 1.25rem 1.25rem;
+    }
+
+    .trip-title {
+      font-size: 1.5rem;
+    }
+  }
+}
+// master - MARSISCA - END 2024-12-24

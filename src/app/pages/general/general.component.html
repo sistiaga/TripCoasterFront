@@ -1,12 +1,5 @@
-<!-- master - MARSISCA - BEGIN 2025-11-01 -->
+<!-- master - MARSISCA - BEGIN 2024-12-24 -->
 <div class="trips-container">
-  <div class="filters-sidebar">
-    <h2>Filtros</h2>
-    <div class="filter-option">Todos los años</div>
-    <div class="filter-option">Europa</div>
-    <div class="filter-option">Asia</div>
-  </div>
-
   <div class="trips-content">
     @if (isLoading) {
       <div class="loading">Cargando viajes...</div>
@@ -17,16 +10,24 @@
     }
 
     @if (!isLoading && trips.length > 0) {
-      <div class="trips-list">
+      <div class="trips-grid">
         @for (trip of trips; track trip.id) {
           <div class="trip-card" (click)="viewTripDetail(trip)">
-            <div class="trip-image">
-              <div class="image-placeholder"></div>
+            <div class="trip-image-container">
+              <div class="trip-image"
+                   [class.has-photo]="getMainPhotoUrl(trip)"
+                   [style.background-image]="getMainPhotoUrl(trip) ? 'url(' + getMainPhotoUrl(trip) + ')' : null"></div>
+              <div class="trip-overlay"></div>
+              <div class="trip-content">
+                <h2 class="trip-title">{{ trip.name }}</h2>
+                <p class="trip-description">{{ trip.description }}</p>
+              </div>
             </div>
-            <div class="trip-details">
-              <h3>{{ trip.name }}</h3>
-              <p class="trip-description">{{ trip.description }}</p>
-              <p class="trip-dates">{{ formatDate(trip.startDate) }} — {{ formatDate(trip.endDate) }}</p>
+            <div class="trip-footer">
+              <div class="trip-dates">
+                <mat-icon class="date-icon">event</mat-icon>
+                <span>{{ formatDate(trip.startDate) }} — {{ formatDate(trip.endDate) }}</span>
+              </div>
               <div class="trip-stats">
                 @if (trip.rating) {
                   <app-star-rating
@@ -35,12 +36,6 @@
                     [value]="trip.rating"
                     class="rating"
                   ></app-star-rating>
-                }
-                @if (trip.photos && trip.photos.length > 0) {
-                  <div class="photo-count">
-                    <mat-icon>photo_library</mat-icon>
-                    <span>{{ trip.photos.length }}</span>
-                  </div>
                 }
               </div>
             </div>
@@ -60,4 +55,4 @@
     <mat-icon>add</mat-icon>
   </button>
 </div>
-<!-- master - MARSISCA - END 2025-11-01 -->
+<!-- master - MARSISCA - END 2024-12-24 -->

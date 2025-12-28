@@ -1,6 +1,8 @@
-// master - MARSISCA - BEGIN 2025-10-18
+// master - MARSISCA - BEGIN 2024-12-24
+@use '../../../../variables' as vars;
+
 .app-header {
-  background-color: #ff6600;
+  background-color: vars.$primary-color;
   width: 100%;
   padding: 0;
   margin: 0;
@@ -75,4 +77,4 @@
     display: block;
   }
 }
-// master - MARSISCA - END 2025-10-18
+// master - MARSISCA - END 2024-12-24

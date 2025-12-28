@@ -104,3 +104,36 @@ The application uses standalone component architecture (no NgModules). Configura
   - Component styles: 4kB warning, 8kB error
 - Output hashing enabled for production
 - Source maps enabled in development mode
+
+## Brand & Style Guide
+
+### Brand Identity
+
+- **Application Name**: TripCoaster
+- **Logo**: Main logo and application name should display "TripCoaster"
+
+### Color Palette
+
+Use these exact HEX color codes throughout the application:
+
+- **Primary Color** (Orange): `#FF7F00`
+- **Secondary Color** (Black): `#2C2C2C`
+- **Accent Color 1** (Light Gray): `#F1E9E4`
+- **Accent Color 2** (Blue): `#081F5C`
+
+### Typography
+
+- **Primary Font**: Montserrat Italic (for headings and emphasis)
+- **Secondary Font**: Montserrat (for body text)
+- **Font Source**: Google Fonts (via CDN)
+- **Fallback Stack**: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`
+
+### SCSS Variables
+
+All styles should reference SCSS variables defined in `styles.scss`:
+- `$primary-color`: Main orange color
+- `$secondary-color`: Black color
+- `$accent-light`: Light gray
+- `$accent-dark`: Blue
+- `$font-primary`: Montserrat Italic
+- `$font-secondary`: Montserrat
