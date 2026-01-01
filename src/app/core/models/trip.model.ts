@@ -1,4 +1,6 @@
 // master - MARSISCA - BEGIN 2025-12-08
+import { TripLocationDetail } from './location.model';
+
 export interface TripPhoto {
   id: number;
   url: string;
@@ -32,6 +34,9 @@ export interface Trip {
   // master - MARSISCA - BEGIN 2024-12-24
   mainPhoto?: TripPhoto | null;
   // master - MARSISCA - END 2024-12-24
+  // master - MARSISCA - BEGIN 2025-12-28
+  locations?: TripLocationDetail[];
+  // master - MARSISCA - END 2025-12-28
   createdAt: string;
   updatedAt: string;
 }

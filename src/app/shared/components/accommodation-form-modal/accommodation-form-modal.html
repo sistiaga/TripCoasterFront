@@ -1,0 +1,38 @@
+<!-- master - MARSISCA - BEGIN 2025-12-31 -->
+<h2 mat-dialog-title>
+  {{ (isEditMode ? 'ACCOMMODATION_FORM.EDIT_TITLE' : 'ACCOMMODATION_FORM.ADD_TITLE') | translate }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="accommodation-form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'ACCOMMODATION_FORM.NAME_SPANISH' | translate }}</mat-label>
+      <input matInput formControlName="nameSpanish" [placeholder]="'ACCOMMODATION_FORM.NAME_SPANISH_PLACEHOLDER' | translate">
+      <mat-error *ngIf="form.get('nameSpanish')?.hasError('required')">
+        {{ 'ACCOMMODATION_FORM.NAME_SPANISH_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('nameSpanish')?.hasError('maxlength')">
+        {{ 'ACCOMMODATION_FORM.NAME_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'ACCOMMODATION_FORM.NAME_ENGLISH' | translate }}</mat-label>
+      <input matInput formControlName="nameEnglish" [placeholder]="'ACCOMMODATION_FORM.NAME_ENGLISH_PLACEHOLDER' | translate">
+      <mat-error *ngIf="form.get('nameEnglish')?.hasError('required')">
+        {{ 'ACCOMMODATION_FORM.NAME_ENGLISH_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('nameEnglish')?.hasError('maxlength')">
+        {{ 'ACCOMMODATION_FORM.NAME_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{ 'ACCOMMODATION_FORM.CANCEL' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    {{ 'ACCOMMODATION_FORM.SAVE' | translate }}
+  </button>
+</mat-dialog-actions>
+<!-- master - MARSISCA - END 2025-12-31 -->

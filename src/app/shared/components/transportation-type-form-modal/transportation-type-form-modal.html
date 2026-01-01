@@ -1,0 +1,58 @@
+<!-- master - MARSISCA - BEGIN 2025-12-31 -->
+<h2 mat-dialog-title>
+  {{ (isEditMode ? 'TRANSPORTATION_TYPE_FORM.EDIT_TITLE' : 'TRANSPORTATION_TYPE_FORM.ADD_TITLE') | translate }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="transportation-type-form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'TRANSPORTATION_TYPE_FORM.NAME_SPANISH' | translate }}</mat-label>
+      <input matInput formControlName="nameSpanish" [placeholder]="'TRANSPORTATION_TYPE_FORM.NAME_SPANISH_PLACEHOLDER' | translate">
+      <mat-error *ngIf="form.get('nameSpanish')?.hasError('required')">
+        {{ 'TRANSPORTATION_TYPE_FORM.NAME_SPANISH_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('nameSpanish')?.hasError('maxlength')">
+        {{ 'TRANSPORTATION_TYPE_FORM.NAME_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'TRANSPORTATION_TYPE_FORM.NAME_ENGLISH' | translate }}</mat-label>
+      <input matInput formControlName="nameEnglish" [placeholder]="'TRANSPORTATION_TYPE_FORM.NAME_ENGLISH_PLACEHOLDER' | translate">
+      <mat-error *ngIf="form.get('nameEnglish')?.hasError('required')">
+        {{ 'TRANSPORTATION_TYPE_FORM.NAME_ENGLISH_REQUIRED' | translate }}
+      </mat-error>
+      <mat-error *ngIf="form.get('nameEnglish')?.hasError('maxlength')">
+        {{ 'TRANSPORTATION_TYPE_FORM.NAME_MAX_LENGTH' | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <div class="icon-upload">
+      <label class="icon-label">{{ 'TRANSPORTATION_TYPE_FORM.ICON' | translate }}</label>
+      <div class="icon-preview-container" *ngIf="iconPreview">
+        <img [src]="iconPreview" alt="Icon preview" class="icon-preview">
+        <button mat-icon-button type="button" (click)="removeIcon()" class="remove-icon">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <input
+        type="file"
+        #iconInput
+        accept="image/*"
+        (change)="onIconSelected($event)"
+        style="display: none">
+      <button mat-stroked-button type="button" (click)="iconInput.click()">
+        <mat-icon>upload</mat-icon>
+        {{ 'TRANSPORTATION_TYPE_FORM.UPLOAD_ICON' | translate }}
+      </button>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{ 'TRANSPORTATION_TYPE_FORM.CANCEL' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    {{ 'TRANSPORTATION_TYPE_FORM.SAVE' | translate }}
+  </button>
+</mat-dialog-actions>
+<!-- master - MARSISCA - END 2025-12-31 -->

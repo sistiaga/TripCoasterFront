@@ -11,8 +11,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { Trip, TripPhoto } from '../../core/models/trip.model';
 import { TripService } from '../../core/services/trip.service';
 import { AuthService } from '../../core/services/auth.service';
-import { LocationService } from '../../core/services/location.service';
-import { TripLocation } from '../../core/models/location.model';
 import { StarRating } from '../../shared/components/star-rating/star-rating';
 import { TripDiary } from '../../shared/components/trip-diary/trip-diary';
 import { TripFormModal } from '../../shared/components/trip-form-modal/trip-form-modal';
@@ -37,7 +35,6 @@ import { PhotoDetailModal } from '../../shared/components/photo-detail-modal/pho
 })
 export class TripDetail implements OnInit, OnDestroy {
   trip: Trip | null = null;
-  tripLocations: TripLocation[] = [];
   isLoading = true;
   private destroy$ = new Subject<void>();
 
@@ -46,7 +43,6 @@ export class TripDetail implements OnInit, OnDestroy {
     private router: Router,
     private tripService: TripService,
     private authService: AuthService,
-    private locationService: LocationService,
     private dialog: MatDialog
   ) {}
 
@@ -55,7 +51,6 @@ export class TripDetail implements OnInit, OnDestroy {
       const tripId = params.get('id');
       if (tripId) {
         this.loadTripDetail(+tripId);
-        this.loadTripLocations(+tripId);
       }
     });
   }
@@ -65,6 +60,7 @@ export class TripDetail implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // master - MARSISCA - BEGIN 2025-12-28
   loadTripDetail(tripId: number): void {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
@@ -73,10 +69,10 @@ export class TripDetail implements OnInit, OnDestroy {
       return;
     }
 
-    this.tripService.getUserTrips(currentUser.id).pipe(takeUntil(this.destroy$)).subscribe({
+    this.tripService.getTripById(tripId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
         if (response.success) {
-          this.trip = response.data.find(t => t.id === tripId) || null;
+          this.trip = response.data;
           if (this.trip) {
             this.loadTripPhotos(tripId);
           }
@@ -89,6 +85,7 @@ export class TripDetail implements OnInit, OnDestroy {
       }
     });
   }
+  // master - MARSISCA - END 2025-12-28
 
   loadTripPhotos(tripId: number): void {
     this.tripService.getTripPhotos(tripId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -110,18 +107,6 @@ export class TripDetail implements OnInit, OnDestroy {
     });
   }
 
-  loadTripLocations(tripId: number): void {
-    this.locationService.getTripLocations(tripId).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.tripLocations = response.data;
-        }
-      },
-      error: (error) => {
-        console.error('Error loading locations:', error);
-      }
-    });
-  }
 
   goBack(): void {
     this.router.navigate(['/general']);
@@ -143,7 +128,6 @@ export class TripDetail implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.trip) {
         this.loadTripDetail(this.trip.id);
-        this.loadTripLocations(this.trip.id);
       }
     });
   }

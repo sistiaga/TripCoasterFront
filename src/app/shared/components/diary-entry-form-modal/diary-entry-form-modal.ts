@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2025-12-08
+// master - MARSISCA - BEGIN 2026-01-01
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Diary } from '../../../core/models/diary.model';
@@ -17,19 +16,20 @@ import { DiaryType } from '../../../core/models/diary-type.model';
 import { DiaryService } from '../../../core/services/diary.service';
 import { DiaryTypeService } from '../../../core/services/diary-type.service';
 import { AuthService } from '../../../core/services/auth.service';
-import moment from 'moment';
+import { format, addDays } from 'date-fns';
 
 export const EUROPEAN_DATE_FORMATS = {
   parse: {
-    dateInput: 'DD/MM/YYYY',
+    dateInput: 'dd/MM/yyyy',
   },
   display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM yyyy',
   },
 };
+// master - MARSISCA - END 2026-01-01
 
 export interface DiaryEntryFormModalData {
   tripId: number;
@@ -53,15 +53,12 @@ export interface DiaryEntryFormModalData {
     MatNativeDateModule,
     TranslateModule
   ],
+// master - MARSISCA - BEGIN 2026-01-01
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
     { provide: MAT_DATE_FORMATS, useValue: EUROPEAN_DATE_FORMATS },
   ],
+  // master - MARSISCA - END 2026-01-01
   templateUrl: './diary-entry-form-modal.html',
   styleUrl: './diary-entry-form-modal.scss'
 })
@@ -91,7 +88,8 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
       this.maxDate = new Date(data.tripEndDate);
     }
 
-    const initialDate = this.minDate ? moment(this.minDate) : moment();
+// master - MARSISCA - BEGIN 2026-01-01
+    const initialDate = this.minDate ? this.minDate : new Date();
 
     this.form = this.fb.group({
       date: [initialDate, [Validators.required]],
@@ -99,6 +97,7 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
       description: ['', [Validators.required, Validators.maxLength(2000)]],
       diaryTypeId: [null]
     });
+    // master - MARSISCA - END 2026-01-01
   }
 
   ngOnInit(): void {
@@ -117,17 +116,19 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
     }
   }
 
-  calculateDateFromDay(day: any): moment.Moment {
+// master - MARSISCA - BEGIN 2026-01-01
+  calculateDateFromDay(day: any): Date {
     // If day is already a date string (ISO format), parse it directly
     if (typeof day === 'string' && day.includes('-')) {
-      return moment(day);
+      return new Date(day);
     }
     // Otherwise treat as number (legacy format)
     if (this.minDate) {
-      return moment(this.minDate).add(day - 1, 'days');
+      return addDays(this.minDate, day - 1);
     }
-    return moment();
+    return new Date();
   }
+  // master - MARSISCA - END 2026-01-01
 
 
   ngOnDestroy(): void {
@@ -159,20 +160,13 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
       return;
     }
 
+// master - MARSISCA - BEGIN 2026-01-01
     const formValue = this.form.value;
 
-    // Convert moment date to ISO 8601 format (YYYY-MM-DD)
-    let dayFormatted: string;
-    if (formValue.date._isAMomentObject || (formValue.date.format && typeof formValue.date.format === 'function')) {
-      dayFormatted = formValue.date.format('YYYY-MM-DD');
-    } else {
-      // Fallback for regular Date objects
-      const selectedDate = new Date(formValue.date);
-      const year = selectedDate.getFullYear();
-      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-      const day = String(selectedDate.getDate()).padStart(2, '0');
-      dayFormatted = `${year}-${month}-${day}`;
-    }
+    // Convert date to ISO 8601 format (yyyy-MM-dd)
+    const selectedDate = formValue.date instanceof Date ? formValue.date : new Date(formValue.date);
+    const dayFormatted = format(selectedDate, 'yyyy-MM-dd');
+    // master - MARSISCA - END 2026-01-01
 
     const dataToSend = {
       day: dayFormatted,
@@ -215,4 +209,4 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
     this.dialogRef.close(false);
   }
 }
-// master - MARSISCA - END 2025-12-08
+// master - MARSISCA - END 2026-01-01

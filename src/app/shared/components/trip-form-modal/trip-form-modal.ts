@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2025-12-08
+// master - MARSISCA - BEGIN 2026-01-01
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { TripService } from '../../../core/services/trip.service';
@@ -19,19 +18,20 @@ import { TripDestinations } from '../trip-destinations/trip-destinations';
 import { TripDiary } from '../trip-diary/trip-diary';
 import { Trip, TripPhoto } from '../../../core/models/trip.model';
 import { PhotoDetailModal } from '../photo-detail-modal/photo-detail-modal';
-import moment from 'moment';
+import { parse, format } from 'date-fns';
 
 export const EUROPEAN_DATE_FORMATS = {
   parse: {
-    dateInput: 'DD/MM/YYYY',
+    dateInput: 'dd/MM/yyyy',
   },
   display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
     dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    monthYearA11yLabel: 'MMMM yyyy',
   },
 };
+// master - MARSISCA - END 2026-01-01
 
 export interface TripFormData {
   trip?: Trip;
@@ -56,15 +56,12 @@ export interface TripFormData {
     TripDestinations,
     TripDiary
   ],
+// master - MARSISCA - BEGIN 2026-01-01
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
     { provide: MAT_DATE_FORMATS, useValue: EUROPEAN_DATE_FORMATS },
   ],
+  // master - MARSISCA - END 2026-01-01
   templateUrl: './trip-form-modal.html',
   styleUrl: './trip-form-modal.scss'
 })
@@ -124,16 +121,19 @@ export class TripFormModal implements OnInit {
     }
   }
 
+// master - MARSISCA - BEGIN 2026-01-01
   private populateForm(trip: Trip): void {
     this.tripForm.patchValue({
       name: trip.name,
       description: trip.description,
-      startDate: moment(trip.startDate),
-      endDate: moment(trip.endDate),
+      startDate: new Date(trip.startDate),
+      endDate: new Date(trip.endDate),
       rating: trip.rating
     });
   }
+  // master - MARSISCA - END 2026-01-01
 
+// master - MARSISCA - BEGIN 2026-01-01
   private dateRangeValidator(group: FormGroup): { [key: string]: any } | null {
     const startDate = group.get('startDate')?.value;
     const endDate = group.get('endDate')?.value;
@@ -142,19 +142,16 @@ export class TripFormModal implements OnInit {
       return null;
     }
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    const start = startDate instanceof Date ? startDate : new Date(startDate);
+    const end = endDate instanceof Date ? endDate : new Date(endDate);
 
-    // Handle Moment objects
-    const startTime = startDate._isAMomentObject ? startDate.valueOf() : start.getTime();
-    const endTime = endDate._isAMomentObject ? endDate.valueOf() : end.getTime();
-
-    if (endTime < startTime) {
+    if (end.getTime() < start.getTime()) {
       return { dateRange: true };
     }
 
     return null;
   }
+  // master - MARSISCA - END 2026-01-01
 
   onSubmit(): void {
     if (this.tripForm.invalid) {
@@ -353,24 +350,19 @@ export class TripFormModal implements OnInit {
     });
   }
 
+// master - MARSISCA - BEGIN 2026-01-01
   private formatDate(date: any): string {
     if (!date) return '';
 
-    // Handle Moment object
-    if (date._isAMomentObject || (date.format && typeof date.format === 'function')) {
-      return date.format('YYYY-MM-DD');
+    const dateObj = date instanceof Date ? date : new Date(date);
+
+    if (isNaN(dateObj.getTime())) {
+      return '';
     }
 
-    // Handle Date object
-    if (date instanceof Date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-
-    return '';
+    return format(dateObj, 'yyyy-MM-dd');
   }
+  // master - MARSISCA - END 2026-01-01
 
   getNameError(): string {
     const control = this.tripForm.get('name');
@@ -410,4 +402,4 @@ export class TripFormModal implements OnInit {
     return '';
   }
 }
-// master - MARSISCA - END 2025-12-08
+// master - MARSISCA - END 2026-01-01

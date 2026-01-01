@@ -245,3 +245,45 @@ $breakpoint-large: 1440px;
   image-rendering: crisp-edges;
 }
 // master - MARSISCA - END 2025-10-18
+
+// master - MARSISCA - BEGIN 2024-12-24
+// Angular Material Datepicker fixes
+.mat-datepicker-content {
+  background-color: white !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mat-calendar {
+  background-color: white !important;
+}
+
+.mat-calendar-header {
+  background-color: white !important;
+}
+
+.mat-calendar-body {
+  background-color: white !important;
+}
+
+.mat-calendar-content {
+  background-color: white !important;
+}
+
+.mat-datepicker-content-container {
+  background-color: white !important;
+}
+
+.mat-calendar-table-header {
+  background-color: white !important;
+}
+
+// Angular Material Dialog fixes
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: white !important;
+  background-color: white !important;
+}
+
+.mat-mdc-dialog-surface {
+  background-color: white !important;
+}
+// master - MARSISCA - END 2024-12-24

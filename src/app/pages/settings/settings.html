@@ -1,21 +1,56 @@
-<!-- master - MARSISCA - BEGIN 2025-12-14 -->
+<!-- master - MARSISCA - BEGIN 2026-01-01 -->
 <div class="settings-container">
   <h1>{{ 'SETTINGS.TITLE' | translate }}</h1>
 
   <mat-tab-group [(selectedIndex)]="selectedTabIndex">
-    <mat-tab [label]="'SETTINGS.DIARY_TYPES' | translate">
+
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.COUNTRIES' | translate }}</ng-template>
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.COUNTRIES_DESCRIPTION' | translate }}</p>
+        <app-countries></app-countries>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.DIARY_TYPES' | translate }}</ng-template>
       <div class="tab-content">
         <p>{{ 'SETTINGS.DIARY_TYPES_DESCRIPTION' | translate }}</p>
         <app-diary-types></app-diary-types>
       </div>
     </mat-tab>
 
-    <mat-tab [label]="'SETTINGS.COUNTRIES' | translate">
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.WEATHERS' | translate }}</ng-template>
       <div class="tab-content">
-        <p>{{ 'SETTINGS.COUNTRIES_DESCRIPTION' | translate }}</p>
-        <app-countries></app-countries>
+        <p>{{ 'SETTINGS.WEATHERS_DESCRIPTION' | translate }}</p>
+        <app-weathers></app-weathers>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.SPORTS' | translate }}</ng-template>
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.SPORTS_DESCRIPTION' | translate }}</p>
+        <app-sports></app-sports>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.ACCOMMODATIONS' | translate }}</ng-template>
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.ACCOMMODATIONS_DESCRIPTION' | translate }}</p>
+        <app-accommodations></app-accommodations>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.TRANSPORTATION_TYPES' | translate }}</ng-template>
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.TRANSPORTATION_TYPES_DESCRIPTION' | translate }}</p>
+        <app-transportation-types></app-transportation-types>
       </div>
     </mat-tab>
   </mat-tab-group>
 </div>
-<!-- master - MARSISCA - END 2025-12-14 -->
+<!-- master - MARSISCA - END 2026-01-01 -->

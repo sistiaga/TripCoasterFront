@@ -8,6 +8,38 @@ export interface LocationSuggestion {
   longitude: number;
 }
 
+// master - MARSISCA - BEGIN 2025-12-28
+export interface Country {
+  id: number;
+  name: string;
+  isoCode: string;
+}
+
+export interface Location {
+  id: number;
+  externalId?: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  countryId: number;
+  country: Country;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TripLocationDetail {
+  id: number;
+  externalId?: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  countryId: number;
+  country: Country;
+  createdAt: string;
+  updatedAt: string;
+}
+// master - MARSISCA - END 2025-12-28
+
 export interface TripLocation {
   id: number;
   tripId: number;
@@ -33,4 +65,29 @@ export interface AddLocationToTripResponse {
   message: string;
   data?: TripLocation;
 }
+
+// master - MARSISCA - BEGIN 2024-12-24
+export interface CreateLocationRequest {
+  externalId?: string;
+  name: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface CreateLocationResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    id: number;
+    externalId?: string;
+    name: string;
+    country: string;
+    latitude: number;
+    longitude: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+// master - MARSISCA - END 2024-12-24
 // master - MARSISCA - END 2025-11-15

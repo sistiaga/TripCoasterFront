@@ -1,0 +1,51 @@
+/* master - MARSISCA - BEGIN 2025-12-31 */
+.weather-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+  min-width: 400px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .icon-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .icon-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .icon-preview-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .icon-preview {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      .remove-icon {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+/* master - MARSISCA - END 2025-12-31 */

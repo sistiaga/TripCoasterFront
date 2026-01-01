@@ -1,0 +1,27 @@
+/* master - MARSISCA - BEGIN 2025-12-31 */
+.accommodations-container {
+  .header {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .mat-row {
+    &.mat-row:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .mat-cell {
+    &[colspan] {
+      text-align: center;
+      padding: 24px;
+      color: #999;
+    }
+  }
+}
+/* master - MARSISCA - END 2025-12-31 */

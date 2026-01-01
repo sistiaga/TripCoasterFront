@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2025-12-08
+// master - MARSISCA - BEGIN 2026-01-01
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +11,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { Diary } from '../../../core/models/diary.model';
 import { DiaryService } from '../../../core/services/diary.service';
 import { DiaryEntryFormModal } from '../diary-entry-form-modal/diary-entry-form-modal';
-import moment from 'moment';
+import { format } from 'date-fns';
+// master - MARSISCA - END 2026-01-01
 
 @Component({
   selector: 'app-trip-diary',
@@ -123,8 +124,14 @@ export class TripDiary implements OnInit, OnDestroy {
     }
   }
 
+// master - MARSISCA - BEGIN 2026-01-01
   formatDate(dateString: string): string {
-    return moment(dateString).format('DD/MM/YYYY');
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return dateString;
+    }
+    return format(date, 'dd/MM/yyyy');
   }
+  // master - MARSISCA - END 2026-01-01
 }
-// master - MARSISCA - END 2025-12-08
+// master - MARSISCA - END 2026-01-01

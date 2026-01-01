@@ -44,6 +44,12 @@ export class TripService {
     return this.apiService.get<TripsResponse>(`/trips/user/${userId}`);
   }
 
+  // master - MARSISCA - BEGIN 2025-12-28
+  getTripById(tripId: number): Observable<{ success: boolean; message: string; data: Trip }> {
+    return this.apiService.get<{ success: boolean; message: string; data: Trip }>(`/trips/${tripId}`);
+  }
+  // master - MARSISCA - END 2025-12-28
+
   createTrip(tripData: CreateTripData): Observable<CreateTripResponse> {
     return this.apiService.post<CreateTripResponse>('/trips', tripData);
   }

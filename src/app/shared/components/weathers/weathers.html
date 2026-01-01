@@ -1,0 +1,56 @@
+<!-- master - MARSISCA - BEGIN 2025-12-31 -->
+<div class="weathers-container">
+  <div class="header">
+    <button mat-raised-button color="primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      {{ 'WEATHERS.ADD' | translate }}
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="weathers" class="mat-elevation-z2">
+    <ng-container matColumnDef="nameSpanish">
+      <th mat-header-cell *matHeaderCellDef>{{ 'WEATHERS.NAME_SPANISH' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.nameSpanish }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nameEnglish">
+      <th mat-header-cell *matHeaderCellDef>{{ 'WEATHERS.NAME_ENGLISH' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.nameEnglish }}</td>
+    </ng-container>
+
+    <!-- master - MARSISCA - BEGIN 2026-01-01 -->
+    <ng-container matColumnDef="icon">
+      <th mat-header-cell *matHeaderCellDef>{{ 'WEATHERS.ICON' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        @if (getIconUrl(element.icon)) {
+          <img [src]="getIconUrl(element.icon)" alt="{{ element.nameEnglish }}" class="icon-preview" />
+        } @else {
+          <span>-</span>
+        }
+      </td>
+    </ng-container>
+    <!-- master - MARSISCA - END 2026-01-01 -->
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{ 'WEATHERS.ACTIONS' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="openEditDialog(element)" [title]="'WEATHERS.EDIT' | translate">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteWeather(element)" [title]="'WEATHERS.DELETE' | translate">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        {{ 'WEATHERS.NO_DATA' | translate }}
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- master - MARSISCA - END 2025-12-31 -->

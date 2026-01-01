@@ -9,7 +9,17 @@
   "SETTINGS": {
     "TITLE": "Configuración",
     "DIARY_TYPES": "Tipos de Diario",
-    "DIARY_TYPES_DESCRIPTION": "Gestiona los tipos de entradas de diario para categorizar tus experiencias de viaje"
+    "DIARY_TYPES_DESCRIPTION": "Gestiona los tipos de entradas de diario para categorizar tus experiencias de viaje",
+    "COUNTRIES": "Países",
+    "COUNTRIES_DESCRIPTION": "Gestiona los países que deseas visitar o que ya has visitado",
+    "WEATHERS": "Tipos de Tiempo",
+    "WEATHERS_DESCRIPTION": "Gestiona las condiciones meteorológicas que puedes encontrar durante tus viajes",
+    "SPORTS": "Deportes",
+    "SPORTS_DESCRIPTION": "Gestiona deportes y actividades que puedes practicar durante tus viajes",
+    "ACCOMMODATIONS": "Tipos de Alojamiento",
+    "ACCOMMODATIONS_DESCRIPTION": "Gestiona los tipos de alojamiento para tus viajes",
+    "TRANSPORTATION_TYPES": "Tipos de Transporte",
+    "TRANSPORTATION_TYPES_DESCRIPTION": "Gestiona los medios de transporte para tus viajes"
   },
   "DIARY_TYPES": {
     "ADD": "Añadir Tipo de Diario",
@@ -85,5 +95,133 @@
     "DELETE": "Eliminar",
     "CANCEL": "Cancelar",
     "SAVE": "Guardar"
+  },
+  "COUNTRIES": {
+    "ADD": "Añadir País",
+    "ADD_TITLE": "Añadir País",
+    "EDIT_TITLE": "Editar País",
+    "NAME": "Nombre",
+    "NAME_PLACEHOLDER": "ej., España, Francia, Italia",
+    "NAME_REQUIRED": "El nombre es obligatorio",
+    "NAME_MAX_LENGTH": "El nombre no debe exceder los 100 caracteres",
+    "LATITUDE": "Latitud",
+    "LATITUDE_PLACEHOLDER": "ej., 40.4168",
+    "LATITUDE_REQUIRED": "La latitud es obligatoria",
+    "LATITUDE_RANGE": "La latitud debe estar entre -90 y 90",
+    "LONGITUDE": "Longitud",
+    "LONGITUDE_PLACEHOLDER": "ej., -3.7038",
+    "LONGITUDE_REQUIRED": "La longitud es obligatoria",
+    "LONGITUDE_RANGE": "La longitud debe estar entre -180 y 180",
+    "CONTINENT": "Continente",
+    "CONTINENT_PLACEHOLDER": "ej., Europa, Asia, África",
+    "CONTINENT_REQUIRED": "El continente es obligatorio",
+    "CONTINENT_MAX_LENGTH": "El continente no debe exceder los 50 caracteres",
+    "ACTIONS": "Acciones",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "NO_DATA": "No se encontraron países. ¡Crea el primero!"
+  },
+  "WEATHERS": {
+    "ADD": "Añadir Tipo de Tiempo",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "ICON": "Icono",
+    "ACTIONS": "Acciones",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "NO_DATA": "No se encontraron tipos de tiempo. ¡Crea el primero!"
+  },
+  "WEATHER_FORM": {
+    "ADD_TITLE": "Añadir Tipo de Tiempo",
+    "EDIT_TITLE": "Editar Tipo de Tiempo",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_SPANISH_PLACEHOLDER": "ej., Soleado, Nublado",
+    "NAME_SPANISH_REQUIRED": "El nombre en español es obligatorio",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "NAME_ENGLISH_PLACEHOLDER": "ej., Sunny, Cloudy",
+    "NAME_ENGLISH_REQUIRED": "El nombre en inglés es obligatorio",
+    "NAME_MAX_LENGTH": "El nombre no debe exceder los 50 caracteres",
+    "ICON": "Icono",
+    "UPLOAD_ICON": "Subir Icono",
+    "CANCEL": "Cancelar",
+    "SAVE": "Guardar"
+  },
+  "SPORTS": {
+    "ADD": "Añadir Deporte",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "ICON": "Icono",
+    "ACTIONS": "Acciones",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "NO_DATA": "No se encontraron deportes. ¡Crea el primero!"
+  },
+  "SPORT_FORM": {
+    "ADD_TITLE": "Añadir Deporte",
+    "EDIT_TITLE": "Editar Deporte",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_SPANISH_PLACEHOLDER": "ej., Fútbol, Tenis",
+    "NAME_SPANISH_REQUIRED": "El nombre en español es obligatorio",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "NAME_ENGLISH_PLACEHOLDER": "ej., Football, Tennis",
+    "NAME_ENGLISH_REQUIRED": "El nombre en inglés es obligatorio",
+    "NAME_MAX_LENGTH": "El nombre no debe exceder los 100 caracteres",
+    "ICON": "Icono",
+    "UPLOAD_ICON": "Subir Icono",
+    "CANCEL": "Cancelar",
+    "SAVE": "Guardar"
+  },
+  "ACCOMMODATIONS": {
+    "ADD": "Añadir Tipo de Alojamiento",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "ACTIONS": "Acciones",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "NO_DATA": "No se encontraron tipos de alojamiento. ¡Crea el primero!"
+  },
+  "ACCOMMODATION_FORM": {
+    "ADD_TITLE": "Añadir Tipo de Alojamiento",
+    "EDIT_TITLE": "Editar Tipo de Alojamiento",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_SPANISH_PLACEHOLDER": "ej., Hotel, Apartamento",
+    "NAME_SPANISH_REQUIRED": "El nombre en español es obligatorio",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "NAME_ENGLISH_PLACEHOLDER": "ej., Hotel, Apartment",
+    "NAME_ENGLISH_REQUIRED": "El nombre en inglés es obligatorio",
+    "NAME_MAX_LENGTH": "El nombre no debe exceder los 100 caracteres",
+    "CANCEL": "Cancelar",
+    "SAVE": "Guardar"
+  },
+  "TRANSPORTATION_TYPES": {
+    "ADD": "Añadir Tipo de Transporte",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "ICON": "Icono",
+    "ACTIONS": "Acciones",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "NO_DATA": "No se encontraron tipos de transporte. ¡Crea el primero!"
+  },
+  "TRANSPORTATION_TYPE_FORM": {
+    "ADD_TITLE": "Añadir Tipo de Transporte",
+    "EDIT_TITLE": "Editar Tipo de Transporte",
+    "NAME_SPANISH": "Nombre (Español)",
+    "NAME_SPANISH_PLACEHOLDER": "ej., Coche, Avión",
+    "NAME_SPANISH_REQUIRED": "El nombre en español es obligatorio",
+    "NAME_ENGLISH": "Nombre (Inglés)",
+    "NAME_ENGLISH_PLACEHOLDER": "ej., Car, Plane",
+    "NAME_ENGLISH_REQUIRED": "El nombre en inglés es obligatorio",
+    "NAME_MAX_LENGTH": "El nombre no debe exceder los 100 caracteres",
+    "ICON": "Icono",
+    "UPLOAD_ICON": "Subir Icono",
+    "CANCEL": "Cancelar",
+    "SAVE": "Guardar"
+  },
+  "COMMON": {
+    "CANCEL": "Cancelar",
+    "CREATE": "Crear",
+    "UPDATE": "Actualizar"
   }
+
 }

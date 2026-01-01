@@ -237,7 +237,7 @@
         .chip-name {
           font-size: 14px;
           font-weight: 500;
-          color: rgba(0, 0, 0, 0.87);
+          color: rgba(0, 0, 0, 0.87) !important;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -245,7 +245,7 @@
 
         .chip-country {
           font-size: 12px;
-          color: rgba(0, 0, 0, 0.6);
+          color: rgba(0, 0, 0, 0.6) !important;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

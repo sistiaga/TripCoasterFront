@@ -1,10 +1,10 @@
 // master - MARSISCA - BEGIN 2024-12-24
-@import '../../../variables';
+@use  '../../../variables' as vars;
 
 .trips-container {
   min-height: calc(100vh - 64px);
   margin-top: 64px;
-  background: linear-gradient(135deg, $accent-light 0%, #ffffff 100%);
+  background: linear-gradient(135deg, vars.$accent-light 0%, #ffffff 100%);
   position: relative;
 }
 
@@ -20,8 +20,8 @@
   text-align: center;
   padding: 4rem 2rem;
   font-size: 1.5rem;
-  color: $text-secondary;
-  font-family: $font-primary-italic;
+  color: vars.$text-secondary;
+  font-family: vars.$font-primary-italic;
   font-style: italic;
 }
 
@@ -111,11 +111,12 @@
     font-size: 2rem;
     font-weight: 700;
     margin: 0 0 0.75rem 0;
-    font-family: $font-primary-italic;
+    font-family: vars.$font-primary-italic;
     font-style: italic;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     line-height: 1.2;
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -128,6 +129,7 @@
     line-height: 1.6;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -148,12 +150,12 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: $text-secondary;
+    color: vars.$text-secondary;
     font-size: 0.9rem;
     font-weight: 500;
 
     .date-icon {
-      color: $primary-color;
+      color: vars.$primary-color;
       font-size: 18px;
       width: 18px;
       height: 18px;

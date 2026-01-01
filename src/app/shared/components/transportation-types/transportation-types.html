@@ -1,0 +1,56 @@
+<!-- master - MARSISCA - BEGIN 2025-12-31 -->
+<div class="transportation-types-container">
+  <div class="header">
+    <button mat-raised-button color="primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      {{ 'TRANSPORTATION_TYPES.ADD' | translate }}
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="transportationTypes" class="mat-elevation-z2">
+    <ng-container matColumnDef="nameSpanish">
+      <th mat-header-cell *matHeaderCellDef>{{ 'TRANSPORTATION_TYPES.NAME_SPANISH' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.nameSpanish }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nameEnglish">
+      <th mat-header-cell *matHeaderCellDef>{{ 'TRANSPORTATION_TYPES.NAME_ENGLISH' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.nameEnglish }}</td>
+    </ng-container>
+
+    <!-- master - MARSISCA - BEGIN 2026-01-01 -->
+    <ng-container matColumnDef="icon">
+      <th mat-header-cell *matHeaderCellDef>{{ 'TRANSPORTATION_TYPES.ICON' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        @if (getIconUrl(element.icon)) {
+          <img [src]="getIconUrl(element.icon)" alt="{{ element.nameEnglish }}" class="icon-preview" />
+        } @else {
+          <span>-</span>
+        }
+      </td>
+    </ng-container>
+    <!-- master - MARSISCA - END 2026-01-01 -->
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{ 'TRANSPORTATION_TYPES.ACTIONS' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="openEditDialog(element)" [title]="'TRANSPORTATION_TYPES.EDIT' | translate">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteTransportationType(element)" [title]="'TRANSPORTATION_TYPES.DELETE' | translate">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        {{ 'TRANSPORTATION_TYPES.NO_DATA' | translate }}
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- master - MARSISCA - END 2025-12-31 -->

@@ -147,6 +147,9 @@ export class TripDestinations implements OnInit, OnDestroy {
         next: (response) => {
           if (response.success && response.data) {
             this.tripLocations = response.data;
+            // master - MARSISCA - BEGIN 2024-12-24
+            console.log('Loaded trip locations:', this.tripLocations);
+            // master - MARSISCA - END 2024-12-24
           }
           this.isLoading = false;
         },
@@ -225,7 +228,9 @@ export class TripDestinations implements OnInit, OnDestroy {
 
   /**
    * Add a location to the trip
+   * Two-step process: 1) Create location in DB, 2) Associate with trip
    */
+  // master - MARSISCA - BEGIN 2024-12-24
   private addLocationToTrip(location: LocationSuggestion): void {
     if (!this.tripId) {
       return;
@@ -235,29 +240,38 @@ export class TripDestinations implements OnInit, OnDestroy {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Use externalId if id is not available
-    const locationIdentifier = location.id || location.externalId;
+    console.log('Step 1: Creating location in database', location);
 
-    if (!locationIdentifier) {
-      this.errorMessage = 'Location identifier is missing';
-      this.isSaving = false;
-      return;
-    }
+    // Step 1: Create the location in the database
+    this.locationService.createLocation(location)
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((createResponse) => {
+          console.log('Location created:', createResponse);
 
-    console.log('Adding location with identifier:', locationIdentifier);
+          if (!createResponse.success || !createResponse.data) {
+            throw new Error(createResponse.message || 'Error creating location');
+          }
 
-    this.locationService.addLocationToTrip(this.tripId, locationIdentifier)
-      .pipe(takeUntil(this.destroy$))
+          const createdLocationId = createResponse.data.id;
+          console.log('Step 2: Associating location', createdLocationId, 'with trip', this.tripId);
+
+          // Step 2: Associate the created location with the trip
+          return this.locationService.addLocationToTrip(this.tripId!, createdLocationId);
+        })
+      )
       .subscribe({
         next: (response) => {
           if (response.success && response.data) {
+            // master - MARSISCA - BEGIN 2024-12-24
+            console.log('Location added successfully, received data:', response.data);
+            // master - MARSISCA - END 2024-12-24
             this.tripLocations.push(response.data);
             this.successMessage = `${location.name} added successfully`;
             this.selectedLocation = null;
             this.searchControl.setValue('');
             this.suggestions = [];
 
-            // Clear success message after 3 seconds
             setTimeout(() => this.successMessage = '', 3000);
           } else {
             this.errorMessage = response.message || 'Error adding location';
@@ -265,12 +279,13 @@ export class TripDestinations implements OnInit, OnDestroy {
           this.isSaving = false;
         },
         error: (error) => {
-          console.error('Error adding location:', error);
+          console.error('Error in location creation/association:', error);
           this.errorMessage = error.error?.message || 'Error adding location to trip';
           this.isSaving = false;
         }
       });
   }
+  // master - MARSISCA - END 2024-12-24
 
   /**
    * Remove a location from the trip

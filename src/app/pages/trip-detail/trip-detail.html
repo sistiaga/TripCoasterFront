@@ -46,27 +46,27 @@
     </section>
 
     <!-- Destinations Section -->
+    <!-- master - MARSISCA - BEGIN 2025-12-28 -->
     <section class="destinations-section section">
       <div class="section-header">
         <mat-icon>place</mat-icon>
         <h2>{{ 'TRIP_DETAIL.DESTINATIONS' | translate }}</h2>
       </div>
       <div class="section-content">
-        <div class="destinations-grid" *ngIf="tripLocations.length > 0">
-          <div class="destination-card" *ngFor="let location of tripLocations">
+        <div class="destinations-grid" *ngIf="trip.locations && trip.locations.length > 0">
+          <div class="destination-card" *ngFor="let location of trip.locations">
             <div class="destination-icon">
               <mat-icon>location_on</mat-icon>
             </div>
             <div class="destination-info">
-              <h3>{{ location.location.name }}</h3>
-              <p>{{ location.location.country }}</p>
+              <h3>{{ location.name }} ({{ location.country.name }})</h3>
               <span class="coordinates">
-                {{ location.location.latitude.toFixed(4) }}, {{ location.location.longitude.toFixed(4) }}
+                {{ location.latitude.toFixed(4) }}, {{ location.longitude.toFixed(4) }}
               </span>
             </div>
           </div>
         </div>
-        <div class="empty-state" *ngIf="tripLocations.length === 0">
+        <div class="empty-state" *ngIf="!trip.locations || trip.locations.length === 0">
           <mat-icon>add_location</mat-icon>
           <p>{{ 'TRIP_DETAIL.NO_DESTINATIONS' | translate }}</p>
           <button mat-raised-button color="primary" (click)="editTrip()">
@@ -75,6 +75,7 @@
         </div>
       </div>
     </section>
+    <!-- master - MARSISCA - END 2025-12-28 -->
 
     <!-- Diary Section -->
     <section class="diary-section section">

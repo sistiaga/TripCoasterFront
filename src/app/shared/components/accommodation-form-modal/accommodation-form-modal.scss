@@ -1,0 +1,13 @@
+/* master - MARSISCA - BEGIN 2025-12-31 */
+.accommodation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+  min-width: 400px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+/* master - MARSISCA - END 2025-12-31 */

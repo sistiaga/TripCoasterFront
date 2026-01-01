@@ -7,7 +7,11 @@ import {
   LocationSuggestion,
   LocationSearchResponse,
   TripLocationsResponse,
-  AddLocationToTripResponse
+  AddLocationToTripResponse,
+  // master - MARSISCA - BEGIN 2024-12-24
+  CreateLocationRequest,
+  CreateLocationResponse
+  // master - MARSISCA - END 2024-12-24
 } from '../models/location.model';
 
 @Injectable({
@@ -25,6 +29,26 @@ export class LocationService {
     const params = new HttpParams().set('query', query);
     return this.apiService.get<LocationSearchResponse>('locations/search', params);
   }
+
+  // master - MARSISCA - BEGIN 2024-12-24
+  /**
+   * Create a new location in the database
+   * @param locationData - Location data to create
+   * @returns Observable with the created location
+   */
+  createLocation(locationData: LocationSuggestion): Observable<CreateLocationResponse> {
+    const requestData: CreateLocationRequest = {
+      externalId: locationData.externalId,
+      name: locationData.name,
+      country: locationData.country,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude
+    };
+
+    console.log('Creating location with data:', requestData);
+    return this.apiService.post<CreateLocationResponse>('locations', requestData);
+  }
+  // master - MARSISCA - END 2024-12-24
 
   /**
    * Associate a location with a trip
