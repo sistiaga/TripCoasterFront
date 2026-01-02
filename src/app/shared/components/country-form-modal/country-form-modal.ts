@@ -33,6 +33,7 @@ export class CountryFormModal implements OnInit {
   form: FormGroup;
   isEditMode: boolean;
 
+// master - MARSISCA - BEGIN 2026-01-02
   constructor(
     private fb: FormBuilder,
     private countryService: CountryService,
@@ -41,7 +42,9 @@ export class CountryFormModal implements OnInit {
   ) {
     this.isEditMode = !!data?.country;
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(100)]],
+      nameSpanish: ['', [Validators.required, Validators.maxLength(100)]],
+      nameEnglish: ['', [Validators.required, Validators.maxLength(100)]],
+      flagPath: ['', [Validators.required, Validators.maxLength(255)]],
       latitude: ['', [Validators.required, Validators.min(-90), Validators.max(90)]],
       longitude: ['', [Validators.required, Validators.min(-180), Validators.max(180)]],
       continent: ['', [Validators.required, Validators.maxLength(50)]]
@@ -51,13 +54,16 @@ export class CountryFormModal implements OnInit {
   ngOnInit(): void {
     if (this.isEditMode && this.data.country) {
       this.form.patchValue({
-        name: this.data.country.name,
+        nameSpanish: this.data.country.nameSpanish,
+        nameEnglish: this.data.country.nameEnglish,
+        flagPath: this.data.country.flagPath,
         latitude: this.data.country.latitude,
         longitude: this.data.country.longitude,
         continent: this.data.country.continent
       });
     }
   }
+// master - MARSISCA - END 2026-01-02
 
   onSubmit(): void {
     if (this.form.invalid) {

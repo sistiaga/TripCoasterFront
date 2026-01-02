@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2025-12-14
+// master - MARSISCA - BEGIN 2026-01-02
 .countries-container {
   padding: 1rem;
 }
@@ -24,4 +24,12 @@ table {
 .mat-icon-button {
   margin: 0 0.25rem;
 }
-// master - MARSISCA - END 2025-12-14
+
+.flag-icon {
+  width: 32px;
+  height: 24px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+}
+// master - MARSISCA - END 2026-01-02

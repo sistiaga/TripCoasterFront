@@ -1,4 +1,4 @@
-<!-- master - MARSISCA - BEGIN 2025-12-14 -->
+<!-- master - MARSISCA - BEGIN 2026-01-02 -->
 <h2 mat-dialog-title>
   {{ (isEditMode ? 'COUNTRIES.EDIT_TITLE' : 'COUNTRIES.ADD_TITLE') | translate }}
 </h2>
@@ -6,47 +6,69 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>{{ 'COUNTRIES.NAME' | translate }}</mat-label>
-      <input matInput formControlName="name" [placeholder]="'COUNTRIES.NAME_PLACEHOLDER' | translate">
-      <mat-error *ngIf="form.get('name')?.hasError('required')">
-        {{ 'COUNTRIES.NAME_REQUIRED' | translate }}
-      </mat-error>
-      <mat-error *ngIf="form.get('name')?.hasError('maxlength')">
-        {{ 'COUNTRIES.NAME_MAX_LENGTH' | translate }}
-      </mat-error>
+      <mat-label>{{ 'COUNTRIES.NAME_SPANISH' | translate }}</mat-label>
+      <input matInput formControlName="nameSpanish" [placeholder]="'COUNTRIES.NAME_SPANISH_PLACEHOLDER' | translate">
+      @if (form.get('nameSpanish')?.hasError('required')) {
+        <mat-error>{{ 'COUNTRIES.NAME_SPANISH_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('nameSpanish')?.hasError('maxlength')) {
+        <mat-error>{{ 'COUNTRIES.NAME_MAX_LENGTH' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'COUNTRIES.NAME_ENGLISH' | translate }}</mat-label>
+      <input matInput formControlName="nameEnglish" [placeholder]="'COUNTRIES.NAME_ENGLISH_PLACEHOLDER' | translate">
+      @if (form.get('nameEnglish')?.hasError('required')) {
+        <mat-error>{{ 'COUNTRIES.NAME_ENGLISH_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('nameEnglish')?.hasError('maxlength')) {
+        <mat-error>{{ 'COUNTRIES.NAME_MAX_LENGTH' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ 'COUNTRIES.FLAG_PATH' | translate }}</mat-label>
+      <input matInput formControlName="flagPath" [placeholder]="'COUNTRIES.FLAG_PATH_PLACEHOLDER' | translate">
+      @if (form.get('flagPath')?.hasError('required')) {
+        <mat-error>{{ 'COUNTRIES.FLAG_PATH_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('flagPath')?.hasError('maxlength')) {
+        <mat-error>{{ 'COUNTRIES.FLAG_PATH_MAX_LENGTH' | translate }}</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>{{ 'COUNTRIES.LATITUDE' | translate }}</mat-label>
       <input matInput type="number" formControlName="latitude" [placeholder]="'COUNTRIES.LATITUDE_PLACEHOLDER' | translate">
-      <mat-error *ngIf="form.get('latitude')?.hasError('required')">
-        {{ 'COUNTRIES.LATITUDE_REQUIRED' | translate }}
-      </mat-error>
-      <mat-error *ngIf="form.get('latitude')?.hasError('min') || form.get('latitude')?.hasError('max')">
-        {{ 'COUNTRIES.LATITUDE_RANGE' | translate }}
-      </mat-error>
+      @if (form.get('latitude')?.hasError('required')) {
+        <mat-error>{{ 'COUNTRIES.LATITUDE_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('latitude')?.hasError('min') || form.get('latitude')?.hasError('max')) {
+        <mat-error>{{ 'COUNTRIES.LATITUDE_RANGE' | translate }}</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>{{ 'COUNTRIES.LONGITUDE' | translate }}</mat-label>
       <input matInput type="number" formControlName="longitude" [placeholder]="'COUNTRIES.LONGITUDE_PLACEHOLDER' | translate">
-      <mat-error *ngIf="form.get('longitude')?.hasError('required')">
-        {{ 'COUNTRIES.LONGITUDE_REQUIRED' | translate }}
-      </mat-error>
-      <mat-error *ngIf="form.get('longitude')?.hasError('min') || form.get('longitude')?.hasError('max')">
-        {{ 'COUNTRIES.LONGITUDE_RANGE' | translate }}
-      </mat-error>
+      @if (form.get('longitude')?.hasError('required')) {
+        <mat-error>{{ 'COUNTRIES.LONGITUDE_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('longitude')?.hasError('min') || form.get('longitude')?.hasError('max')) {
+        <mat-error>{{ 'COUNTRIES.LONGITUDE_RANGE' | translate }}</mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>{{ 'COUNTRIES.CONTINENT' | translate }}</mat-label>
       <input matInput formControlName="continent" [placeholder]="'COUNTRIES.CONTINENT_PLACEHOLDER' | translate">
-      <mat-error *ngIf="form.get('continent')?.hasError('required')">
-        {{ 'COUNTRIES.CONTINENT_REQUIRED' | translate }}
-      </mat-error>
-      <mat-error *ngIf="form.get('continent')?.hasError('maxlength')">
-        {{ 'COUNTRIES.CONTINENT_MAX_LENGTH' | translate }}
-      </mat-error>
+      @if (form.get('continent')?.hasError('required')) {
+        <mat-error>{{ 'COUNTRIES.CONTINENT_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('continent')?.hasError('maxlength')) {
+        <mat-error>{{ 'COUNTRIES.CONTINENT_MAX_LENGTH' | translate }}</mat-error>
+      }
     </mat-form-field>
   </mat-dialog-content>
 
@@ -59,4 +81,4 @@
     </button>
   </mat-dialog-actions>
 </form>
-<!-- master - MARSISCA - END 2025-12-14 -->
+<!-- master - MARSISCA - END 2026-01-02 -->

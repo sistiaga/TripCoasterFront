@@ -1,9 +1,10 @@
-// master - MARSISCA - BEGIN 2025-10-18
+// master - MARSISCA - BEGIN 2026-01-02
 import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
 import { CountryService } from '../../../core/services/country.service';
 import { Country } from '../../../core/models/country.model';
+import { environment } from '../../../../environments/environment';
 
 // Fix Leaflet icon paths
 const iconRetinaUrl = 'assets/leaflet/marker-icon-2x.png';
@@ -28,6 +29,7 @@ L.Marker.prototype.options.icon = iconDefault;
   templateUrl: './world-map.component.html',
   styleUrl: './world-map.component.scss'
 })
+// master - MARSISCA - END 2026-01-02
 export class WorldMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
 
@@ -97,7 +99,12 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
         fillOpacity: 0.8
       }).addTo(this.map!);
 
-      marker.bindPopup(`<b>${country.name}</b><br>${country.continent}`);
+      const lang = localStorage.getItem('lang') || 'en';
+      const countryName = lang === 'es' ? country.nameSpanish : country.nameEnglish;
+      const flagUrl = this.getFlagUrl(country.flagPath);
+      const flagImg = flagUrl ? `<img src="${flagUrl}" alt="${countryName}" style="width: 32px; height: 24px; margin-bottom: 5px; border: 1px solid #ddd; border-radius: 2px;"><br>` : '';
+
+      marker.bindPopup(`${flagImg}<b>${countryName}</b><br>${country.continent}`);
     });
 
     // Invalidate size
@@ -107,5 +114,16 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
       }
     }, 200);
   }
+
+  private getFlagUrl(flagPath: string | null): string | null {
+    if (!flagPath) return null;
+
+    if (flagPath.startsWith('http://') || flagPath.startsWith('https://') || flagPath.startsWith('data:')) {
+      return flagPath;
+    }
+
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${flagPath}`;
+  }
 }
-// master - MARSISCA - END 2025-10-18
+// master - MARSISCA - END 2026-01-02

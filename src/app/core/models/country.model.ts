@@ -1,7 +1,9 @@
-// master - MARSISCA - BEGIN 2025-10-18
+// master - MARSISCA - BEGIN 2026-01-02
 export interface Country {
   id: number;
-  name: string;
+  nameSpanish: string;
+  nameEnglish: string;
+  flagPath: string;
   latitude: number;
   longitude: number;
   continent: string;
@@ -14,4 +16,4 @@ export interface CountriesResponse {
   message: string;
   data: Country[];
 }
-// master - MARSISCA - END 2025-10-18
+// master - MARSISCA - END 2026-01-02

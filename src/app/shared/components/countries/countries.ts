@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2025-12-14
+// master - MARSISCA - BEGIN 2026-01-02
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Country } from '../../../core/models/country.model';
 import { CountryService } from '../../../core/services/country.service';
 import { CountryFormModal } from '../country-form-modal/country-form-modal';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-countries',
@@ -27,7 +28,7 @@ import { CountryFormModal } from '../country-form-modal/country-form-modal';
 })
 export class Countries implements OnInit, OnDestroy {
   countries: Country[] = [];
-  displayedColumns: string[] = ['name', 'continent', 'latitude', 'longitude', 'actions'];
+  displayedColumns: string[] = ['flag', 'nameSpanish', 'nameEnglish', 'continent', 'latitude', 'longitude', 'actions'];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -87,7 +88,7 @@ export class Countries implements OnInit, OnDestroy {
   }
 
   deleteCountry(country: Country): void {
-    if (confirm(`Are you sure you want to delete "${country.name}"?`)) {
+    if (confirm(`Are you sure you want to delete "${country.nameSpanish}"?`)) {
       this.countryService
         .deleteCountry(country.id)
         .pipe(takeUntil(this.destroy$))
@@ -103,5 +104,16 @@ export class Countries implements OnInit, OnDestroy {
         });
     }
   }
+
+  getFlagUrl(flagPath: string | null): string | null {
+    if (!flagPath) return null;
+
+    if (flagPath.startsWith('http://') || flagPath.startsWith('https://') || flagPath.startsWith('data:')) {
+      return flagPath;
+    }
+
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${flagPath}`;
+  }
 }
-// master - MARSISCA - END 2025-12-14
+// master - MARSISCA - END 2026-01-02
