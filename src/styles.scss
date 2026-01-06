@@ -286,4 +286,22 @@ $breakpoint-large: 1440px;
 .mat-mdc-dialog-surface {
   background-color: white !important;
 }
+
+// master - MARSISCA - BEGIN 2026-01-03
+// Angular Material Select Panel - ensure solid white background
+.mat-mdc-select-panel {
+  background-color: white !important;
+  backdrop-filter: none !important;
+}
+
+.cdk-overlay-pane .mat-mdc-select-panel {
+  background-color: white !important;
+}
+
+// Mat autocomplete panel
+.mat-mdc-autocomplete-panel {
+  background-color: white !important;
+  backdrop-filter: none !important;
+}
+// master - MARSISCA - END 2026-01-03
 // master - MARSISCA - END 2024-12-24

@@ -1,5 +1,10 @@
-// master - MARSISCA - BEGIN 2025-12-08
+// master - MARSISCA - BEGIN 2026-01-03
 import { TripLocationDetail } from './location.model';
+import { Weather } from './weather.model';
+import { Accommodation } from './accommodation.model';
+import { TransportationType } from './transportation-type.model';
+import { Country } from './country.model';
+// master - MARSISCA - END 2026-01-03
 
 export interface TripPhoto {
   id: number;
@@ -37,6 +42,16 @@ export interface Trip {
   // master - MARSISCA - BEGIN 2025-12-28
   locations?: TripLocationDetail[];
   // master - MARSISCA - END 2025-12-28
+  // master - MARSISCA - BEGIN 2026-01-03
+  weatherId?: number;
+  weather?: Weather;
+  accommodationId?: number;
+  accommodation?: Accommodation;
+  transportationTypeId?: number;
+  transportationType?: TransportationType;
+  countryId?: number;
+  country?: Country;
+  // master - MARSISCA - END 2026-01-03
   createdAt: string;
   updatedAt: string;
 }

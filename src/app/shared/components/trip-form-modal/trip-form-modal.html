@@ -1,13 +1,10 @@
-<!-- master - MARSISCA - BEGIN 2025-12-08 -->
+<!-- master - MARSISCA - BEGIN 2026-01-03 -->
 <div class="trip-form-modal">
   <h2 mat-dialog-title>{{ mode === 'create' ? 'Add New Trip' : 'Edit Trip' }}</h2>
 
   <mat-dialog-content>
-    <mat-tab-group>
-      <!-- General Tab -->
-      <mat-tab label="General">
-        <div class="tab-content">
-          <form [formGroup]="tripForm">
+    <div class="form-content">
+      <form [formGroup]="tripForm">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Trip Name</mat-label>
               <input
@@ -63,6 +60,92 @@
               </mat-form-field>
             </div>
 
+
+            <!-- master - MARSISCA - BEGIN 2026-01-03 -->
+            <!-- Weather -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'TRIP_FORM.WEATHER' | translate }}</mat-label>
+              <mat-select formControlName="weatherId">
+                <mat-option [value]="null">{{ 'TRIP_FORM.NO_WEATHER' | translate }}</mat-option>
+                @for (weather of weathers; track weather.id) {
+                  <mat-option [value]="weather.id">
+                    <div class="option-with-icon">
+                      @if (getIconUrl(weather.icon)) {
+                        <img [src]="getIconUrl(weather.icon)" class="option-icon" [alt]="weather.nameEnglish">
+                      }
+                      <span>{{ getCurrentLangName(weather) }}</span>
+                    </div>
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Accommodation -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'TRIP_FORM.ACCOMMODATION' | translate }}</mat-label>
+              <mat-select formControlName="accommodationId">
+                <mat-option [value]="null">{{ 'TRIP_FORM.NO_ACCOMMODATION' | translate }}</mat-option>
+                @for (accommodation of accommodations; track accommodation.id) {
+                  <mat-option [value]="accommodation.id">
+                    <div class="option-with-icon">
+                      @if (getIconUrl(accommodation.icon)) {
+                        <img [src]="getIconUrl(accommodation.icon)" class="option-icon" [alt]="accommodation.nameEnglish">
+                      }
+                      <span>{{ getCurrentLangName(accommodation) }}</span>
+                    </div>
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Transportation -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'TRIP_FORM.TRANSPORTATION' | translate }}</mat-label>
+              <mat-select formControlName="transportationTypeId">
+                <mat-option [value]="null">{{ 'TRIP_FORM.NO_TRANSPORTATION' | translate }}</mat-option>
+                @for (transport of transportationTypes; track transport.id) {
+                  <mat-option [value]="transport.id">
+                    <div class="option-with-icon">
+                      @if (getIconUrl(transport.icon)) {
+                        <img [src]="getIconUrl(transport.icon)" class="option-icon" [alt]="transport.nameEnglish">
+                      }
+                      <span>{{ getCurrentLangName(transport) }}</span>
+                    </div>
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Country -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'TRIP_FORM.COUNTRY' | translate }}</mat-label>
+              <input
+                type="text"
+                matInput
+                [formControl]="countryControl"
+                [matAutocomplete]="autoCountry"
+                [placeholder]="'TRIP_FORM.SEARCH_COUNTRY' | translate"
+              />
+              <mat-autocomplete #autoCountry="matAutocomplete" [displayWith]="displayCountryFn.bind(this)" (optionSelected)="onCountrySelected($event)">
+                @for (country of filteredCountries | async; track country.id) {
+                  <mat-option [value]="country">
+                    <div class="option-with-icon">
+                      @if (getFlagUrl(country.flagPath)) {
+                        <img [src]="getFlagUrl(country.flagPath)" class="country-flag" [alt]="country.nameEnglish">
+                      }
+                      <span>{{ getCurrentLangName(country) }}</span>
+                    </div>
+                  </mat-option>
+                }
+              </mat-autocomplete>
+              @if (countryControl.value && !isCountryObject(countryControl.value)) {
+                <button mat-icon-button matSuffix (click)="clearCountry()" type="button">
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+            </mat-form-field>
+            <!-- master - MARSISCA - END 2026-01-03 -->
+
             <div class="rating-field">
               <label class="rating-label">Rating</label>
               <app-star-rating
@@ -73,116 +156,9 @@
                 <div class="rating-error">{{ getRatingError() }}</div>
               }
             </div>
+
           </form>
-        </div>
-      </mat-tab>
-
-      <!-- Destinations Tab -->
-      <mat-tab label="Destinations">
-        <div class="tab-content">
-          @if (mode === 'edit' && tripId) {
-            <app-trip-destinations [tripId]="tripId"></app-trip-destinations>
-          } @else {
-            <div class="info-message">
-              <mat-icon>info</mat-icon>
-              <p>Save the trip first to add destinations</p>
-            </div>
-          }
-        </div>
-      </mat-tab>
-
-      <!-- Diary Tab -->
-      <mat-tab label="Diary">
-        <div class="tab-content">
-          @if (mode === 'edit' && tripId) {
-            <app-trip-diary [tripId]="tripId" [tripStartDate]="tripStartDate" [tripEndDate]="tripEndDate"></app-trip-diary>
-          } @else {
-            <div class="info-message">
-              <mat-icon>info</mat-icon>
-              <p>Save the trip first to add diary entries</p>
-            </div>
-          }
-        </div>
-      </mat-tab>
-
-      <!-- Photos Tab -->
-      <mat-tab label="Photos">
-        <div class="tab-content">
-          <!-- Existing Photos -->
-          @if (existingPhotos.length > 0) {
-            <div class="existing-photos-section">
-              <h3>Existing Photos</h3>
-              <div class="photos-grid">
-                @for (photo of existingPhotos; track photo.id) {
-                  <div class="photo-preview" (click)="viewPhoto(photo)">
-                    <img [src]="photo.url" [alt]="photo.filename" />
-                    <button
-                      mat-icon-button
-                      class="remove-photo"
-                      type="button"
-                      (click)="deleteExistingPhoto(photo.id, $event)"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                    <div class="photo-name">{{ photo.filename }}</div>
-                  </div>
-                }
-              </div>
-            </div>
-          }
-
-          <!-- Upload Zone -->
-          <div class="upload-section">
-            @if (existingPhotos.length > 0) {
-              <h3>Add More Photos</h3>
-            }
-            <div
-              class="upload-zone"
-              (drop)="onFileDrop($event)"
-              (dragover)="onDragOver($event)"
-            >
-              <mat-icon>cloud_upload</mat-icon>
-              <p>Drag and drop photos here or click to select</p>
-              <input
-                type="file"
-                #fileInput
-                multiple
-                accept="image/*,.heic,.heif"
-                (change)="onFilesSelected($event)"
-                style="display: none"
-              />
-              <button
-                mat-raised-button
-                color="primary"
-                type="button"
-                (click)="fileInput.click()"
-              >
-                Select Photos
-              </button>
-            </div>
-
-            @if (photoPreviews.length > 0) {
-              <div class="photos-grid new-photos">
-                @for (preview of photoPreviews; track $index) {
-                  <div class="photo-preview">
-                    <img [src]="preview.url" [alt]="preview.file.name" />
-                    <button
-                      mat-icon-button
-                      class="remove-photo"
-                      type="button"
-                      (click)="removePhoto($index)"
-                    >
-                      <mat-icon>close</mat-icon>
-                    </button>
-                    <div class="photo-name">{{ preview.file.name }}</div>
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+    </div>
 
     @if (errorMessage) {
       <div class="error-message">
@@ -214,4 +190,4 @@
     </button>
   </mat-dialog-actions>
 </div>
-<!-- master - MARSISCA - END 2025-12-08 -->
+<!-- master - MARSISCA - END 2026-01-03 -->

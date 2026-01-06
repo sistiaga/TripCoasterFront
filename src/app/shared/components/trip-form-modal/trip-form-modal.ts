@@ -1,7 +1,11 @@
-// master - MARSISCA - BEGIN 2026-01-01
+// master - MARSISCA - BEGIN 2026-01-03
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+// master - MARSISCA - END 2026-01-03
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,11 +18,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { TripService } from '../../../core/services/trip.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { StarRating } from '../star-rating/star-rating';
-import { TripDestinations } from '../trip-destinations/trip-destinations';
-import { TripDiary } from '../trip-diary/trip-diary';
-import { Trip, TripPhoto } from '../../../core/models/trip.model';
-import { PhotoDetailModal } from '../photo-detail-modal/photo-detail-modal';
+import { Trip } from '../../../core/models/trip.model';
 import { parse, format } from 'date-fns';
+// master - MARSISCA - BEGIN 2026-01-03
+import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { WeatherService } from '../../../core/services/weather.service';
+import { AccommodationService } from '../../../core/services/accommodation.service';
+import { TransportationTypeService } from '../../../core/services/transportation-type.service';
+import { CountryService } from '../../../core/services/country.service';
+import { Weather } from '../../../core/models/weather.model';
+import { Accommodation } from '../../../core/models/accommodation.model';
+import { TransportationType } from '../../../core/models/transportation-type.model';
+import { Country } from '../../../core/models/country.model';
+import { environment } from '../../../../environments/environment';
+// master - MARSISCA - END 2026-01-03
 
 export const EUROPEAN_DATE_FORMATS = {
   parse: {
@@ -52,9 +66,10 @@ export interface TripFormData {
     MatNativeDateModule,
     MatTabsModule,
     MatIconModule,
-    StarRating,
-    TripDestinations,
-    TripDiary
+    MatSelectModule,
+    MatAutocompleteModule,
+    TranslateModule,
+    StarRating
   ],
 // master - MARSISCA - BEGIN 2026-01-01
   providers: [
@@ -73,17 +88,28 @@ export class TripFormModal implements OnInit {
   tripId?: number;
   tripStartDate?: string;
   tripEndDate?: string;
-  selectedFiles: File[] = [];
-  photoPreviews: { file: File, url: string }[] = [];
-  existingPhotos: any[] = [];
+  // master - MARSISCA - BEGIN 2026-01-03
+  weathers: Weather[] = [];
+  accommodations: Accommodation[] = [];
+  transportationTypes: TransportationType[] = [];
+  countries: Country[] = [];
+  countryControl = new FormControl<string | Country>('');
+  filteredCountries!: Observable<Country[]>;
+  // master - MARSISCA - END 2026-01-03
 
   constructor(
     private fb: FormBuilder,
     private tripService: TripService,
     private authService: AuthService,
-    private dialog: MatDialog,
     private dialogRef: MatDialogRef<TripFormModal>,
-    @Inject(MAT_DIALOG_DATA) public data: TripFormData
+    @Inject(MAT_DIALOG_DATA) public data: TripFormData,
+    // master - MARSISCA - BEGIN 2026-01-03
+    private weatherService: WeatherService,
+    private accommodationService: AccommodationService,
+    private transportationTypeService: TransportationTypeService,
+    private countryService: CountryService,
+    private translateService: TranslateService
+    // master - MARSISCA - END 2026-01-03
   ) {
     this.mode = data?.mode || 'create';
     this.tripId = data?.trip?.id;
@@ -93,45 +119,183 @@ export class TripFormModal implements OnInit {
       description: ['', [Validators.maxLength(500)]],
       startDate: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
-      rating: [null, [Validators.min(0), Validators.max(5)]]
+      rating: [null, [Validators.min(0), Validators.max(5)]],
+      // master - MARSISCA - BEGIN 2026-01-03
+      weatherId: [null],
+      accommodationId: [null],
+      transportationTypeId: [null],
+      countryId: [null]
+      // master - MARSISCA - END 2026-01-03
     }, { validators: this.dateRangeValidator });
   }
 
   ngOnInit(): void {
+    // master - MARSISCA - BEGIN 2026-01-03
+    // Track loading states
+    let weathersLoaded = false;
+    let accommodationsLoaded = false;
+    let transportationTypesLoaded = false;
+    let countriesLoaded = false;
+
+    const checkAllLoaded = () => {
+      if (weathersLoaded && accommodationsLoaded && transportationTypesLoaded && countriesLoaded) {
+        if (this.mode === 'edit' && this.data?.trip) {
+          this.populateForm(this.data.trip);
+        }
+      }
+    };
+
+    // Load weather types
+    this.weatherService.getWeathers().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.weathers = response.data;
+        }
+        weathersLoaded = true;
+        checkAllLoaded();
+      },
+      error: (error) => {
+        console.error('Error loading weathers:', error);
+        weathersLoaded = true;
+        checkAllLoaded();
+      }
+    });
+
+    // Load accommodations
+    this.accommodationService.getAccommodations().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.accommodations = response.data;
+        }
+        accommodationsLoaded = true;
+        checkAllLoaded();
+      },
+      error: (error) => {
+        console.error('Error loading accommodations:', error);
+        accommodationsLoaded = true;
+        checkAllLoaded();
+      }
+    });
+
+    // Load transportation types
+    this.transportationTypeService.getTransportationTypes().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.transportationTypes = response.data;
+        }
+        transportationTypesLoaded = true;
+        checkAllLoaded();
+      },
+      error: (error) => {
+        console.error('Error loading transportation types:', error);
+        transportationTypesLoaded = true;
+        checkAllLoaded();
+      }
+    });
+
+    // Load countries
+    this.countryService.getCountries().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.countries = response.data;
+          // Setup country autocomplete filter
+          this.filteredCountries = this.countryControl.valueChanges.pipe(
+            startWith(''),
+            map(value => this._filterCountries(value || ''))
+          );
+        }
+        countriesLoaded = true;
+        checkAllLoaded();
+      },
+      error: (error) => {
+        console.error('Error loading countries:', error);
+        countriesLoaded = true;
+        checkAllLoaded();
+      }
+    });
+    // master - MARSISCA - END 2026-01-03
+
     if (this.mode === 'edit' && this.data?.trip) {
       this.tripStartDate = this.data.trip.startDate;
       this.tripEndDate = this.data.trip.endDate;
-      this.populateForm(this.data.trip);
-      this.loadExistingPhotos();
     }
   }
 
-  private loadExistingPhotos(): void {
-    if (this.tripId) {
-      this.tripService.getTripPhotos(this.tripId).subscribe({
-        next: (response) => {
-          if (response.success && response.data) {
-            this.existingPhotos = response.data;
-          }
-        },
-        error: (error) => {
-          console.error('Error loading photos:', error);
-        }
-      });
+  // master - MARSISCA - BEGIN 2026-01-03
+  private _filterCountries(value: string | Country): Country[] {
+    if (typeof value === 'object' && value !== null) {
+      return this.countries;
     }
+
+    const filterValue = (value as string).toLowerCase();
+    const currentLang = this.translateService.currentLang || 'en';
+
+    return this.countries.filter(country => {
+      const name = currentLang === 'es' ? country.nameSpanish : country.nameEnglish;
+      return name.toLowerCase().includes(filterValue);
+    });
   }
 
-// master - MARSISCA - BEGIN 2026-01-01
+  displayCountryFn(country: Country): string {
+    return country ? this.getCurrentLangName(country) : '';
+  }
+
+  onCountrySelected(event: MatAutocompleteSelectedEvent): void {
+    const country: Country = event.option.value;
+    this.tripForm.patchValue({ countryId: country.id });
+  }
+
+  clearCountry(): void {
+    this.countryControl.setValue('');
+    this.tripForm.patchValue({ countryId: null });
+  }
+
+  isCountryObject(value: any): boolean {
+    return typeof value === 'object' && value !== null && 'id' in value;
+  }
+  // master - MARSISCA - END 2026-01-03
+
+// master - MARSISCA - BEGIN 2026-01-03
   private populateForm(trip: Trip): void {
+    console.log('Populating form with trip data:', trip);
+
+    // Extract IDs from nested objects if they exist
+    const weatherId = trip.weatherId || trip.weather?.id || null;
+    const accommodationId = trip.accommodationId || trip.accommodation?.id || null;
+    const transportationTypeId = trip.transportationTypeId || trip.transportationType?.id || null;
+    const countryId = trip.countryId || trip.country?.id || null;
+
+    console.log('Extracted IDs:', { weatherId, accommodationId, transportationTypeId, countryId });
+
     this.tripForm.patchValue({
       name: trip.name,
       description: trip.description,
       startDate: new Date(trip.startDate),
       endDate: new Date(trip.endDate),
-      rating: trip.rating
+      rating: trip.rating,
+      weatherId: weatherId,
+      accommodationId: accommodationId,
+      transportationTypeId: transportationTypeId,
+      countryId: countryId
     });
+
+    // Set country control value - find country object from loaded countries
+    if (countryId) {
+      const country = this.countries.find(c => c.id === countryId);
+      if (country) {
+        this.countryControl.setValue(country);
+        console.log('Country set:', country);
+      } else if (trip.country) {
+        // Fallback: use trip.country if provided
+        this.countryControl.setValue(trip.country);
+        console.log('Country set from trip.country:', trip.country);
+      }
+    }
+
+    console.log('Form values after populate:', this.tripForm.value);
+    console.log('Country control value:', this.countryControl.value);
   }
-  // master - MARSISCA - END 2026-01-01
+  // master - MARSISCA - END 2026-01-03
 
 // master - MARSISCA - BEGIN 2026-01-01
   private dateRangeValidator(group: FormGroup): { [key: string]: any } | null {
@@ -168,27 +332,32 @@ export class TripFormModal implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
+    // master - MARSISCA - BEGIN 2026-01-03
+    console.log('Form values before sending:', this.tripForm.value);
+
     const tripData = {
       name: this.tripForm.value.name?.trim(),
       description: this.tripForm.value.description?.trim() || undefined,
       startDate: this.formatDate(this.tripForm.value.startDate),
       endDate: this.formatDate(this.tripForm.value.endDate),
       rating: this.tripForm.value.rating ? parseFloat(this.tripForm.value.rating) : undefined,
-      userId: user.id
+      userId: user.id,
+      weatherId: this.tripForm.value.weatherId !== null ? this.tripForm.value.weatherId : undefined,
+      accommodationId: this.tripForm.value.accommodationId !== null ? this.tripForm.value.accommodationId : undefined,
+      transportationTypeId: this.tripForm.value.transportationTypeId !== null ? this.tripForm.value.transportationTypeId : undefined,
+      countryId: this.tripForm.value.countryId !== null ? this.tripForm.value.countryId : undefined
     };
+
+    console.log('Trip data being sent to backend:', tripData);
+    // master - MARSISCA - END 2026-01-03
 
     if (this.mode === 'create') {
       this.tripService.createTrip(tripData).subscribe({
         next: (response) => {
           if (response.success && response.data) {
-            // If there are photos to upload, upload them after creating the trip
-            if (this.selectedFiles.length > 0) {
-              this.uploadPhotos(response.data.id);
-            } else {
-              this.isLoading = false;
-              this.tripForm.reset();
-              this.dialogRef.close(true);
-            }
+            this.isLoading = false;
+            this.tripForm.reset();
+            this.dialogRef.close(true);
           } else {
             this.isLoading = false;
             this.errorMessage = response.message || 'Error creating trip';
@@ -209,13 +378,8 @@ export class TripFormModal implements OnInit {
       this.tripService.updateTrip(this.tripId, tripData).subscribe({
         next: (response) => {
           if (response.success) {
-            // If there are photos to upload, upload them after updating the trip
-            if (this.selectedFiles.length > 0) {
-              this.uploadPhotos(this.tripId!);
-            } else {
-              this.isLoading = false;
-              this.dialogRef.close(true);
-            }
+            this.isLoading = false;
+            this.dialogRef.close(true);
           } else {
             this.isLoading = false;
             this.errorMessage = response.message || 'Error updating trip';
@@ -231,123 +395,6 @@ export class TripFormModal implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close(false);
-  }
-
-  onFilesSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.addFiles(Array.from(input.files));
-    }
-  }
-
-  onFileDrop(event: DragEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (event.dataTransfer?.files) {
-      this.addFiles(Array.from(event.dataTransfer.files));
-    }
-  }
-
-  onDragOver(event: DragEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  private addFiles(files: File[]): void {
-    // Accept image files and HEIC/HEIF files
-    const imageFiles = files.filter(file =>
-      file.type.startsWith('image/') ||
-      file.name.toLowerCase().endsWith('.heic') ||
-      file.name.toLowerCase().endsWith('.heif')
-    );
-
-    imageFiles.forEach(file => {
-      const isHeic = file.name.toLowerCase().endsWith('.heic') ||
-                     file.name.toLowerCase().endsWith('.heif');
-
-      if (isHeic) {
-        // For HEIC files, show a generic image icon placeholder
-        // The backend will convert to JPEG and extract metadata
-        this.photoPreviews.push({
-          file,
-          url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SEVJQzwvdGV4dD48L3N2Zz4='
-        });
-      } else {
-        // For regular image files, create preview
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.photoPreviews.push({
-            file,
-            url: e.target?.result as string
-          });
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    this.selectedFiles.push(...imageFiles);
-  }
-
-  removePhoto(index: number): void {
-    this.photoPreviews.splice(index, 1);
-    this.selectedFiles.splice(index, 1);
-  }
-
-  deleteExistingPhoto(photoId: number, event: Event): void {
-    event.stopPropagation();
-
-    if (confirm('Are you sure you want to delete this photo?')) {
-      this.tripService.deletePhoto(photoId).subscribe({
-        next: () => {
-          this.existingPhotos = this.existingPhotos.filter(p => p.id !== photoId);
-        },
-        error: (error) => {
-          console.error('Error deleting photo:', error);
-          this.errorMessage = 'Error deleting photo';
-        }
-      });
-    }
-  }
-
-  viewPhoto(photo: TripPhoto): void {
-    const dialogRef = this.dialog.open(PhotoDetailModal, {
-      width: '90vw',
-      maxWidth: '800px',
-      data: {
-        photo,
-        tripId: this.tripId,
-        canEdit: true
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true || result === 'deleted') {
-        // Reload photos after changes
-        this.loadExistingPhotos();
-      }
-    });
-  }
-
-  private uploadPhotos(tripId: number): void {
-    this.tripService.uploadPhotos(tripId, this.selectedFiles).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        if (this.mode === 'create') {
-          this.tripForm.reset();
-        }
-        this.dialogRef.close(true);
-      },
-      error: (error) => {
-        this.isLoading = false;
-        console.error('Error uploading photos:', error);
-        // Still close the dialog as the trip was created/updated successfully
-        if (this.mode === 'create') {
-          this.tripForm.reset();
-        }
-        this.dialogRef.close(true);
-      }
-    });
   }
 
 // master - MARSISCA - BEGIN 2026-01-01
@@ -401,5 +448,30 @@ export class TripFormModal implements OnInit {
     }
     return '';
   }
+
+  // master - MARSISCA - BEGIN 2026-01-03
+  getIconUrl(icon: string | undefined): string | null {
+    if (!icon) return null;
+    if (icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('data:')) {
+      return icon;
+    }
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${icon}`;
+  }
+
+  getFlagUrl(flagPath: string | undefined): string | null {
+    if (!flagPath) return null;
+    if (flagPath.startsWith('http://') || flagPath.startsWith('https://') || flagPath.startsWith('data:')) {
+      return flagPath;
+    }
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${flagPath}`;
+  }
+
+  getCurrentLangName(item: { nameSpanish: string; nameEnglish: string }): string {
+    const currentLang = this.translateService.currentLang || 'en';
+    return currentLang === 'es' ? item.nameSpanish : item.nameEnglish;
+  }
+  // master - MARSISCA - END 2026-01-03
 }
 // master - MARSISCA - END 2026-01-01

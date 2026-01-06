@@ -21,6 +21,36 @@
             class="hero-rating"
           ></app-star-rating>
         </div>
+        <!-- master - MARSISCA - BEGIN 2026-01-03 -->
+        @if (trip.weather || trip.accommodation || trip.transportationType) {
+          <div class="trip-attributes">
+            @if (trip.weather) {
+              <div class="attribute-item">
+                @if (getIconUrl(trip.weather.icon)) {
+                  <img [src]="getIconUrl(trip.weather.icon)" class="attribute-icon" [alt]="trip.weather.nameEnglish">
+                }
+                <span>{{ getCurrentLangName(trip.weather) }}</span>
+              </div>
+            }
+            @if (trip.accommodation) {
+              <div class="attribute-item">
+                @if (getIconUrl(trip.accommodation.icon)) {
+                  <img [src]="getIconUrl(trip.accommodation.icon)" class="attribute-icon" [alt]="trip.accommodation.nameEnglish">
+                }
+                <span>{{ getCurrentLangName(trip.accommodation) }}</span>
+              </div>
+            }
+            @if (trip.transportationType) {
+              <div class="attribute-item">
+                @if (getIconUrl(trip.transportationType.icon)) {
+                  <img [src]="getIconUrl(trip.transportationType.icon)" class="attribute-icon" [alt]="trip.transportationType.nameEnglish">
+                }
+                <span>{{ getCurrentLangName(trip.transportationType) }}</span>
+              </div>
+            }
+          </div>
+        }
+        <!-- master - MARSISCA - END 2026-01-03 -->
       </div>
       <button mat-fab color="primary" class="edit-fab" (click)="editTrip()">
         <mat-icon>edit</mat-icon>
@@ -58,12 +88,14 @@
             <div class="destination-icon">
               <mat-icon>location_on</mat-icon>
             </div>
+            <!-- master - MARSISCA - BEGIN 2026-01-02 -->
             <div class="destination-info">
-              <h3>{{ location.name }} ({{ location.country.name }})</h3>
+              <h3>{{ location.name }}@if (location.country) { ({{ location.country.nameEnglish }})} </h3>
               <span class="coordinates">
                 {{ location.latitude.toFixed(4) }}, {{ location.longitude.toFixed(4) }}
               </span>
             </div>
+            <!-- master - MARSISCA - END 2026-01-02 -->
           </div>
         </div>
         <div class="empty-state" *ngIf="!trip.locations || trip.locations.length === 0">
@@ -89,15 +121,39 @@
     </section>
 
     <!-- Photos Section -->
+    <!-- master - MARSISCA - BEGIN 2026-01-03 -->
     <section class="photos-section section">
       <div class="section-header">
         <mat-icon>photo_library</mat-icon>
         <h2>{{ 'TRIP_DETAIL.PHOTOS' | translate }}</h2>
+        @if (trip.photos && trip.photos.length > 0) {
+          <button mat-raised-button color="primary" (click)="uploadNewPhotos()">
+            <mat-icon>add_photo_alternate</mat-icon>
+            {{ 'TRIP_DETAIL.ADD_PHOTOS' | translate }}
+          </button>
+        }
       </div>
       <div class="section-content">
         <div class="photos-grid" *ngIf="trip.photos && trip.photos.length > 0">
           <div class="photo-item" *ngFor="let photo of getVisiblePhotos()">
-            <img [src]="photo.url" [alt]="photo.filename" (click)="openPhotoDetail(photo)">
+            <div class="photo-wrapper">
+              <img [src]="photo.url" [alt]="photo.filename" (click)="openPhotoDetail(photo)">
+              <div class="photo-actions">
+                <button mat-icon-button
+                        class="photo-action-btn"
+                        (click)="toggleMainPhoto(photo); $event.stopPropagation()"
+                        [class.is-main]="photo.isMain"
+                        [matTooltip]="photo.isMain ? ('TRIP_DETAIL.MAIN_PHOTO' | translate) : ('TRIP_DETAIL.SET_AS_MAIN' | translate)">
+                  <mat-icon>{{ photo.isMain ? 'star' : 'star_border' }}</mat-icon>
+                </button>
+                <button mat-icon-button
+                        class="photo-action-btn delete-btn"
+                        (click)="deletePhoto(photo); $event.stopPropagation()"
+                        [matTooltip]="'TRIP_DETAIL.DELETE_PHOTO' | translate">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
           <div class="more-photos" *ngIf="hasMorePhotos()" (click)="editTrip()">
             <div class="more-photos-overlay">
@@ -109,12 +165,13 @@
         <div class="empty-state" *ngIf="!trip.photos || trip.photos.length === 0">
           <mat-icon>add_photo_alternate</mat-icon>
           <p>{{ 'TRIP_DETAIL.NO_PHOTOS' | translate }}</p>
-          <button mat-raised-button color="primary" (click)="editTrip()">
+          <button mat-raised-button color="primary" (click)="uploadNewPhotos()">
             {{ 'TRIP_DETAIL.ADD_PHOTOS' | translate }}
           </button>
         </div>
       </div>
     </section>
+    <!-- master - MARSISCA - END 2026-01-03 -->
 
   </div>
 </div>

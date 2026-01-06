@@ -1,3 +1,7 @@
+// master - MARSISCA - BEGIN 2026-01-02
+import { Country } from './country.model';
+// master - MARSISCA - END 2026-01-02
+
 // master - MARSISCA - BEGIN 2025-11-15
 export interface LocationSuggestion {
   id?: number;
@@ -6,13 +10,6 @@ export interface LocationSuggestion {
   country: string;
   latitude: number;
   longitude: number;
-}
-
-// master - MARSISCA - BEGIN 2025-12-28
-export interface Country {
-  id: number;
-  name: string;
-  isoCode: string;
 }
 
 export interface Location {

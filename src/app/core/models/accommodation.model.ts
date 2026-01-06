@@ -1,11 +1,13 @@
-// master - MARSISCA - BEGIN 2025-12-31
+// master - MARSISCA - BEGIN 2026-01-03
 export interface Accommodation {
   id: number;
   nameSpanish: string;
   nameEnglish: string;
+  icon?: string;
   createdAt: string;
   updatedAt: string;
 }
+// master - MARSISCA - END 2026-01-03
 
 export interface AccommodationsResponse {
   success: boolean;

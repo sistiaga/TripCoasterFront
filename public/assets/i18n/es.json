@@ -70,6 +70,17 @@
     "CANCEL": "Cancelar",
     "SAVE": "Guardar"
   },
+  "TRIP_FORM": {
+    "WEATHER": "Tiempo",
+    "NO_WEATHER": "Sin especificar",
+    "ACCOMMODATION": "Alojamiento",
+    "NO_ACCOMMODATION": "Sin especificar",
+    "TRANSPORTATION": "Transporte",
+    "NO_TRANSPORTATION": "Sin especificar",
+    "COUNTRY": "País",
+    "NO_COUNTRY": "Sin especificar",
+    "SEARCH_COUNTRY": "Buscar país..."
+  },
   "TRIP_DETAIL": {
     "INFO": "Información",
     "DESTINATIONS": "Destinos",
@@ -78,8 +89,13 @@
     "NO_DESCRIPTION": "No hay descripción disponible para este viaje",
     "NO_DESTINATIONS": "Aún no se han añadido destinos",
     "ADD_DESTINATIONS": "Añadir Destinos",
+    "MANAGE_DESTINATIONS": "Gestionar Destinos",
     "NO_PHOTOS": "Aún no hay fotos",
     "ADD_PHOTOS": "Añadir Fotos",
+    "DELETE_PHOTO": "Eliminar foto",
+    "SET_AS_MAIN": "Marcar como principal",
+    "MAIN_PHOTO": "Foto principal",
+    "CONFIRM_DELETE_PHOTO": "¿Estás seguro de que quieres eliminar esta foto?",
     "MORE_PHOTOS": "fotos más",
     "LOADING": "Cargando detalles del viaje...",
     "NOT_FOUND": "Viaje no encontrado",

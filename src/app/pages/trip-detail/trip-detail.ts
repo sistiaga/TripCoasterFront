@@ -6,8 +6,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
+// master - MARSISCA - BEGIN 2026-01-03
+import { environment } from '../../../environments/environment';
+// master - MARSISCA - END 2026-01-03
 import { Trip, TripPhoto } from '../../core/models/trip.model';
 import { TripService } from '../../core/services/trip.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -26,6 +30,7 @@ import { PhotoDetailModal } from '../../shared/components/photo-detail-modal/pho
     MatIconModule,
     MatChipsModule,
     MatDialogModule,
+    MatTooltipModule,
     TranslateModule,
     StarRating,
     TripDiary
@@ -43,7 +48,10 @@ export class TripDetail implements OnInit, OnDestroy {
     private router: Router,
     private tripService: TripService,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    // master - MARSISCA - BEGIN 2026-01-03
+    private translateService: TranslateService
+    // master - MARSISCA - END 2026-01-03
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +68,7 @@ export class TripDetail implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // master - MARSISCA - BEGIN 2025-12-28
+  // master - MARSISCA - BEGIN 2026-01-03
   loadTripDetail(tripId: number): void {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) {
@@ -85,20 +93,14 @@ export class TripDetail implements OnInit, OnDestroy {
       }
     });
   }
-  // master - MARSISCA - END 2025-12-28
+  // master - MARSISCA - END 2026-01-03
 
+  // master - MARSISCA - BEGIN 2026-01-03
   loadTripPhotos(tripId: number): void {
     this.tripService.getTripPhotos(tripId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
-        console.log('=== PHOTO RESPONSE ===', response);
         if (response.success && this.trip) {
           this.trip.photos = response.data;
-          console.log('=== PHOTOS LOADED ===', this.trip.photos);
-          if (this.trip.photos && this.trip.photos.length > 0) {
-            console.log('First photo:', this.trip.photos[0]);
-            console.log('First photo URL:', this.trip.photos[0].url);
-            console.log('First photo metadata:', this.trip.photos[0].metadata);
-          }
         }
       },
       error: (error) => {
@@ -106,6 +108,7 @@ export class TripDetail implements OnInit, OnDestroy {
       }
     });
   }
+  // master - MARSISCA - END 2026-01-03
 
 
   goBack(): void {
@@ -182,5 +185,79 @@ export class TripDetail implements OnInit, OnDestroy {
   getMorePhotosCount(): number {
     return (this.trip?.photos?.length || 0) - 6;
   }
+
+  // master - MARSISCA - BEGIN 2026-01-03
+  getIconUrl(icon: string | undefined): string | null {
+    if (!icon) return null;
+    if (icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('data:')) {
+      return icon;
+    }
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${icon}`;
+  }
+
+  getCurrentLangName(item: { nameSpanish: string; nameEnglish: string }): string {
+    const currentLang = this.translateService.currentLang || 'en';
+    return currentLang === 'es' ? item.nameSpanish : item.nameEnglish;
+  }
+
+  deletePhoto(photo: TripPhoto): void {
+    if (confirm(this.translateService.instant('TRIP_DETAIL.CONFIRM_DELETE_PHOTO'))) {
+      this.tripService.deletePhoto(photo.id).subscribe({
+        next: (response) => {
+          if (response.success && this.trip) {
+            this.loadTripPhotos(this.trip.id);
+          }
+        },
+        error: (error) => {
+          console.error('Error deleting photo:', error);
+        }
+      });
+    }
+  }
+
+  toggleMainPhoto(photo: TripPhoto): void {
+    if (photo.isMain) return; // Already main, do nothing
+
+    this.tripService.updatePhoto(photo.id, { isMain: true }).subscribe({
+      next: (response) => {
+        if (response.success && this.trip) {
+          this.loadTripPhotos(this.trip.id);
+        }
+      },
+      error: (error) => {
+        console.error('Error updating photo:', error);
+      }
+    });
+  }
+
+  uploadNewPhotos(): void {
+    // Open file input dialog
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = 'image/*,.heic,.heif';
+
+    input.onchange = (event: any) => {
+      const files = event.target.files;
+      if (files && files.length > 0 && this.trip) {
+        // Convert FileList to Array
+        const filesArray = Array.from(files) as File[];
+        this.tripService.uploadPhotos(this.trip.id, filesArray).subscribe({
+          next: (response) => {
+            if (response.success && this.trip) {
+              this.loadTripPhotos(this.trip.id);
+            }
+          },
+          error: (error) => {
+            console.error('Error uploading photos:', error);
+          }
+        });
+      }
+    };
+
+    input.click();
+  }
+  // master - MARSISCA - END 2026-01-03
 }
 // master - MARSISCA - END 2025-12-08

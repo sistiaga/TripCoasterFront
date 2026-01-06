@@ -71,6 +71,17 @@
     "CANCEL": "Cancel",
     "SAVE": "Save"
   },
+  "TRIP_FORM": {
+    "WEATHER": "Weather",
+    "NO_WEATHER": "Not specified",
+    "ACCOMMODATION": "Accommodation",
+    "NO_ACCOMMODATION": "Not specified",
+    "TRANSPORTATION": "Transportation",
+    "NO_TRANSPORTATION": "Not specified",
+    "COUNTRY": "Country",
+    "NO_COUNTRY": "Not specified",
+    "SEARCH_COUNTRY": "Search country..."
+  },
   "TRIP_DETAIL": {
     "INFO": "Information",
     "DESTINATIONS": "Destinations",
@@ -79,8 +90,13 @@
     "NO_DESCRIPTION": "No description available for this trip",
     "NO_DESTINATIONS": "No destinations added yet",
     "ADD_DESTINATIONS": "Add Destinations",
+    "MANAGE_DESTINATIONS": "Manage Destinations",
     "NO_PHOTOS": "No photos yet",
     "ADD_PHOTOS": "Add Photos",
+    "DELETE_PHOTO": "Delete photo",
+    "SET_AS_MAIN": "Set as main",
+    "MAIN_PHOTO": "Main photo",
+    "CONFIRM_DELETE_PHOTO": "Are you sure you want to delete this photo?",
     "MORE_PHOTOS": "more photos",
     "LOADING": "Loading trip details...",
     "NOT_FOUND": "Trip not found",

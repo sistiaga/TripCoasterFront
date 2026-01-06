@@ -6,12 +6,14 @@
     position: relative;
   }
 
+  // master - MARSISCA - BEGIN 2026-01-03
   h3 {
     margin: 0 0 16px 0;
     font-size: 18px;
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.87);
+    color: #FF7F00;
   }
+  // master - MARSISCA - END 2026-01-03
 
   // Search Section
   .search-section {
@@ -320,4 +322,46 @@
     }
   }
 }
+
+// master - MARSISCA - BEGIN 2026-01-03
+// Orange theme for trip-destinations
+::ng-deep {
+  .trip-destinations {
+    // Labels in orange
+    .mat-mdc-form-field-label {
+      color: #FF7F00 !important;
+    }
+
+    // Outline border in orange
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #FF7F00 !important;
+      }
+    }
+
+    // Focused state in orange
+    .mat-mdc-form-field.mat-focused .mat-mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #FF7F00 !important;
+        border-width: 2px !important;
+      }
+    }
+
+    // Input text in black
+    .mat-mdc-input-element {
+      color: #2C2C2C !important;
+    }
+
+    // Autocomplete panel with transparent background
+    .mat-mdc-autocomplete-panel {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+    }
+  }
+}
+// master - MARSISCA - END 2026-01-03
 // master - MARSISCA - END 2025-11-15
