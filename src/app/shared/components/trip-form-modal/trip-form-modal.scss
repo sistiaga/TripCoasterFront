@@ -1,36 +1,45 @@
-// master - MARSISCA - BEGIN 2026-01-06
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
+// =============================================================================
+// Trip Form Modal Component Styles
+// Clean architecture without ::ng-deep - styles are now in global overrides
+// =============================================================================
+
 .trip-form-modal {
+  // Dialog base styles are now in global _material-overrides.scss
+  // This component only contains component-specific styles
 
   h2[mat-dialog-title] {
-    color: #FF7F00 !important;
     margin: 0;
-    padding: 20px;
+    padding: vars.$spacing-lg;
     flex-shrink: 0;
   }
 
   mat-dialog-content {
-    padding: 20px;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+    padding: vars.$spacing-lg;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: calc(90vh - 180px);
   }
 
   mat-dialog-actions {
-    padding: 20px;
+    padding: vars.$spacing-lg;
     margin: 0;
     flex-shrink: 0;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid vars.$border-color;
   }
 
   .form-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: vars.$spacing-lg;
 
     form {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: vars.$spacing-lg;
     }
 
     mat-form-field {
@@ -38,221 +47,44 @@
     }
   }
 
+  // Date fields row
   .date-fields {
     display: flex;
-    gap: 1rem;
+    gap: vars.$spacing-md;
     width: 100%;
 
     mat-form-field {
       flex: 1;
     }
+
+    @include mixins.respond-to(mobile) {
+      flex-direction: column;
+      gap: 0;
+    }
   }
 
+  // Rating field (custom component)
   .rating-field {
     .rating-label {
       display: block;
-      font-size: 16px;
-      color: #757575;
-      margin-bottom: 0.5rem;
+      font-size: vars.$font-size-base;
+      color: vars.$text-secondary;
+      margin-bottom: vars.$spacing-sm;
       font-weight: 500;
     }
 
     .rating-error {
-      color: #f44336;
+      color: vars.$error-color;
       font-size: 0.75rem;
-      margin-top: 0.25rem;
+      margin-top: vars.$spacing-xs;
     }
   }
-// master - MARSISCA - END 2026-01-06
 
-}
-// master - MARSISCA - END 2026-01-06
-
-// master - MARSISCA - BEGIN 2026-01-06
-// Modern design theme - moved outside to apply globally
-
-// Apply border-radius and shadow to the Material Dialog container
-::ng-deep .mat-mdc-dialog-container {
-  border-radius: 12px !important;
-  overflow: hidden !important;
-
-  .mdc-dialog__surface {
-    border-radius: 12px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-  }
-
-  .mat-mdc-dialog-surface {
-    border-radius: 12px !important;
-  }
-}
-
-::ng-deep .trip-form-modal {
-    h2[mat-dialog-title] {
-      color: #FF7F00 !important;
-    }
-
-    // Force labels to always float above - not inside the field
-    .mat-mdc-form-field-has-label .mat-mdc-floating-label {
-      transform: translateY(-1.34375em) scale(1) !important;
-      font-size: 16px !important;
-      color: #757575 !important;
-      font-weight: 500 !important;
-      position: relative !important;
-      top: 0 !important;
-    }
-
-    // When focused, label turns orange
-    .mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
-      color: #FF7F00 !important;
-    }
-
-    // Adjust notched outline to not have the label cutout
-    .mat-mdc-form-field-has-label.mat-mdc-form-field .mdc-notched-outline__notch {
-      border-left-style: none !important;
-      border-right-style: none !important;
-      max-width: 0 !important;
-    }
-
-    .mat-mdc-form-field-subscript-wrapper {
-      margin-top: 8px;
-    }
-
-    // Input fields background and border radius
-    .mat-mdc-text-field-wrapper {
-      background-color: #F9F9F9 !important;
-      border-radius: 8px !important;
-
-      .mat-mdc-form-field-flex {
-        border-radius: 8px !important;
-
-        .mdc-notched-outline {
-          .mdc-notched-outline__leading,
-          .mdc-notched-outline__notch,
-          .mdc-notched-outline__trailing {
-            border-color: #E0E0E0 !important;
-            border-width: 1px !important;
-          }
-
-          .mdc-notched-outline__leading {
-            border-radius: 8px 0 0 8px !important;
-          }
-
-          .mdc-notched-outline__trailing {
-            border-radius: 0 8px 8px 0 !important;
-          }
-        }
-      }
-    }
-
-    // Input field on focus - orange border
-    .mat-mdc-form-field.mat-focused {
-      .mdc-notched-outline {
-        .mdc-notched-outline__leading,
-        .mdc-notched-outline__notch,
-        .mdc-notched-outline__trailing {
-          border-color: #FF7F00 !important;
-          border-width: 2px !important;
-        }
-      }
-
-      .mat-mdc-floating-label {
-        color: #FF7F00 !important;
-      }
-    }
-
-    // Input text color
-    .mat-mdc-input-element,
-    input.mat-mdc-input-element,
-    textarea.mat-mdc-input-element {
-      color: #2C2C2C !important;
-      padding: 12px !important;
-    }
-
-    // Select field styling
-    .mat-mdc-select-value,
-    .mat-mdc-select-value-text {
-      color: #2C2C2C !important;
-    }
-
-    // Select arrow - softer orange
-    .mat-mdc-select-arrow,
-    .mat-mdc-select-arrow svg {
-      color: rgba(255, 127, 0, 0.7) !important;
-      fill: rgba(255, 127, 0, 0.7) !important;
-    }
-
-    .mat-mdc-select-panel {
-      background-color: white !important;
-      backdrop-filter: none !important;
-      border-radius: 8px !important;
-    }
-
-    // Datepicker icon - softer orange
-    .mat-datepicker-toggle {
-      button {
-        color: rgba(255, 127, 0, 0.7) !important;
-
-        .mat-mdc-button-persistent-ripple,
-        .mat-mdc-button-ripple {
-          color: rgba(255, 127, 0, 0.7) !important;
-        }
-      }
-    }
-
-    mat-datepicker-toggle button mat-icon {
-      color: rgba(255, 127, 0, 0.7) !important;
-    }
-
-    // Autocomplete icon (clear button)
-    .mat-mdc-icon-button mat-icon {
-      color: rgba(255, 127, 0, 0.7) !important;
-    }
-
-    // Buttons styling - Cancel button (outline)
-    mat-dialog-actions button.mat-mdc-button:not(.mat-mdc-raised-button) {
-      color: #FF7F00 !important;
-      border: 1px solid #FF7F00 !important;
-      border-radius: 8px !important;
-      padding: 10px 24px !important;
-      font-weight: 500 !important;
-
-      &:hover {
-        background-color: rgba(255, 127, 0, 0.1) !important;
-      }
-    }
-
-    // Save/Update button (solid orange with white text)
-    mat-dialog-actions button.mat-mdc-raised-button {
-      color: white !important;
-      background-color: #FF7F00 !important;
-      border: none !important;
-      border-radius: 8px !important;
-      padding: 10px 24px !important;
-      font-weight: 500 !important;
-
-      .mat-mdc-button-persistent-ripple {
-        background-color: #FF7F00 !important;
-      }
-
-      &:hover:not([disabled]) {
-        background-color: #E67300 !important;
-        box-shadow: 0 2px 8px rgba(255, 127, 0, 0.3) !important;
-      }
-
-      &[disabled] {
-        opacity: 0.5;
-        background-color: #FF7F00 !important;
-      }
-    }
-}
-// master - MARSISCA - END 2026-01-06
-
-// master - MARSISCA - BEGIN 2026-01-03
-.trip-form-modal {
+  // Option with icon (select, autocomplete)
   .option-with-icon {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: vars.$spacing-md;
 
     .option-icon {
       width: 24px;
@@ -265,30 +97,29 @@
       height: 14px;
       object-fit: cover;
       border-radius: 2px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      box-shadow: vars.$shadow-sm;
     }
   }
 
+  // Error message
   .error-message {
-    color: #f44336;
-    background-color: #ffebee;
-    padding: 0.75rem;
-    border-radius: 4px;
-    margin-top: 1rem;
+    color: vars.$error-color;
+    background-color: vars.$error-bg;
+    padding: vars.$spacing-md;
+    border-radius: vars.$radius-sm;
+    margin-top: vars.$spacing-md;
     font-size: 0.9rem;
   }
 
+  // Spinner in button
   mat-spinner {
     display: inline-block;
   }
 
+  // Mobile responsive
   @media (max-width: 600px) {
     max-width: 100%;
-
-    .date-fields {
-      flex-direction: column;
-      gap: 0;
-    }
   }
 }
-// master - MARSISCA - END 2026-01-03
+
+// master - MARSISCA - END 2026-01-08

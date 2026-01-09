@@ -1,0 +1,83 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../themes/variables' as vars;
+
+// =============================================================================
+// Layout Base Styles
+// =============================================================================
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  color-scheme: light;
+  background-color: vars.$background-color;
+  color: vars.$text-primary;
+  font-family: vars.$font-family-base;
+  margin: 0;
+}
+
+// Container responsive
+.container {
+  width: 100%;
+  padding: 0 16px;
+  margin: 0 auto;
+
+  @media (min-width: vars.$breakpoint-tablet) {
+    max-width: 720px;
+    padding: 0 24px;
+  }
+
+  @media (min-width: vars.$breakpoint-desktop) {
+    max-width: 960px;
+    padding: 0 32px;
+  }
+
+  @media (min-width: vars.$breakpoint-large) {
+    max-width: 1200px;
+  }
+}
+
+// Responsive utilities
+.mobile-only {
+  @media (min-width: vars.$breakpoint-tablet) {
+    display: none !important;
+  }
+}
+
+.tablet-up {
+  display: none !important;
+
+  @media (min-width: vars.$breakpoint-tablet) {
+    display: block !important;
+  }
+}
+
+.desktop-up {
+  display: none !important;
+
+  @media (min-width: vars.$breakpoint-desktop) {
+    display: block !important;
+  }
+}
+
+// Flex utilities for responsive layouts
+.flex-column-mobile {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: vars.$breakpoint-tablet) {
+    flex-direction: row;
+  }
+}
+
+// Touch-friendly buttons for mobile
+@media (max-width: vars.$breakpoint-tablet) {
+  button, .mat-mdc-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+// master - MARSISCA - END 2026-01-08

@@ -1,0 +1,67 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../themes/variables' as vars;
+
+// =============================================================================
+// Dialog Components - Reusable styles
+// =============================================================================
+
+// Base dialog styling (mixin para aplicar en componentes)
+@mixin dialog-base {
+  h2[mat-dialog-title] {
+    margin: 0;
+    padding: vars.$spacing-lg;
+    flex-shrink: 0;
+    color: vars.$primary-color;
+  }
+
+  mat-dialog-content {
+    padding: vars.$spacing-lg;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(90vh - 180px);
+  }
+
+  mat-dialog-actions {
+    padding: vars.$spacing-lg;
+    margin: 0;
+    flex-shrink: 0;
+    border-top: 1px solid vars.$border-color;
+  }
+}
+
+// Form dialog (con formularios dentro)
+.dialog-form {
+  min-width: 400px;
+  max-width: 600px;
+
+  @media (max-width: vars.$breakpoint-mobile) {
+    min-width: 300px;
+    max-width: 100vw;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-lg;
+  }
+}
+
+// Confirmation dialog (pequeño)
+.dialog-confirm {
+  min-width: 300px;
+  max-width: 400px;
+
+  .confirm-content {
+    padding: vars.$spacing-lg 0;
+    text-align: center;
+
+    mat-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      margin-bottom: vars.$spacing-md;
+    }
+  }
+}
+
+// master - MARSISCA - END 2026-01-08

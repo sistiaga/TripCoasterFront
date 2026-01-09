@@ -1,0 +1,40 @@
+// master - MARSISCA - BEGIN 2026-01-08
+// =============================================================================
+// Leaflet Map Library Fixes
+// =============================================================================
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-color: #aad3df;
+}
+
+.leaflet-tile-container {
+  position: absolute;
+}
+
+.leaflet-tile {
+  position: absolute;
+  width: 256px;
+  height: 256px;
+  border: none;
+  outline: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.leaflet-pane {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.leaflet-tile-pane {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+// master - MARSISCA - END 2026-01-08

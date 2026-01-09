@@ -1,0 +1,52 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../themes/variables' as vars;
+
+// =============================================================================
+// Utility Classes
+// =============================================================================
+
+// Width utilities
+.full-width { width: 100% !important; }
+.auto-width { width: auto !important; }
+
+// Spacing utilities
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: vars.$spacing-sm !important; }
+.mt-2 { margin-top: vars.$spacing-md !important; }
+.mt-3 { margin-top: vars.$spacing-lg !important; }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: vars.$spacing-sm !important; }
+.mb-2 { margin-bottom: vars.$spacing-md !important; }
+.mb-3 { margin-bottom: vars.$spacing-lg !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: vars.$spacing-sm !important; }
+.p-2 { padding: vars.$spacing-md !important; }
+.p-3 { padding: vars.$spacing-lg !important; }
+
+// Flex utilities
+.d-flex { display: flex !important; }
+.flex-column { flex-direction: column !important; }
+.flex-row { flex-direction: row !important; }
+.align-center { align-items: center !important; }
+.justify-center { justify-content: center !important; }
+.justify-between { justify-content: space-between !important; }
+.gap-1 { gap: vars.$spacing-sm !important; }
+.gap-2 { gap: vars.$spacing-md !important; }
+.gap-3 { gap: vars.$spacing-lg !important; }
+
+// Text utilities
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+.text-primary { color: vars.$primary-color !important; }
+.text-secondary { color: vars.$text-secondary !important; }
+.text-error { color: vars.$error-color !important; }
+
+// Display utilities
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-inline-block { display: inline-block !important; }
+
+// master - MARSISCA - END 2026-01-08

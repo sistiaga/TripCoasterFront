@@ -1,0 +1,36 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../themes/variables' as vars;
+
+// =============================================================================
+// Button Components - Additional reusable button styles
+// =============================================================================
+
+// Icon button with text
+.btn-icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: vars.$spacing-xs;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Button group
+.btn-group {
+  display: flex;
+  gap: vars.$spacing-sm;
+  flex-wrap: wrap;
+
+  &.btn-group-end {
+    justify-content: flex-end;
+  }
+
+  &.btn-group-center {
+    justify-content: center;
+  }
+}
+
+// master - MARSISCA - END 2026-01-08

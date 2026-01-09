@@ -1,0 +1,26 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use '@angular/material' as mat;
+@use './variables' as vars;
+
+// =============================================================================
+// Angular Material Theme Configuration
+// =============================================================================
+
+// For Material 3, we define the theme using the primary color directly
+// The palette is generated automatically by Material
+$tripcoaster-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$orange-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  typography: (
+    plain-family: vars.$font-family-base,
+    brand-family: vars.$font-family-base,
+  ),
+  density: (
+    scale: 0
+  )
+));
+
+// master - MARSISCA - END 2026-01-08

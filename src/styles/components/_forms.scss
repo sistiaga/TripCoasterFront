@@ -1,0 +1,102 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../themes/variables' as vars;
+@use '../utilities/mixins' as mixins;
+
+// =============================================================================
+// Form Components - Reusable styles
+// =============================================================================
+
+// Full width form field (utility class)
+.form-field-full-width {
+  width: 100%;
+}
+
+// Form grid layouts
+.form-row {
+  display: flex;
+  gap: vars.$spacing-md;
+  width: 100%;
+
+  > * {
+    flex: 1;
+  }
+
+  @include mixins.respond-to(mobile) {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.form-grid {
+  display: grid;
+  gap: vars.$spacing-lg;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+// Error message styling (reusable class)
+.form-error-message {
+  color: vars.$error-color;
+  background-color: vars.$error-bg;
+  padding: vars.$spacing-sm vars.$spacing-md;
+  border-radius: vars.$radius-sm;
+  font-size: 0.9rem;
+  margin-top: vars.$spacing-sm;
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Field with icon inside (select, autocomplete)
+.form-field-with-icon {
+  .mat-mdc-form-field-icon-suffix {
+    mat-icon {
+      color: rgba(vars.$primary-color, 0.7);
+    }
+  }
+}
+
+// Option with icon (for mat-select, mat-autocomplete)
+.option-with-icon {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-md;
+
+  .option-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .country-flag {
+    width: 20px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: vars.$shadow-sm;
+  }
+}
+
+// Custom rating field (usado en trip-form)
+.form-rating-field {
+  .rating-label {
+    display: block;
+    font-size: vars.$font-size-base;
+    color: vars.$text-secondary;
+    margin-bottom: vars.$spacing-sm;
+    font-weight: 500;
+  }
+
+  .rating-error {
+    color: vars.$error-color;
+    font-size: 0.75rem;
+    margin-top: vars.$spacing-xs;
+  }
+}
+
+// master - MARSISCA - END 2026-01-08

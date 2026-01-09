@@ -1,0 +1,30 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../themes/variables' as vars;
+@use '../utilities/mixins' as mixins;
+
+// =============================================================================
+// Card Components - Reusable card styles
+// =============================================================================
+
+// Base card
+.card-base {
+  @include mixins.card;
+}
+
+// Card with hover effect
+.card-hover {
+  @include mixins.card;
+  @include mixins.hover-lift;
+  cursor: pointer;
+}
+
+// Card header with gradient
+.card-header-gradient {
+  background: linear-gradient(135deg, vars.$primary-color, vars.$primary-hover);
+  color: white;
+  padding: vars.$spacing-md;
+  border-radius: vars.$radius-lg vars.$radius-lg 0 0;
+  margin: calc(-1 * vars.$spacing-lg) calc(-1 * vars.$spacing-lg) vars.$spacing-md;
+}
+
+// master - MARSISCA - END 2026-01-08

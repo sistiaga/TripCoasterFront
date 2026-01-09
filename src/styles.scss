@@ -1,307 +1,37 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// master - MARSISCA - BEGIN 2026-01-08
+// =============================================================================
+// TripCoaster Global Styles
+// New Architecture - Modular SCSS Structure
+// =============================================================================
+
+// IMPORTANT: All @use declarations MUST come first, before any other rules
 @use '@angular/material' as mat;
-@use 'sass:color';
-
-// master - MARSISCA - BEGIN 2024-12-24
-// =============================================================================
-// TripCoaster Brand Colors
-// =============================================================================
-$primary-color: #FF7F00;        // Orange - Main brand color
-$secondary-color: #2C2C2C;      // Black - Secondary brand color
-$accent-light: #F1E9E4;         // Light Gray - Accent color
-$accent-dark: #081F5C;          // Blue - Accent color
-
-// =============================================================================
-// Typography
-// =============================================================================
-$font-primary: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-$font-primary-italic: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+@use './styles/themes/material-theme' as theme;
+@use './styles/base/typography';
+@use './styles/base/layout';
+@use './styles/themes/material-overrides';
+@use './styles/components/forms';
+@use './styles/components/dialogs';
+@use './styles/components/buttons';
+@use './styles/components/cards';
+@use './styles/utilities/helpers';
+@use './styles/utilities/animations';
+@use './styles/vendor/leaflet';
 
 // =============================================================================
-// Semantic Colors (derived from brand colors)
+// Apply Material Theme
 // =============================================================================
-$background-color: #FFFFFF;
-$surface-color: $accent-light;
-$text-primary: $secondary-color;
-$text-secondary: #757575;
-$border-color: #E0E0E0;
-
-// Status colors
-$success-color: #4CAF50;
-$warning-color: $primary-color;  // Using brand orange for warnings
-$error-color: #F44336;
-$info-color: $accent-dark;       // Using brand blue for info
-
-// Transparency overlays
-$overlay-dark: rgba($secondary-color, 0.5);
-$overlay-light: rgba(255, 255, 255, 0.9);
-
-// Custom Material palette using TripCoaster colors
-// Manually defined to avoid deprecated color functions
-$tripcoaster-primary: (
-  50: #FFEDCC,    // Lightest orange
-  100: #FFDB99,   // Very light orange
-  200: #FFC966,   // Light orange
-  300: #FFB733,   // Medium-light orange
-  400: #FFA500,   // Medium orange
-  500: $primary-color,  // Base orange #FF7F00
-  600: #E67300,   // Medium-dark orange
-  700: #CC6700,   // Dark orange
-  800: #B35B00,   // Darker orange
-  900: #994F00,   // Darkest orange
-  contrast: (
-    50: $secondary-color,
-    100: $secondary-color,
-    200: $secondary-color,
-    300: $secondary-color,
-    400: #FFFFFF,
-    500: #FFFFFF,
-    600: #FFFFFF,
-    700: #FFFFFF,
-    800: #FFFFFF,
-    900: #FFFFFF,
-  )
-);
-// master - MARSISCA - END 2024-12-24
-
 html {
-  @include mat.theme((
-    color: (
-      primary: $tripcoaster-primary,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: $font-primary,
-    density: 0,
-  ));
+  @include mat.theme(theme.$tripcoaster-theme);
 }
 
-body {
-  color-scheme: light;
-  background-color: $background-color;
-  color: $text-primary;
-  font-family: $font-primary;
-  margin: 0;
-}
-// master - MARSISCA - END 2025-12-24
-/* You can add global styles to this file, and also import other style files */
+// master - MARSISCA - END 2026-01-08
 
-// main - MARSISCA - BEGIN 2025-10-04
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-}
-
-// master - MARSISCA - BEGIN 2025-12-24
-// Typography classes
-h1, h2, h3, h4, h5, h6 {
-  font-family: $font-primary-italic;
-  font-style: italic;
-  color: $text-primary;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
-h2 {
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-h3 {
-  font-size: 1.75rem;
-  font-weight: 600;
-}
-
-h4 {
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-h5 {
-  font-size: 1.25rem;
-  font-weight: 500;
-}
-
-h6 {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-p, span, div, a, button, input, textarea, select {
-  font-family: $font-primary;
-}
-// master - MARSISCA - END 2025-12-24
-
-// Responsive breakpoints
-$breakpoint-mobile: 576px;
-$breakpoint-tablet: 768px;
-$breakpoint-desktop: 1024px;
-$breakpoint-large: 1440px;
-
-// Container responsive
-.container {
-  width: 100%;
-  padding: 0 16px;
-  margin: 0 auto;
-
-  @media (min-width: $breakpoint-tablet) {
-    max-width: 720px;
-    padding: 0 24px;
-  }
-
-  @media (min-width: $breakpoint-desktop) {
-    max-width: 960px;
-    padding: 0 32px;
-  }
-
-  @media (min-width: $breakpoint-large) {
-    max-width: 1200px;
-  }
-}
-
-// Responsive utilities
-.mobile-only {
-  @media (min-width: $breakpoint-tablet) {
-    display: none !important;
-  }
-}
-
-.tablet-up {
-  display: none !important;
-
-  @media (min-width: $breakpoint-tablet) {
-    display: block !important;
-  }
-}
-
-.desktop-up {
-  display: none !important;
-
-  @media (min-width: $breakpoint-desktop) {
-    display: block !important;
-  }
-}
-
-// Flex utilities for responsive layouts
-.flex-column-mobile {
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: $breakpoint-tablet) {
-    flex-direction: row;
-  }
-}
-
-// Touch-friendly buttons for mobile
-@media (max-width: $breakpoint-tablet) {
-  button, .mat-mdc-button {
-    min-height: 44px;
-    min-width: 44px;
-  }
-}
-// main - MARSISCA - END 2025-10-04
-
-// master - MARSISCA - BEGIN 2025-10-18
-// Leaflet specific fixes
-.leaflet-container {
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  background-color: #aad3df;
-}
-
-.leaflet-tile-container {
-  position: absolute;
-}
-
-.leaflet-tile {
-  position: absolute;
-  width: 256px;
-  height: 256px;
-  border: none;
-  outline: none;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
-.leaflet-pane {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.leaflet-tile-pane {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
-// master - MARSISCA - END 2025-10-18
-
-// master - MARSISCA - BEGIN 2024-12-24
-// Angular Material Datepicker fixes
-.mat-datepicker-content {
-  background-color: white !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
-}
-
-.mat-calendar {
-  background-color: white !important;
-}
-
-.mat-calendar-header {
-  background-color: white !important;
-}
-
-.mat-calendar-body {
-  background-color: white !important;
-}
-
-.mat-calendar-content {
-  background-color: white !important;
-}
-
-.mat-datepicker-content-container {
-  background-color: white !important;
-}
-
-.mat-calendar-table-header {
-  background-color: white !important;
-}
-
-// Angular Material Dialog fixes
-.mat-mdc-dialog-container {
-  --mdc-dialog-container-color: white !important;
-  background-color: white !important;
-}
-
-.mat-mdc-dialog-surface {
-  background-color: white !important;
-}
-
-// master - MARSISCA - BEGIN 2026-01-03
-// Angular Material Select Panel - ensure solid white background
-.mat-mdc-select-panel {
-  background-color: white !important;
-  backdrop-filter: none !important;
-}
-
-.cdk-overlay-pane .mat-mdc-select-panel {
-  background-color: white !important;
-}
-
-// Mat autocomplete panel
-.mat-mdc-autocomplete-panel {
-  background-color: white !important;
-  backdrop-filter: none !important;
-}
-// master - MARSISCA - END 2026-01-03
-// master - MARSISCA - END 2024-12-24
+// =============================================================================
+// NOTA: Los estilos globales ahora están organizados en la carpeta /styles/
+// - Variables: styles/themes/_variables.scss
+// - Mixins: styles/utilities/_mixins.scss
+// - Typography: styles/base/_typography.scss
+// - Layout: styles/base/_layout.scss
+// - Material overrides: styles/themes/_material-overrides.scss
+// =============================================================================

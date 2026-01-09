@@ -1,0 +1,215 @@
+// master - MARSISCA - BEGIN 2026-01-08
+@use './variables' as vars;
+
+// =============================================================================
+// Global Material Component Overrides
+// IMPORTANTE: Solo overrides que afecten a TODOS los componentes de la app
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Mat Dialog - Global styles
+// -----------------------------------------------------------------------------
+.mat-mdc-dialog-container {
+  border-radius: vars.$radius-lg !important;
+  overflow: hidden !important;
+
+  .mdc-dialog__surface {
+    border-radius: vars.$radius-lg !important;
+    box-shadow: vars.$shadow-lg !important;
+  }
+}
+
+// Mat Dialog Title - Color brand
+.mat-mdc-dialog-title,
+h2[mat-dialog-title] {
+  color: vars.$primary-color !important;
+  font-weight: 600;
+}
+
+// Mat Dialog Actions - Spacing
+.mat-mdc-dialog-actions {
+  padding: vars.$spacing-lg !important;
+  gap: vars.$spacing-sm;
+  border-top: 1px solid vars.$border-color;
+}
+
+// -----------------------------------------------------------------------------
+// Mat Form Field - Global appearance
+// -----------------------------------------------------------------------------
+
+// Force all form fields to use outline appearance with consistent styling
+.mat-mdc-form-field {
+  width: 100%;
+
+  // Label always floated above
+  .mat-mdc-floating-label {
+    font-weight: 500;
+    color: vars.$text-secondary;
+  }
+
+  // Focus state - orange label
+  &.mat-focused .mat-mdc-floating-label {
+    color: vars.$primary-color !important;
+  }
+
+  // Input background
+  .mat-mdc-text-field-wrapper {
+    background-color: vars.$surface-color;
+    border-radius: vars.$radius-md;
+  }
+
+  // Input borders
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: vars.$border-color;
+      border-width: 1px;
+    }
+
+    .mdc-notched-outline__leading {
+      border-radius: vars.$radius-md 0 0 vars.$radius-md;
+    }
+
+    .mdc-notched-outline__trailing {
+      border-radius: 0 vars.$radius-md vars.$radius-md 0;
+    }
+  }
+
+  // Focus border
+  &.mat-focused .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: vars.$primary-color !important;
+      border-width: 2px !important;
+    }
+  }
+
+  // Input text
+  .mat-mdc-input-element,
+  input.mat-mdc-input-element,
+  textarea.mat-mdc-input-element {
+    color: vars.$text-primary;
+    padding: 12px;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Mat Select - Dropdown styling
+// -----------------------------------------------------------------------------
+.mat-mdc-select-arrow svg {
+  color: rgba(vars.$primary-color, 0.7);
+  fill: rgba(vars.$primary-color, 0.7);
+}
+
+.mat-mdc-select-panel {
+  background-color: white !important;
+  border-radius: vars.$radius-md !important;
+}
+
+// -----------------------------------------------------------------------------
+// Mat Autocomplete - Panel styling
+// -----------------------------------------------------------------------------
+.mat-mdc-autocomplete-panel {
+  background-color: white !important;
+  border-radius: vars.$radius-md !important;
+}
+
+// -----------------------------------------------------------------------------
+// Mat Datepicker - Calendar styling
+// -----------------------------------------------------------------------------
+.mat-datepicker-content {
+  background-color: white !important;
+  box-shadow: vars.$shadow-md !important;
+  border-radius: vars.$radius-md !important;
+}
+
+.mat-calendar {
+  background-color: white !important;
+}
+
+.mat-calendar-header {
+  background-color: white !important;
+}
+
+.mat-calendar-body {
+  background-color: white !important;
+}
+
+.mat-calendar-content {
+  background-color: white !important;
+}
+
+.mat-datepicker-content-container {
+  background-color: white !important;
+}
+
+.mat-calendar-table-header {
+  background-color: white !important;
+}
+
+.mat-datepicker-toggle button {
+  color: rgba(vars.$primary-color, 0.7);
+}
+
+// -----------------------------------------------------------------------------
+// Mat Button - Brand styling
+// -----------------------------------------------------------------------------
+
+// Outlined button (Cancel, secondary actions)
+.mat-mdc-button:not(.mat-mdc-raised-button):not(.mat-mdc-fab):not(.mat-mdc-mini-fab) {
+  color: vars.$primary-color;
+  border: 1px solid vars.$primary-color;
+  border-radius: vars.$radius-md;
+  padding: 10px 24px;
+  font-weight: 500;
+
+  &:hover:not([disabled]) {
+    background-color: rgba(vars.$primary-color, 0.1);
+  }
+}
+
+// Raised button (Primary actions)
+.mat-mdc-raised-button {
+  color: vars.$text-on-primary !important;
+  background-color: vars.$primary-color !important;
+  border-radius: vars.$radius-md !important;
+  padding: 10px 24px !important;
+  font-weight: 500 !important;
+  box-shadow: vars.$shadow-sm;
+
+  &:hover:not([disabled]) {
+    background-color: vars.$primary-hover !important;
+    box-shadow: vars.$shadow-md !important;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    background-color: vars.$primary-color !important;
+  }
+}
+
+// Icon button
+.mat-mdc-icon-button {
+  color: rgba(vars.$primary-color, 0.7);
+
+  &:hover {
+    background-color: rgba(vars.$primary-color, 0.1);
+  }
+}
+
+// FAB button
+.mat-mdc-fab,
+.mat-mdc-mini-fab {
+  &.mat-primary {
+    background-color: vars.$primary-color;
+    color: white;
+
+    &:hover {
+      background-color: vars.$primary-hover;
+    }
+  }
+}
+
+// master - MARSISCA - END 2026-01-08
