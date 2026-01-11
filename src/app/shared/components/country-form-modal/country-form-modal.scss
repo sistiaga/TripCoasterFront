@@ -1,15 +1,23 @@
-// master - MARSISCA - BEGIN 2025-12-14
-.full-width {
-  width: 100%;
-  margin-bottom: 1rem;
-}
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
 
-mat-dialog-content {
-  padding: 1.5rem 0;
-  min-width: 400px;
-}
+.country-form-modal {
+  mat-form-field {
+    width: 100%;
+    margin-bottom: vars.$spacing-md;
+  }
 
-mat-dialog-actions {
-  padding: 1rem 0;
+  mat-dialog-content {
+    padding: vars.$spacing-lg 0;
+    min-width: 400px;
+
+    @media (max-width: 600px) {
+      min-width: 300px;
+    }
+  }
+
+  mat-dialog-actions {
+    padding: vars.$spacing-md 0;
+  }
 }
-// master - MARSISCA - END 2025-12-14
+// master - MARSISCA - END 2026-01-08

@@ -18,6 +18,19 @@
       <td mat-cell *matCellDef="let element">{{ element.nameEnglish }}</td>
     </ng-container>
 
+    <!-- master - MARSISCA - BEGIN 2026-01-10 -->
+    <ng-container matColumnDef="icon">
+      <th mat-header-cell *matHeaderCellDef>{{ 'ACCOMMODATIONS.ICON' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        @if (getIconUrl(element.icon)) {
+          <img [src]="getIconUrl(element.icon)" alt="{{ element.nameEnglish }}" class="icon-preview" />
+        } @else {
+          <span>-</span>
+        }
+      </td>
+    </ng-container>
+    <!-- master - MARSISCA - END 2026-01-10 -->
+
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>{{ 'ACCOMMODATIONS.ACTIONS' | translate }}</th>
       <td mat-cell *matCellDef="let element">

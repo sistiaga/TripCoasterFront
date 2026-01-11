@@ -29,7 +29,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class Weathers implements OnInit, OnDestroy {
   weathers: Weather[] = [];
-  displayedColumns: string[] = ['nameSpanish', 'nameEnglish', 'icon', 'actions'];
+  // master - MARSISCA - BEGIN 2026-01-10
+  displayedColumns: string[] = ['id', 'nameSpanish', 'nameEnglish', 'icon', 'actions'];
+  // master - MARSISCA - END 2026-01-10
   private destroy$ = new Subject<void>();
 
   constructor(

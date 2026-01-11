@@ -1,13 +1,15 @@
-/* master - MARSISCA - BEGIN 2025-11-30 */
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+
 .diary-types-container {
   .header {
-    margin-bottom: 20px;
+    margin-bottom: vars.$spacing-lg;
     display: flex;
     justify-content: flex-end;
 
     button {
       mat-icon {
-        margin-right: 8px;
+        margin-right: vars.$spacing-sm;
       }
     }
   }
@@ -17,11 +19,11 @@
 
     th {
       font-weight: 600;
-      font-size: 14px;
+      font-size: 0.875rem;
     }
 
     td {
-      font-size: 14px;
+      font-size: 0.875rem;
     }
 
     .mat-column-actions {
@@ -31,18 +33,18 @@
 
     .mat-row {
       &.mat-row:hover {
-        background-color: #f5f5f5;
+        background-color: vars.$surface-color;
       }
     }
 
     tr.mat-row.mat-no-data-row {
       td {
         text-align: center;
-        padding: 40px;
-        color: #999;
+        padding: vars.$spacing-xxl;
+        color: vars.$text-secondary;
         font-style: italic;
       }
     }
   }
 }
-/* master - MARSISCA - END 2025-11-30 */
+// master - MARSISCA - END 2026-01-08

@@ -1,7 +1,9 @@
-// master - MARSISCA - BEGIN 2025-11-01
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+
 .star-rating {
   display: inline-flex;
-  gap: 0.25rem;
+  gap: vars.$spacing-xs;
   align-items: center;
 
   .star {
@@ -9,12 +11,12 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: #ddd;
+    transition: all vars.$transition-fast;
+    color: vars.$border-color;
     user-select: none;
 
     &.filled {
-      color: #ffc107;
+      color: #ffc107; // Star gold color
     }
 
     &:not(.read-only):hover {
@@ -26,4 +28,4 @@
     }
   }
 }
-// master - MARSISCA - END 2025-11-01
+// master - MARSISCA - END 2026-01-08

@@ -1,7 +1,9 @@
-/* master - MARSISCA - BEGIN 2026-01-01 */
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+
 .sports-container {
   .header {
-    margin-bottom: 16px;
+    margin-bottom: vars.$spacing-md;
     display: flex;
     justify-content: flex-end;
   }
@@ -19,8 +21,8 @@
   .mat-cell {
     &[colspan] {
       text-align: center;
-      padding: 24px;
-      color: #999;
+      padding: vars.$spacing-lg;
+      color: vars.$text-secondary;
     }
   }
 
@@ -29,9 +31,9 @@
     height: 48px;
     object-fit: cover;
     display: block;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: vars.$radius-md;
+    border: 1px solid vars.$border-color;
+    box-shadow: vars.$shadow-sm;
   }
 }
-/* master - MARSISCA - END 2026-01-01 */
+// master - MARSISCA - END 2026-01-08

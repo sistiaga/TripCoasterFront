@@ -1,7 +1,16 @@
-/* master - MARSISCA - BEGIN 2025-11-30 */
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../styles/themes/variables' as vars;
+@use '../../../styles/utilities/mixins' as mixins;
+
+// =============================================================================
+// Trip Detail Page - Complex layout with hero section
+// All hardcoded values replaced with variables
+// ::ng-deep eliminated (star rating styles now global)
+// =============================================================================
+
 .trip-detail-page {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: vars.$surface-color;
 }
 
 // Hero Section
@@ -13,23 +22,19 @@
   background-repeat: no-repeat;
 
   .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    @include mixins.absolute-cover;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 20px;
+    padding: vars.$spacing-lg;
 
     .back-button {
       position: absolute;
-      top: 20px;
-      left: 20px;
+      top: vars.$spacing-lg;
+      left: vars.$spacing-lg;
       background: rgba(255, 255, 255, 0.9);
-      color: #333;
+      color: vars.$text-primary;
 
       &:hover {
         background: white;
@@ -38,26 +43,26 @@
 
     .hero-content {
       margin-top: auto;
-      margin-bottom: 40px;
+      margin-bottom: vars.$spacing-xxl;
       color: white;
 
       .trip-title {
         font-size: 48px;
         font-weight: 700;
-        margin: 0 0 16px 0;
+        margin: 0 0 vars.$spacing-md 0;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
       }
 
       .trip-meta {
         display: flex;
         align-items: center;
-        gap: 24px;
+        gap: vars.$spacing-lg;
         flex-wrap: wrap;
 
         .trip-dates {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: vars.$spacing-sm;
           font-size: 18px;
           text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
@@ -69,7 +74,9 @@
         }
 
         .hero-rating {
-          ::ng-deep .star {
+          // Star styles now come from global star-rating component
+          // No ::ng-deep needed
+          .star {
             font-size: 28px;
             color: #ffd700;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -77,21 +84,20 @@
         }
       }
 
-      // master - MARSISCA - BEGIN 2026-01-03
       .trip-attributes {
         display: flex;
-        gap: 16px;
+        gap: vars.$spacing-md;
         flex-wrap: wrap;
-        margin-top: 16px;
+        margin-top: vars.$spacing-md;
 
         .attribute-item {
           display: flex;
           align-items: center;
-          gap: 8px;
-          padding: 8px 16px;
+          gap: vars.$spacing-sm;
+          padding: vars.$spacing-sm vars.$spacing-md;
           background-color: rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(10px);
-          border-radius: 20px;
+          border-radius: vars.$radius-xl;
           font-size: 16px;
           text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
@@ -103,14 +109,13 @@
           }
         }
       }
-      // master - MARSISCA - END 2026-01-03
     }
 
     .edit-fab {
       position: absolute;
       bottom: -28px;
-      right: 40px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      right: vars.$spacing-xxl;
+      box-shadow: vars.$shadow-md;
     }
   }
 }
@@ -119,22 +124,22 @@
 .content-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 20px 40px;
+  padding: 60px vars.$spacing-lg vars.$spacing-xxl;
 }
 
 // Section Styles
 .section {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 32px;
+  border-radius: vars.$radius-lg;
+  box-shadow: vars.$shadow-sm;
+  margin-bottom: vars.$spacing-xl;
   overflow: hidden;
 
   .section-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 24px 32px;
+    gap: vars.$spacing-sm;
+    padding: vars.$spacing-lg vars.$spacing-xl;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
 
@@ -151,7 +156,6 @@
       font-weight: 600;
     }
 
-    // master - MARSISCA - BEGIN 2026-01-03
     button {
       background-color: rgba(255, 255, 255, 0.2);
       color: white;
@@ -160,11 +164,10 @@
         background-color: rgba(255, 255, 255, 0.3);
       }
     }
-    // master - MARSISCA - END 2026-01-03
   }
 
   .section-content {
-    padding: 32px;
+    padding: vars.$spacing-xl;
   }
 }
 
@@ -173,16 +176,16 @@
   .trip-description {
     font-size: 16px;
     line-height: 1.8;
-    color: #333;
+    color: vars.$text-primary;
     margin: 0;
     white-space: pre-wrap;
   }
 
   .no-content {
-    color: #999;
+    color: vars.$text-secondary;
     font-style: italic;
     text-align: center;
-    padding: 20px;
+    padding: vars.$spacing-lg;
   }
 }
 
@@ -190,15 +193,15 @@
 .destinations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  gap: vars.$spacing-lg;
 
   .destination-card {
     display: flex;
-    gap: 16px;
-    padding: 20px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    gap: vars.$spacing-md;
+    padding: vars.$spacing-lg;
+    border: 2px solid vars.$border-color;
+    border-radius: vars.$radius-md;
+    transition: all vars.$transition-base;
 
     &:hover {
       border-color: #667eea;
@@ -211,10 +214,8 @@
       width: 48px;
       height: 48px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: vars.$radius-full;
+      @include mixins.flex-center;
 
       mat-icon {
         color: white;
@@ -228,21 +229,21 @@
       flex: 1;
 
       h3 {
-        margin: 0 0 4px 0;
+        margin: 0 0 vars.$spacing-xs 0;
         font-size: 18px;
         font-weight: 600;
-        color: #333;
+        color: vars.$text-primary;
       }
 
       p {
-        margin: 0 0 8px 0;
-        color: #666;
-        font-size: 14px;
+        margin: 0 0 vars.$spacing-sm 0;
+        color: vars.$text-secondary;
+        font-size: 0.875rem;
       }
 
       .coordinates {
-        font-size: 12px;
-        color: #999;
+        font-size: 0.75rem;
+        color: vars.$text-secondary;
         font-family: monospace;
       }
     }
@@ -252,7 +253,7 @@
 // Diary Section
 .diary-section {
   .section-content {
-    padding: 16px 32px 32px;
+    padding: vars.$spacing-md vars.$spacing-xl vars.$spacing-xl;
   }
 }
 
@@ -260,7 +261,7 @@
 .photos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
+  gap: vars.$spacing-md;
 
   .photo-item {
     position: relative;
@@ -268,24 +269,19 @@
     height: 0;
     padding-bottom: 100%;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: vars.$radius-md;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    box-shadow: vars.$shadow-sm;
+    transition: all vars.$transition-base;
     background: #f0f0f0;
 
     &:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      box-shadow: vars.$shadow-md;
     }
 
-    // master - MARSISCA - BEGIN 2026-01-03
     .photo-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      @include mixins.absolute-cover;
 
       &:hover .photo-actions {
         opacity: 1;
@@ -294,10 +290,10 @@
 
     .photo-actions {
       position: absolute;
-      top: 8px;
-      right: 8px;
+      top: vars.$spacing-sm;
+      right: vars.$spacing-sm;
       display: flex;
-      gap: 4px;
+      gap: vars.$spacing-xs;
       opacity: 0;
       transition: opacity 0.2s;
 
@@ -322,14 +318,9 @@
         }
       }
     }
-    // master - MARSISCA - END 2026-01-03
 
     img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      @include mixins.absolute-cover;
       object-fit: cover;
       display: block;
     }
@@ -341,33 +332,27 @@
     height: 0;
     padding-bottom: 100%;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: vars.$radius-md;
     cursor: pointer;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    transition: all 0.3s ease;
+    transition: all vars.$transition-base;
 
     &:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      box-shadow: vars.$shadow-md;
     }
 
     .more-photos-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
+      @include mixins.absolute-cover;
+      @include mixins.flex-center;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       color: white;
       text-align: center;
 
       span {
         font-size: 48px;
         font-weight: 700;
-        margin-bottom: 8px;
+        margin-bottom: vars.$spacing-sm;
       }
 
       p {
@@ -381,11 +366,9 @@
 
 // Empty States
 .empty-state {
-  display: flex;
+  @include mixins.flex-center;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
+  padding: 60px vars.$spacing-lg;
   text-align: center;
 
   mat-icon {
@@ -393,24 +376,22 @@
     width: 80px;
     height: 80px;
     color: #ccc;
-    margin-bottom: 16px;
+    margin-bottom: vars.$spacing-md;
   }
 
   p {
-    color: #999;
+    color: vars.$text-secondary;
     font-size: 16px;
-    margin: 0 0 24px 0;
+    margin: 0 0 vars.$spacing-lg 0;
   }
 }
 
 // Loading State
 .loading-container {
-  display: flex;
+  @include mixins.flex-center;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
-  background: #f5f5f5;
+  background: vars.$surface-color;
 
   .loading-icon {
     font-size: 80px;
@@ -421,9 +402,9 @@
   }
 
   p {
-    margin-top: 16px;
+    margin-top: vars.$spacing-md;
     font-size: 18px;
-    color: #666;
+    color: vars.$text-secondary;
   }
 }
 
@@ -438,32 +419,30 @@
 
 // Not Found State
 .not-found-container {
-  display: flex;
+  @include mixins.flex-center;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   min-height: 100vh;
-  background: #f5f5f5;
+  background: vars.$surface-color;
   text-align: center;
-  padding: 20px;
+  padding: vars.$spacing-lg;
 
   mat-icon {
     font-size: 100px;
     width: 100px;
     height: 100px;
-    color: #f44336;
-    margin-bottom: 24px;
+    color: vars.$error-color;
+    margin-bottom: vars.$spacing-lg;
   }
 
   h2 {
     font-size: 28px;
-    color: #333;
-    margin: 0 0 24px 0;
+    color: vars.$text-primary;
+    margin: 0 0 vars.$spacing-lg 0;
   }
 }
 
 // Responsive Design
-@media (max-width: 768px) {
+@media (max-width: vars.$breakpoint-tablet) {
   .hero-section {
     height: 400px;
 
@@ -481,22 +460,22 @@
       }
 
       .edit-fab {
-        right: 20px;
+        right: vars.$spacing-lg;
       }
     }
   }
 
   .content-container {
-    padding: 40px 12px 20px;
+    padding: vars.$spacing-xxl vars.$spacing-sm vars.$spacing-lg;
   }
 
   .section {
     .section-header {
-      padding: 20px 20px;
+      padding: vars.$spacing-lg vars.$spacing-lg;
     }
 
     .section-content {
-      padding: 20px;
+      padding: vars.$spacing-lg;
     }
   }
 
@@ -506,7 +485,7 @@
 
   .photos-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: vars.$spacing-sm;
   }
 }
-/* master - MARSISCA - END 2025-11-30 */
+// master - MARSISCA - END 2026-01-08

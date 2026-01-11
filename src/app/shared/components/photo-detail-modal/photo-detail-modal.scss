@@ -1,11 +1,12 @@
-// master - MARSISCA - BEGIN 2025-12-08
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
 .photo-detail-modal {
   h2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include mixins.flex-between;
     margin: 0;
-    padding: 16px 24px;
+    padding: vars.$spacing-md vars.$spacing-lg;
 
     .close-button {
       margin-right: -12px;
@@ -15,13 +16,11 @@
   .photo-container {
     width: 100%;
     max-height: 60vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f5f5f5;
-    border-radius: 8px;
+    @include mixins.flex-center;
+    background: vars.$surface-color;
+    border-radius: vars.$radius-md;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: vars.$spacing-lg;
 
     .main-photo {
       width: 100%;
@@ -32,16 +31,16 @@
   }
 
   .photo-info {
-    margin-bottom: 20px;
+    margin-bottom: vars.$spacing-lg;
 
     .info-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 0;
+      gap: vars.$spacing-sm;
+      padding: vars.$spacing-sm 0;
 
       mat-icon {
-        color: rgba(0, 0, 0, 0.54);
+        color: vars.$text-secondary;
         font-size: 20px;
         width: 20px;
         height: 20px;
@@ -49,25 +48,25 @@
 
       .label {
         font-weight: 500;
-        color: rgba(0, 0, 0, 0.87);
+        color: vars.$text-primary;
       }
 
       .value {
-        color: rgba(0, 0, 0, 0.6);
+        color: vars.$text-secondary;
       }
     }
 
     .metadata {
-      margin-top: 8px;
-      padding: 12px;
-      background: #f5f5f5;
-      border-radius: 4px;
+      margin-top: vars.$spacing-sm;
+      padding: vars.$spacing-sm;
+      background: vars.$surface-color;
+      border-radius: vars.$radius-sm;
       max-height: 200px;
       overflow-y: auto;
 
       pre {
         margin: 0;
-        font-size: 12px;
+        font-size: 0.75rem;
         line-height: 1.4;
         white-space: pre-wrap;
         word-wrap: break-word;
@@ -76,20 +75,20 @@
   }
 
   .photo-form {
-    padding: 16px;
-    background: #f9f9f9;
-    border-radius: 8px;
-    margin-bottom: 16px;
+    padding: vars.$spacing-md;
+    background: vars.$surface-color;
+    border-radius: vars.$radius-md;
+    margin-bottom: vars.$spacing-md;
   }
 
   .main-photo-badge {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px;
+    gap: vars.$spacing-sm;
+    padding: vars.$spacing-sm;
     background: #fff3e0;
-    border-radius: 8px;
-    margin-bottom: 16px;
+    border-radius: vars.$radius-md;
+    margin-bottom: vars.$spacing-md;
     color: #e65100;
 
     mat-icon {
@@ -98,11 +97,11 @@
   }
 
   .error-message {
-    color: #d32f2f;
-    padding: 12px;
-    background: #ffebee;
-    border-radius: 4px;
-    margin-top: 16px;
+    color: vars.$error-color;
+    padding: vars.$spacing-sm;
+    background: vars.$error-bg;
+    border-radius: vars.$radius-sm;
+    margin-top: vars.$spacing-md;
   }
 }
-// master - MARSISCA - END 2025-12-08
+// master - MARSISCA - END 2026-01-08

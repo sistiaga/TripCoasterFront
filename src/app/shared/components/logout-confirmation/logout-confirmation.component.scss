@@ -1,30 +1,32 @@
-// main - MARSISCA - BEGIN 2025-10-11
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+
 .logout-confirmation {
   min-width: 350px;
-  padding: 1rem;
+  padding: vars.$spacing-md;
 
   h2 {
-    margin: 0 0 1rem 0;
-    color: #333;
+    margin: 0 0 vars.$spacing-md 0;
+    color: vars.$text-primary;
+  }
+
+  mat-dialog-content {
+    padding: vars.$spacing-md 0;
+
+    p {
+      margin: 0;
+      font-size: 1rem;
+      color: vars.$text-secondary;
+    }
+  }
+
+  mat-dialog-actions {
+    padding: vars.$spacing-md 0 0 0;
+    gap: vars.$spacing-sm;
+
+    button {
+      min-width: 100px;
+    }
   }
 }
-
-mat-dialog-content {
-  padding: 1rem 0;
-
-  p {
-    margin: 0;
-    font-size: 1rem;
-    color: #555;
-  }
-}
-
-mat-dialog-actions {
-  padding: 1rem 0 0 0;
-  gap: 0.5rem;
-
-  button {
-    min-width: 100px;
-  }
-}
-// main - MARSISCA - END 2025-10-11
+// master - MARSISCA - END 2026-01-08

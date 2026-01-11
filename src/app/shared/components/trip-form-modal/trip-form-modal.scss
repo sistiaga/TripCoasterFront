@@ -11,11 +11,12 @@
   // Dialog base styles are now in global _material-overrides.scss
   // This component only contains component-specific styles
 
+  // master - MARSISCA - BEGIN 2026-01-09
+  // Header is now styled globally in _material-overrides.scss
   h2[mat-dialog-title] {
-    margin: 0;
-    padding: vars.$spacing-lg;
     flex-shrink: 0;
   }
+  // master - MARSISCA - END 2026-01-09
 
   mat-dialog-content {
     padding: vars.$spacing-lg;
@@ -31,21 +32,23 @@
     border-top: 1px solid vars.$border-color;
   }
 
+  // master - MARSISCA - BEGIN 2026-01-09
   .form-content {
     display: flex;
     flex-direction: column;
-    gap: vars.$spacing-lg;
+    gap: vars.$spacing-md;
 
     form {
       display: flex;
       flex-direction: column;
-      gap: vars.$spacing-lg;
+      gap: vars.$spacing-md;
     }
 
     mat-form-field {
       width: 100%;
     }
   }
+  // master - MARSISCA - END 2026-01-09
 
   // Date fields row
   .date-fields {

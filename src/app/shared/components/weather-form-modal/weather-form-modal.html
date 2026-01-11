@@ -5,6 +5,20 @@
 
 <mat-dialog-content>
   <form [formGroup]="form" class="weather-form">
+    <!-- master - MARSISCA - BEGIN 2026-01-10 -->
+    <mat-form-field appearance="outline">
+      <mat-label>ID (WMO Code)</mat-label>
+      <input matInput formControlName="id" type="number" placeholder="e.g., 0, 1, 2...">
+      <mat-hint *ngIf="!isEditMode">Enter the WMO weather code (numeric ID)</mat-hint>
+      <mat-error *ngIf="form.get('id')?.hasError('required')">
+        ID is required
+      </mat-error>
+      <mat-error *ngIf="form.get('id')?.hasError('pattern')">
+        ID must be a number
+      </mat-error>
+    </mat-form-field>
+    <!-- master - MARSISCA - END 2026-01-10 -->
+
     <mat-form-field appearance="outline">
       <mat-label>{{ 'WEATHER_FORM.NAME_SPANISH' | translate }}</mat-label>
       <input matInput formControlName="nameSpanish" [placeholder]="'WEATHER_FORM.NAME_SPANISH_PLACEHOLDER' | translate">

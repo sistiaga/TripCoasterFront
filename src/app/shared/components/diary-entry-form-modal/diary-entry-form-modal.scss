@@ -1,133 +1,33 @@
-// master - MARSISCA - BEGIN 2026-01-03
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+
+// =============================================================================
+// Diary Entry Form Modal Component
+// All ::ng-deep styles removed - now using global overrides
+// =============================================================================
+
 .diary-entry-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: vars.$spacing-md;
   min-width: 500px;
 
   mat-form-field {
     width: 100%;
   }
+
+  @media (max-width: 600px) {
+    min-width: 300px;
+  }
 }
 
 mat-dialog-content {
-  padding: 20px;
-  overflow: visible !important;
+  padding: vars.$spacing-lg;
+  overflow: visible;
 }
 
 mat-dialog-actions {
-  padding: 16px;
+  padding: vars.$spacing-md;
 }
 
-// Orange theme for diary entry form
-:host ::ng-deep {
-  // Title in orange
-  h2[mat-dialog-title] {
-    color: #FF7F00 !important;
-  }
-
-  // Labels in orange
-  .mat-mdc-form-field-label,
-  .mat-mdc-floating-label {
-    color: #FF7F00 !important;
-  }
-
-  // Outline border in orange (all states)
-  .mat-mdc-text-field-wrapper {
-    .mat-mdc-form-field-flex {
-      .mdc-notched-outline {
-        .mdc-notched-outline__leading,
-        .mdc-notched-outline__notch,
-        .mdc-notched-outline__trailing {
-          border-color: #FF7F00 !important;
-        }
-      }
-    }
-  }
-
-  // Focused state in orange
-  .mat-mdc-form-field.mat-focused {
-    .mdc-notched-outline {
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__notch,
-      .mdc-notched-outline__trailing {
-        border-color: #FF7F00 !important;
-        border-width: 2px !important;
-      }
-    }
-  }
-
-  // Input text in black
-  .mat-mdc-input-element,
-  input.mat-mdc-input-element,
-  textarea.mat-mdc-input-element {
-    color: #2C2C2C !important;
-  }
-
-  // Select text in black
-  .mat-mdc-select-value,
-  .mat-mdc-select-value-text {
-    color: #2C2C2C !important;
-  }
-
-  // Select arrow in orange
-  .mat-mdc-select-arrow,
-  .mat-mdc-select-arrow svg {
-    color: #FF7F00 !important;
-    fill: #FF7F00 !important;
-  }
-
-  // Dropdown panel with transparent background
-  .mat-mdc-select-panel {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(10px);
-  }
-
-  // Datepicker icon in orange
-  .mat-datepicker-toggle {
-    button {
-      color: #FF7F00 !important;
-
-      .mat-mdc-button-persistent-ripple,
-      .mat-mdc-button-ripple {
-        color: #FF7F00 !important;
-      }
-    }
-  }
-
-  // Calendar icon in orange
-  mat-datepicker-toggle button mat-icon {
-    color: #FF7F00 !important;
-  }
-
-  // Buttons styling - Cancel button
-  mat-dialog-actions button.mat-mdc-button:not(.mat-mdc-raised-button) {
-    color: #FF7F00 !important;
-    border: 1px solid #FF7F00 !important;
-
-    &:hover {
-      background-color: rgba(255, 127, 0, 0.1) !important;
-    }
-  }
-
-  // Save button (raised button)
-  mat-dialog-actions button.mat-mdc-raised-button {
-    color: #FF7F00 !important;
-    background-color: transparent !important;
-    border: 1px solid #FF7F00 !important;
-
-    .mat-mdc-button-persistent-ripple {
-      background-color: transparent !important;
-    }
-
-    &:hover:not([disabled]) {
-      background-color: rgba(255, 127, 0, 0.1) !important;
-    }
-
-    &[disabled] {
-      opacity: 0.5;
-      border-color: rgba(255, 127, 0, 0.5) !important;
-    }
-  }
-}
-// master - MARSISCA - END 2026-01-03
+// master - MARSISCA - END 2026-01-08

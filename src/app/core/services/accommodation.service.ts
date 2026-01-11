@@ -14,7 +14,9 @@ import {
   providedIn: 'root'
 })
 export class AccommodationService {
-  private readonly endpoint = '/accommodations';
+  // master - MARSISCA - BEGIN 2026-01-10
+  private readonly endpoint = '/accommodation-types';
+  // master - MARSISCA - END 2026-01-10
 
   constructor(private apiService: ApiService) {}
 
@@ -37,5 +39,13 @@ export class AccommodationService {
   deleteAccommodation(id: number): Observable<{ success: boolean; message: string }> {
     return this.apiService.delete<{ success: boolean; message: string }>(`${this.endpoint}/${id}`);
   }
+
+  // master - MARSISCA - BEGIN 2026-01-10
+  uploadIcon(id: number, iconFile: File): Observable<AccommodationResponse> {
+    const formData = new FormData();
+    formData.append('icon', iconFile);
+    return this.apiService.post<AccommodationResponse>(`${this.endpoint}/${id}/icon`, formData);
+  }
+  // master - MARSISCA - END 2026-01-10
 }
 // master - MARSISCA - END 2025-12-31

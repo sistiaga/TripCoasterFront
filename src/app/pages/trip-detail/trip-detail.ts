@@ -150,8 +150,9 @@ export class TripDetail implements OnInit, OnDestroy {
       // Fall back to first photo
       return this.trip.photos[0].url;
     }
-    return 'assets/default-trip-hero.jpg';
-  }
+//    return 'assets/default-trip-hero.jpg';
+    return '';  // master - MARSISCA - 2026-01-03 - Return empty string if no photos
+}
 
   openPhotoDetail(photo: TripPhoto): void {
     const dialogRef = this.dialog.open(PhotoDetailModal, {
@@ -200,6 +201,15 @@ export class TripDetail implements OnInit, OnDestroy {
     const currentLang = this.translateService.currentLang || 'en';
     return currentLang === 'es' ? item.nameSpanish : item.nameEnglish;
   }
+
+  // master - MARSISCA - BEGIN 2026-01-09
+  getMainCountry(): any | null {
+    if (this.trip?.countries && this.trip.countries.length > 0) {
+      return this.trip.countries[0];
+    }
+    return null;
+  }
+  // master - MARSISCA - END 2026-01-09
 
   deletePhoto(photo: TripPhoto): void {
     if (confirm(this.translateService.instant('TRIP_DETAIL.CONFIRM_DELETE_PHOTO'))) {

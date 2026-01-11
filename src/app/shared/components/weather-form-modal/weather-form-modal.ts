@@ -44,18 +44,26 @@ export class WeatherFormModal implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: WeatherFormModalData
   ) {
     this.isEditMode = !!data?.weather;
+    // master - MARSISCA - BEGIN 2026-01-10
     this.form = this.fb.group({
+      id: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       nameSpanish: ['', [Validators.required, Validators.maxLength(50)]],
       nameEnglish: ['', [Validators.required, Validators.maxLength(50)]]
     });
+    // master - MARSISCA - END 2026-01-10
   }
 
   ngOnInit(): void {
     if (this.isEditMode && this.data.weather) {
+      // master - MARSISCA - BEGIN 2026-01-10
       this.form.patchValue({
+        id: this.data.weather.id,
         nameSpanish: this.data.weather.nameSpanish,
         nameEnglish: this.data.weather.nameEnglish
       });
+      // ID field should be disabled in edit mode
+      this.form.get('id')?.disable();
+      // master - MARSISCA - END 2026-01-10
       if (this.data.weather.icon) {
         this.iconPreview = this.data.weather.icon;
       }

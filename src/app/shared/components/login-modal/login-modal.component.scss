@@ -1,54 +1,55 @@
-// main - MARSISCA - BEGIN 2025-10-11
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
 .login-modal {
   min-width: 400px;
-  padding: 1rem;
+  padding: vars.$spacing-md;
 
   h2 {
-    margin: 0 0 1rem 0;
-    color: #333;
-  }
-}
-
-mat-dialog-content {
-  padding: 1rem 0;
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-.full-width {
-  width: 100%;
-}
-
-.error-message {
-  color: #f44336;
-  font-size: 0.875rem;
-  padding: 0.5rem;
-  background-color: #ffebee;
-  border-radius: 4px;
-  margin-top: 0.5rem;
-}
-
-mat-dialog-actions {
-  padding: 1rem 0 0 0;
-  gap: 0.5rem;
-
-  button {
-    min-width: 80px;
+    margin: 0 0 vars.$spacing-md 0;
+    color: vars.$text-primary;
   }
 
-  mat-spinner {
-    display: inline-block;
-    margin: 0 auto;
-  }
-}
+  mat-dialog-content {
+    padding: vars.$spacing-md 0;
 
-@media screen and (max-width: 500px) {
-  .login-modal {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: vars.$spacing-md;
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .error-message {
+    color: vars.$error-color;
+    font-size: 0.875rem;
+    padding: vars.$spacing-sm;
+    background-color: vars.$error-bg;
+    border-radius: vars.$radius-sm;
+    margin-top: vars.$spacing-sm;
+  }
+
+  mat-dialog-actions {
+    padding: vars.$spacing-md 0 0 0;
+    gap: vars.$spacing-sm;
+
+    button {
+      min-width: 80px;
+    }
+
+    mat-spinner {
+      display: inline-block;
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
     min-width: 300px;
   }
 }
-// main - MARSISCA - END 2025-10-11
+// master - MARSISCA - END 2026-01-08

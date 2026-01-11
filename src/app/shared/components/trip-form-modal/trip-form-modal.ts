@@ -259,11 +259,13 @@ export class TripFormModal implements OnInit {
   private populateForm(trip: Trip): void {
     console.log('Populating form with trip data:', trip);
 
+    // master - MARSISCA - BEGIN 2026-01-09
     // Extract IDs from nested objects if they exist
     const weatherId = trip.weatherId || trip.weather?.id || null;
     const accommodationId = trip.accommodationId || trip.accommodation?.id || null;
     const transportationTypeId = trip.transportationTypeId || trip.transportationType?.id || null;
-    const countryId = trip.countryId || trip.country?.id || null;
+    const countryId = trip.countryId || (trip.countries && trip.countries.length > 0 ? trip.countries[0].id : null);
+    // master - MARSISCA - END 2026-01-09
 
     console.log('Extracted IDs:', { weatherId, accommodationId, transportationTypeId, countryId });
 
@@ -279,18 +281,20 @@ export class TripFormModal implements OnInit {
       countryId: countryId
     });
 
+    // master - MARSISCA - BEGIN 2026-01-09
     // Set country control value - find country object from loaded countries
     if (countryId) {
       const country = this.countries.find(c => c.id === countryId);
       if (country) {
         this.countryControl.setValue(country);
         console.log('Country set:', country);
-      } else if (trip.country) {
-        // Fallback: use trip.country if provided
-        this.countryControl.setValue(trip.country);
-        console.log('Country set from trip.country:', trip.country);
+      } else if (trip.countries && trip.countries.length > 0) {
+        // Fallback: use trip.countries[0] if provided
+        this.countryControl.setValue(trip.countries[0]);
+        console.log('Country set from trip.countries[0]:', trip.countries[0]);
       }
     }
+    // master - MARSISCA - END 2026-01-09
 
     console.log('Form values after populate:', this.tripForm.value);
     console.log('Country control value:', this.countryControl.value);

@@ -1,0 +1,102 @@
+<!-- master - MARSISCA - BEGIN 2026-01-10 -->
+<div class="photo-grid">
+  <!-- Empty state -->
+  <div class="photo-grid__empty" *ngIf="photos.length === 0">
+    <mat-icon class="photo-grid__empty-icon">photo_library</mat-icon>
+    <p class="photo-grid__empty-text">No photos selected</p>
+  </div>
+
+  <!-- Photo grid -->
+  <div class="photo-grid__container" *ngIf="photos.length > 0">
+    <div
+      class="photo-grid__item"
+      *ngFor="let photo of photos; trackBy: trackByName"
+      [class.photo-grid__item--invalid]="!isValid(photo)"
+    >
+      <!-- Photo preview -->
+      <div class="photo-grid__preview">
+        <img
+          [src]="getPhotoUrl(photo)"
+          [alt]="photo.name"
+          class="photo-grid__image"
+          loading="lazy"
+        />
+
+        <!-- Status overlay -->
+        <div class="photo-grid__overlay">
+          <!-- Remove button -->
+          <button
+            mat-icon-button
+            class="photo-grid__remove"
+            (click)="removePhoto(photo)"
+            [disabled]="readonly"
+            [matTooltip]="'Remove photo'"
+            *ngIf="!readonly"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+
+          <!-- Status badges -->
+          <div class="photo-grid__badges">
+            <!-- GPS badge -->
+            <div
+              class="photo-grid__badge"
+              [class.photo-grid__badge--success]="hasGPS(photo)"
+              [class.photo-grid__badge--warning]="!hasGPS(photo)"
+              [matTooltip]="hasGPS(photo) ? 'GPS available' : 'No GPS data'"
+            >
+              <mat-icon class="photo-grid__badge-icon">
+                {{ hasGPS(photo) ? 'location_on' : 'location_off' }}
+              </mat-icon>
+            </div>
+
+            <!-- Date badge -->
+            <div
+              class="photo-grid__badge"
+              [class.photo-grid__badge--success]="hasDate(photo)"
+              [class.photo-grid__badge--warning]="!hasDate(photo)"
+              [matTooltip]="hasDate(photo) ? 'Date available' : 'No date data'"
+            >
+              <mat-icon class="photo-grid__badge-icon">
+                {{ hasDate(photo) ? 'event' : 'event_busy' }}
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error indicator -->
+        <div class="photo-grid__error" *ngIf="!isValid(photo)">
+          <mat-icon class="photo-grid__error-icon">error</mat-icon>
+          <span class="photo-grid__error-text">Invalid</span>
+        </div>
+      </div>
+
+      <!-- Photo info -->
+      <div class="photo-grid__info">
+        <p class="photo-grid__name" [matTooltip]="photo.name">
+          {{ photo.name }}
+        </p>
+        <p class="photo-grid__size">
+          {{ formatFileSize(photo.size) }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid summary -->
+  <div class="photo-grid__summary" *ngIf="photos.length > 0 && validationResults">
+    <div class="photo-grid__summary-item">
+      <mat-icon class="photo-grid__summary-icon">photo</mat-icon>
+      <span>{{ photos.length }} photos</span>
+    </div>
+    <div class="photo-grid__summary-item photo-grid__summary-item--success">
+      <mat-icon class="photo-grid__summary-icon">location_on</mat-icon>
+      <span>{{ getPhotosWithGPS() }} with GPS</span>
+    </div>
+    <div class="photo-grid__summary-item photo-grid__summary-item--success">
+      <mat-icon class="photo-grid__summary-icon">event</mat-icon>
+      <span>{{ getPhotosWithDate() }} with date</span>
+    </div>
+  </div>
+</div>
+<!-- master - MARSISCA - END 2026-01-10 -->

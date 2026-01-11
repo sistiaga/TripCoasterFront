@@ -1,30 +1,31 @@
-// master - MARSISCA - BEGIN 2025-11-15
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
 .trip-destinations {
-  padding: 20px 0;
+  padding: vars.$spacing-lg 0;
 
   .destinations-content {
     position: relative;
   }
 
-  // master - MARSISCA - BEGIN 2026-01-03
   h3 {
-    margin: 0 0 16px 0;
+    margin: 0 0 vars.$spacing-md 0;
     font-size: 18px;
     font-weight: 500;
-    color: #FF7F00;
+    color: vars.$primary-color;
   }
-  // master - MARSISCA - END 2026-01-03
 
   // Search Section
   .search-section {
-    margin-bottom: 24px;
+    margin-bottom: vars.$spacing-lg;
 
     .full-width {
       width: 100%;
     }
 
     mat-spinner[matSuffix] {
-      margin-right: 8px;
+      margin-right: vars.$spacing-sm;
     }
   }
 
@@ -32,8 +33,8 @@
   .location-option {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 4px 0;
+    gap: vars.$spacing-sm;
+    padding: vars.$spacing-xs 0;
 
     .location-icon {
       color: #1976d2;
@@ -48,31 +49,31 @@
       .location-name {
         font-size: 14px;
         font-weight: 500;
-        color: rgba(0, 0, 0, 0.87);
+        color: vars.$text-primary;
       }
 
       .location-country {
         font-size: 12px;
-        color: rgba(0, 0, 0, 0.6);
+        color: vars.$text-secondary;
       }
     }
   }
 
   // Selected Location Preview
   .selected-location-preview {
-    margin-top: 16px;
-    padding: 16px;
+    margin-top: vars.$spacing-md;
+    padding: vars.$spacing-md;
     border: 2px solid #1976d2;
-    border-radius: 8px;
+    border-radius: vars.$radius-md;
     background-color: #e3f2fd;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: vars.$spacing-md;
 
     .preview-content {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: vars.$spacing-sm;
 
       .preview-icon {
         color: #1976d2;
@@ -85,30 +86,30 @@
       .preview-details {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: vars.$spacing-xs;
         flex: 1;
 
         .preview-name {
           font-size: 16px;
           font-weight: 600;
-          color: rgba(0, 0, 0, 0.87);
+          color: vars.$text-primary;
         }
 
         .preview-country {
           font-size: 14px;
-          color: rgba(0, 0, 0, 0.6);
+          color: vars.$text-secondary;
         }
       }
     }
 
     .preview-actions {
       display: flex;
-      gap: 12px;
+      gap: vars.$spacing-sm;
       justify-content: flex-end;
 
       button {
         mat-icon {
-          margin-right: 4px;
+          margin-right: vars.$spacing-xs;
           font-size: 18px;
           width: 18px;
           height: 18px;
@@ -122,10 +123,10 @@
   .success-message {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 16px;
-    border-radius: 4px;
-    margin-bottom: 16px;
+    gap: vars.$spacing-sm;
+    padding: vars.$spacing-sm vars.$spacing-md;
+    border-radius: vars.$radius-sm;
+    margin-bottom: vars.$spacing-md;
     font-size: 14px;
 
     mat-icon {
@@ -136,73 +137,69 @@
   }
 
   .error-message {
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: vars.$error-bg;
+    color: vars.$error-color;
     border: 1px solid #ef9a9a;
 
     mat-icon {
-      color: #c62828;
+      color: vars.$error-color;
     }
   }
 
   .success-message {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: vars.$success-bg;
+    color: vars.$success-color;
     border: 1px solid #81c784;
 
     mat-icon {
-      color: #2e7d32;
+      color: vars.$success-color;
     }
   }
 
   // Loading State
   .loading-container {
-    display: flex;
+    @include mixins.flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    gap: 16px;
+    padding: 40px vars.$spacing-lg;
+    gap: vars.$spacing-md;
 
     p {
       margin: 0;
-      color: rgba(0, 0, 0, 0.6);
+      color: vars.$text-secondary;
       font-size: 14px;
     }
   }
 
   // Locations Section
   .locations-section {
-    margin-top: 24px;
+    margin-top: vars.$spacing-lg;
 
     h3 {
-      margin-bottom: 12px;
+      margin-bottom: vars.$spacing-sm;
     }
   }
 
   // Empty State
   .empty-state {
-    display: flex;
+    @include mixins.flex-center;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
+    padding: 40px vars.$spacing-lg;
     text-align: center;
-    color: rgba(0, 0, 0, 0.54);
+    color: vars.$text-secondary;
 
     mat-icon {
       font-size: 64px;
       width: 64px;
       height: 64px;
       color: rgba(0, 0, 0, 0.26);
-      margin-bottom: 16px;
+      margin-bottom: vars.$spacing-md;
     }
 
     p {
-      margin: 0 0 8px 0;
+      margin: 0 0 vars.$spacing-sm 0;
       font-size: 16px;
       font-weight: 500;
-      color: rgba(0, 0, 0, 0.6);
+      color: vars.$text-secondary;
     }
 
     .empty-state-hint {
@@ -216,13 +213,13 @@
   .locations-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: vars.$spacing-sm;
 
     .location-chip {
       max-width: 100%;
       height: auto;
       min-height: 48px;
-      padding: 8px 12px;
+      padding: vars.$spacing-sm vars.$spacing-sm;
 
       mat-icon[matChipAvatar] {
         color: #1976d2;
@@ -239,7 +236,7 @@
         .chip-name {
           font-size: 14px;
           font-weight: 500;
-          color: rgba(0, 0, 0, 0.87) !important;
+          color: vars.$text-primary !important;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -247,7 +244,7 @@
 
         .chip-country {
           font-size: 12px;
-          color: rgba(0, 0, 0, 0.6) !important;
+          color: vars.$text-secondary !important;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -277,31 +274,25 @@
 
   // Saving Overlay
   .saving-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    @include mixins.absolute-cover;
     background-color: rgba(255, 255, 255, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    z-index: 10;
-    border-radius: 4px;
+    @include mixins.flex-center;
+    gap: vars.$spacing-sm;
+    z-index: vars.$z-dropdown;
+    border-radius: vars.$radius-sm;
 
     span {
       font-size: 14px;
-      color: rgba(0, 0, 0, 0.6);
+      color: vars.$text-secondary;
       font-weight: 500;
     }
   }
 }
 
 // Responsive Design
-@media (max-width: 600px) {
+@media (max-width: vars.$breakpoint-mobile) {
   .trip-destinations {
-    padding: 16px 0;
+    padding: vars.$spacing-md 0;
 
     h3 {
       font-size: 16px;
@@ -322,46 +313,4 @@
     }
   }
 }
-
-// master - MARSISCA - BEGIN 2026-01-03
-// Orange theme for trip-destinations
-::ng-deep {
-  .trip-destinations {
-    // Labels in orange
-    .mat-mdc-form-field-label {
-      color: #FF7F00 !important;
-    }
-
-    // Outline border in orange
-    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-notched-outline {
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__notch,
-      .mdc-notched-outline__trailing {
-        border-color: #FF7F00 !important;
-      }
-    }
-
-    // Focused state in orange
-    .mat-mdc-form-field.mat-focused .mat-mdc-notched-outline {
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__notch,
-      .mdc-notched-outline__trailing {
-        border-color: #FF7F00 !important;
-        border-width: 2px !important;
-      }
-    }
-
-    // Input text in black
-    .mat-mdc-input-element {
-      color: #2C2C2C !important;
-    }
-
-    // Autocomplete panel with transparent background
-    .mat-mdc-autocomplete-panel {
-      background-color: rgba(255, 255, 255, 0.95) !important;
-      backdrop-filter: blur(10px);
-    }
-  }
-}
-// master - MARSISCA - END 2026-01-03
-// master - MARSISCA - END 2025-11-15
+// master - MARSISCA - END 2026-01-08

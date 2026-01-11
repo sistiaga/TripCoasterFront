@@ -1,0 +1,156 @@
+<!-- master - MARSISCA - BEGIN 2026-01-10 -->
+<div class="location-picker">
+  <!-- Modal Header -->
+  <h2 mat-dialog-title class="location-picker__title">
+    <mat-icon class="location-picker__title-icon">location_on</mat-icon>
+    Specify Photo Location
+  </h2>
+
+  <!-- Modal Content -->
+  <mat-dialog-content class="location-picker__content">
+
+    <!-- Warning Message -->
+    <div class="location-picker__warning">
+      <mat-icon class="location-picker__warning-icon">warning</mat-icon>
+      <p class="location-picker__warning-text">
+        {{ getWarningMessage() }}
+        <br>
+        <span class="location-picker__warning-subtext">
+          Please tell us where these photos were taken.
+        </span>
+      </p>
+    </div>
+
+    <!-- Loading State -->
+    <div class="location-picker__loading" *ngIf="loading()">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading countries...</p>
+    </div>
+
+    <!-- Error State -->
+    <div class="location-picker__error" *ngIf="error() && !loading()">
+      <mat-icon class="location-picker__error-icon">error</mat-icon>
+      <p class="location-picker__error-text">{{ error() }}</p>
+      <button mat-raised-button color="primary" (click)="retryLoadCountries()">
+        <mat-icon>refresh</mat-icon>
+        Retry
+      </button>
+    </div>
+
+    <!-- Location Form -->
+    <form
+      [formGroup]="locationForm"
+      class="location-picker__form"
+      *ngIf="!loading() && !error()"
+    >
+
+      <!-- Country Selection -->
+      <mat-form-field appearance="outline" class="location-picker__field">
+        <mat-label>Country</mat-label>
+        <mat-select
+          formControlName="countryId"
+          (selectionChange)="onCountrySelected()"
+          required
+        >
+          <mat-option
+            *ngFor="let country of countries()"
+            [value]="country.id"
+          >
+            <span class="location-picker__country-option">
+              <span class="location-picker__country-flag" *ngIf="country.flagPath">
+                <img [src]="country.flagPath" [alt]="country.nameEnglish + ' flag'" />
+              </span>
+              {{ getCountryDisplayName(country) }}
+            </span>
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>flag</mat-icon>
+        <mat-error *ngIf="locationForm.get('countryId')?.hasError('required')">
+          Country is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- City Input (Optional) -->
+      <mat-form-field appearance="outline" class="location-picker__field">
+        <mat-label>City (optional)</mat-label>
+        <input
+          matInput
+          formControlName="cityName"
+          placeholder="e.g., Rome"
+        />
+        <mat-icon matPrefix>location_city</mat-icon>
+        <mat-hint>Optional: Specify the city name</mat-hint>
+      </mat-form-field>
+
+      <!-- Coordinates (Auto-filled, can be edited) -->
+      <div class="location-picker__coordinates">
+        <p class="location-picker__coordinates-label">
+          <mat-icon>my_location</mat-icon>
+          Coordinates (optional)
+        </p>
+
+        <div class="location-picker__coordinates-inputs">
+          <mat-form-field appearance="outline" class="location-picker__coord-field">
+            <mat-label>Latitude</mat-label>
+            <input
+              matInput
+              formControlName="latitude"
+              type="number"
+              step="0.0001"
+              placeholder="41.9028"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="location-picker__coord-field">
+            <mat-label>Longitude</mat-label>
+            <input
+              matInput
+              formControlName="longitude"
+              type="number"
+              step="0.0001"
+              placeholder="12.4964"
+            />
+          </mat-form-field>
+        </div>
+
+        <p class="location-picker__coordinates-hint">
+          <mat-icon class="location-picker__coordinates-hint-icon">info</mat-icon>
+          Coordinates are automatically set from the selected country but can be adjusted if needed.
+        </p>
+      </div>
+
+      <!-- Info Box -->
+      <div class="location-picker__info">
+        <mat-icon class="location-picker__info-icon">lightbulb</mat-icon>
+        <p class="location-picker__info-text">
+          <strong>Tip:</strong> This location will be used for all photos without GPS coordinates.
+          Photos with GPS data will keep their original locations.
+        </p>
+      </div>
+
+    </form>
+
+  </mat-dialog-content>
+
+  <!-- Modal Actions -->
+  <mat-dialog-actions class="location-picker__actions">
+    <button
+      mat-button
+      (click)="onCancel()"
+      class="location-picker__button location-picker__button--cancel"
+    >
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onConfirm()"
+      [disabled]="!isFormValid() || loading()"
+      class="location-picker__button location-picker__button--confirm"
+    >
+      <mat-icon>check</mat-icon>
+      Confirm Location
+    </button>
+  </mat-dialog-actions>
+</div>
+<!-- master - MARSISCA - END 2026-01-10 -->

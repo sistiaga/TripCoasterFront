@@ -1,20 +1,26 @@
-/* master - MARSISCA - BEGIN 2025-11-30 */
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+
 .diary-type-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: vars.$spacing-md;
   min-width: 400px;
 
   mat-form-field {
     width: 100%;
   }
+
+  @media (max-width: 600px) {
+    min-width: 300px;
+  }
 }
 
 mat-dialog-content {
-  padding: 20px;
+  padding: vars.$spacing-lg;
 }
 
 mat-dialog-actions {
-  padding: 16px;
+  padding: vars.$spacing-md;
 }
-/* master - MARSISCA - END 2025-11-30 */
+// master - MARSISCA - END 2026-01-08

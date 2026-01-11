@@ -19,19 +19,56 @@
   }
 }
 
-// Mat Dialog Title - Color brand
+// master - MARSISCA - BEGIN 2026-01-09
+// Mat Dialog Title - Enhanced styling with same height as actions
 .mat-mdc-dialog-title,
 h2[mat-dialog-title] {
   color: vars.$primary-color !important;
-  font-weight: 600;
+  font-weight: 700 !important;
+  font-size: 2rem !important;
+  //background-color: vars.$accent-light !important;
+  padding: vars.$spacing-lg !important;
+  margin: 0 !important;
+  border-bottom: 2px solid vars.$primary-color !important;
 }
+// master - MARSISCA - END 2026-01-09
 
-// Mat Dialog Actions - Spacing
+// Mat Dialog Actions - Spacing (same as title)
 .mat-mdc-dialog-actions {
   padding: vars.$spacing-lg !important;
   gap: vars.$spacing-sm;
   border-top: 1px solid vars.$border-color;
 }
+
+// master - MARSISCA - BEGIN 2026-01-09
+// Mat Dialog Content - Orange scrollbar and extra top padding
+.mat-mdc-dialog-content {
+  padding-top: vars.$spacing-xl !important;
+
+  // Custom scrollbar for WebKit browsers
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: vars.$accent-light;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: vars.$primary-color;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: vars.$primary-hover;
+    }
+  }
+
+  // Custom scrollbar for Firefox
+  scrollbar-width: thin;
+  scrollbar-color: vars.$primary-color vars.$accent-light;
+}
+// master - MARSISCA - END 2026-01-09
 
 // -----------------------------------------------------------------------------
 // Mat Form Field - Global appearance
@@ -41,11 +78,29 @@ h2[mat-dialog-title] {
 .mat-mdc-form-field {
   width: 100%;
 
-  // Label always floated above
-  .mat-mdc-floating-label {
-    font-weight: 500;
-    color: vars.$text-secondary;
+  // master - MARSISCA - BEGIN 2026-01-09
+  // Label configuration - always above field
+  .mat-mdc-form-field-flex {
+   margin-top: vars.$spacing-xs;
+//  margin-top: 1.25rem; // Espacio para la etiqueta que ahora vive arriba
   }
+
+//.mat-mdc-form-field.mat-form-field-should-float .mat-mdc-floating-label {
+  .mat-mdc-floating-label {
+  //  font-weight: 500;
+    color: vars.$text-secondary !important;
+    font-size: 0.95rem !important;
+    transform: translateY(-3.5rem) scale(1) !important;
+//  width: 100%;
+    background-color: transparent !important;
+    padding: 0 !important;
+//    position: absolute !important;
+  }
+
+
+
+
+  // master - MARSISCA - END 2026-01-09
 
   // Focus state - orange label
   &.mat-focused .mat-mdc-floating-label {
@@ -58,25 +113,28 @@ h2[mat-dialog-title] {
     border-radius: vars.$radius-md;
   }
 
-  // Input borders
+  // master - MARSISCA - BEGIN 2026-01-09
+  // Input borders - remove notch for cleaner look
   .mdc-notched-outline {
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
-      border-color: vars.$border-color;
+      border-color: vars.$border-color !important;
       border-width: 1px;
     }
 
-    .mdc-notched-outline__leading {
-      border-radius: vars.$radius-md 0 0 vars.$radius-md;
-    }
-
-    .mdc-notched-outline__trailing {
-      border-radius: 0 vars.$radius-md vars.$radius-md 0;
+    // Hide notch (the cutout for the label)
+    .mdc-notched-outline__notch {
+      border-top: 2px solid vars.$border-color !important;
+      border-left: none !important;
+      border-right: none !important;
     }
   }
 
-  // Focus border
+  // master - MARSISCA - END 2026-01-09
+
+  // master - MARSISCA - BEGIN 2026-01-09
+  // Focus border - keep notch closed
   &.mat-focused .mdc-notched-outline {
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
@@ -84,14 +142,21 @@ h2[mat-dialog-title] {
       border-color: vars.$primary-color !important;
       border-width: 2px !important;
     }
+
+    .mdc-notched-outline__notch {
+      border-top: 2px solid vars.$primary-color !important;
+      border-left: none !important;
+      border-right: none !important;
+    }
   }
+  // master - MARSISCA - END 2026-01-09
 
   // Input text
   .mat-mdc-input-element,
   input.mat-mdc-input-element,
   textarea.mat-mdc-input-element {
     color: vars.$text-primary;
-    padding: 12px;
+    padding: 0px;
   }
 }
 
@@ -209,6 +274,51 @@ h2[mat-dialog-title] {
     &:hover {
       background-color: vars.$primary-hover;
     }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Mat Tab Group - Settings page tab styling
+// -----------------------------------------------------------------------------
+.mat-mdc-tab-group {
+  .mat-mdc-tab-header {
+    border-bottom: 2px solid vars.$accent-light;
+    margin-bottom: vars.$spacing-lg;
+  }
+
+  .mat-mdc-tab-labels {
+    gap: vars.$spacing-sm;
+  }
+
+  .mat-mdc-tab {
+    min-width: 120px;
+    padding: 0 vars.$spacing-md;
+    font-family: vars.$font-secondary;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: vars.$secondary-color;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(255, 127, 0, 0.05);
+    }
+
+    &.mdc-tab--active {
+      opacity: 1;
+      color: vars.$primary-color;
+    }
+  }
+
+  .mat-mdc-tab-label-content {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .mdc-tab-indicator__content--underline {
+    border-color: vars.$primary-color;
+    border-width: 3px;
   }
 }
 

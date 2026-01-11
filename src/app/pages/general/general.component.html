@@ -45,14 +45,32 @@
     }
   </div>
 
-  <button
-    mat-fab
-    color="primary"
-    class="fab-button"
-    (click)="openAddTripModal()"
-    aria-label="Add new trip"
-  >
-    <mat-icon>add</mat-icon>
-  </button>
+  <!-- master - MARSISCA - BEGIN 2026-01-10 -->
+  <div class="fab-buttons">
+    <button
+      mat-fab
+      color="primary"
+      class="fab-button fab-button--photos"
+      (click)="openPhotoUploadModal()"
+      aria-label="Create trip from photos"
+      matTooltip="Create trip from photos"
+      matTooltipPosition="left"
+    >
+      <mat-icon>add_photo_alternate</mat-icon>
+    </button>
+
+    <button
+      mat-fab
+      color="primary"
+      class="fab-button fab-button--main"
+      (click)="openAddTripModal()"
+      aria-label="Add new trip"
+      matTooltip="Add new trip manually"
+      matTooltipPosition="left"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <!-- master - MARSISCA - END 2026-01-10 -->
 </div>
 <!-- master - MARSISCA - END 2024-12-24 -->

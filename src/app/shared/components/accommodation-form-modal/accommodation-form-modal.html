@@ -26,6 +26,28 @@
         {{ 'ACCOMMODATION_FORM.NAME_MAX_LENGTH' | translate }}
       </mat-error>
     </mat-form-field>
+
+    <!-- master - MARSISCA - BEGIN 2026-01-10 -->
+    <div class="icon-upload">
+      <label class="icon-label">{{ 'ACCOMMODATION_FORM.ICON' | translate }}</label>
+      <div class="icon-preview-container" *ngIf="iconPreview">
+        <img [src]="iconPreview" alt="Icon preview" class="icon-preview">
+        <button mat-icon-button type="button" (click)="removeIcon()" class="remove-icon">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <input
+        type="file"
+        #iconInput
+        accept="image/*"
+        (change)="onIconSelected($event)"
+        style="display: none">
+      <button mat-stroked-button type="button" (click)="iconInput.click()">
+        <mat-icon>upload</mat-icon>
+        {{ 'ACCOMMODATION_FORM.UPLOAD_ICON' | translate }}
+      </button>
+    </div>
+    <!-- master - MARSISCA - END 2026-01-10 -->
   </form>
 </mat-dialog-content>
 

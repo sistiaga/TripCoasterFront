@@ -1,0 +1,229 @@
+// master - MARSISCA - BEGIN 2026-01-10
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
+.location-picker {
+  min-width: 500px;
+  max-width: 600px;
+
+  @include mixins.respond-to(mobile) {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  // Title
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-sm;
+    color: vars.$primary-color;
+    font-weight: 600;
+    margin: 0;
+    padding: vars.$spacing-lg;
+    border-bottom: 1px solid vars.$border-color;
+  }
+
+  &__title-icon {
+    color: vars.$primary-color;
+  }
+
+  // Content
+  &__content {
+    padding: vars.$spacing-lg;
+    min-height: 300px;
+  }
+
+  // Warning message
+  &__warning {
+    display: flex;
+    gap: vars.$spacing-md;
+    padding: vars.$spacing-md;
+    background-color: rgba(255, 127, 0, 0.1);
+    border-left: 4px solid vars.$primary-color;
+    border-radius: vars.$radius-sm;
+    margin-bottom: vars.$spacing-lg;
+  }
+
+  &__warning-icon {
+    color: vars.$primary-color;
+    flex-shrink: 0;
+  }
+
+  &__warning-text {
+    margin: 0;
+    color: vars.$text-primary;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  &__warning-subtext {
+    color: vars.$text-secondary;
+    font-size: 13px;
+  }
+
+  // Loading state
+  &__loading {
+    @include mixins.flex-center;
+    flex-direction: column;
+    gap: vars.$spacing-md;
+    padding: vars.$spacing-xl;
+    color: vars.$text-secondary;
+  }
+
+  // Error state
+  &__error {
+    @include mixins.flex-center;
+    flex-direction: column;
+    gap: vars.$spacing-md;
+    padding: vars.$spacing-xl;
+    text-align: center;
+  }
+
+  &__error-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: vars.$error-color;
+  }
+
+  &__error-text {
+    margin: 0;
+    color: vars.$text-secondary;
+  }
+
+  // Form
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-md;
+  }
+
+  &__field {
+    width: 100%;
+  }
+
+  // Country option
+  &__country-option {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-sm;
+  }
+
+  &__country-flag {
+    width: 24px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  // Coordinates section
+  &__coordinates {
+    padding: vars.$spacing-md;
+    background-color: vars.$surface-color;
+    border-radius: vars.$radius-md;
+    margin-top: vars.$spacing-sm;
+  }
+
+  &__coordinates-label {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-xs;
+    margin: 0 0 vars.$spacing-md 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: vars.$text-primary;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__coordinates-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: vars.$spacing-md;
+  }
+
+  &__coord-field {
+    width: 100%;
+  }
+
+  &__coordinates-hint {
+    display: flex;
+    align-items: flex-start;
+    gap: vars.$spacing-xs;
+    margin: vars.$spacing-sm 0 0 0;
+    padding: vars.$spacing-sm;
+    background-color: rgba(8, 31, 92, 0.05);
+    border-radius: vars.$radius-sm;
+    font-size: 12px;
+    color: vars.$text-secondary;
+    line-height: 1.4;
+  }
+
+  &__coordinates-hint-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: vars.$accent-dark;
+  }
+
+  // Info box
+  &__info {
+    display: flex;
+    gap: vars.$spacing-sm;
+    padding: vars.$spacing-md;
+    background-color: rgba(8, 31, 92, 0.05);
+    border-left: 3px solid vars.$accent-dark;
+    border-radius: vars.$radius-sm;
+    margin-top: vars.$spacing-md;
+  }
+
+  &__info-icon {
+    color: vars.$accent-dark;
+    flex-shrink: 0;
+  }
+
+  &__info-text {
+    margin: 0;
+    font-size: 13px;
+    color: vars.$text-secondary;
+    line-height: 1.5;
+
+    strong {
+      color: vars.$text-primary;
+    }
+  }
+
+  // Actions
+  &__actions {
+    padding: vars.$spacing-md vars.$spacing-lg;
+    border-top: 1px solid vars.$border-color;
+    display: flex;
+    justify-content: flex-end;
+    gap: vars.$spacing-sm;
+  }
+
+  &__button {
+    &--cancel {
+      color: vars.$text-secondary;
+    }
+
+    &--confirm {
+      mat-icon {
+        margin-right: vars.$spacing-xs;
+      }
+    }
+  }
+}
+// master - MARSISCA - END 2026-01-10

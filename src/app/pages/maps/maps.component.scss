@@ -1,7 +1,9 @@
-// master - MARSISCA - BEGIN 2025-10-18
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../styles/themes/variables' as vars;
+
 .maps-page {
-  padding: 2rem;
-  background-color: #f5f5f5;
+  padding: vars.$spacing-xl;
+  background-color: vars.$surface-color;
   min-height: calc(100vh - 64px);
   margin-top: 64px;
 
@@ -11,11 +13,11 @@
     max-width: 1400px;
     height: calc(100vh - 64px - 4rem);
     margin: 0 auto;
-    border-radius: 16px;
+    border-radius: vars.$radius-lg;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: vars.$shadow-sm;
     position: relative;
-    z-index: 1;
+    z-index: vars.$z-base;
   }
 }
-// master - MARSISCA - END 2025-10-18
+// master - MARSISCA - END 2026-01-08

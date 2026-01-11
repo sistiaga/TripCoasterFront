@@ -1,9 +1,11 @@
-/* master - MARSISCA - BEGIN 2025-12-31 */
+// master - MARSISCA - BEGIN 2026-01-09
+@use '../../../../styles/themes/variables' as vars;
+
 .weather-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px 0;
+  gap: vars.$spacing-md;
+  padding: vars.$spacing-md 0;
   min-width: 400px;
 
   mat-form-field {

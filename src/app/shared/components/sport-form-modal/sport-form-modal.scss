@@ -1,9 +1,12 @@
-/* master - MARSISCA - BEGIN 2025-12-31 */
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
 .sport-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px 0;
+  gap: vars.$spacing-md;
+  padding: vars.$spacing-md 0;
   min-width: 400px;
 
   mat-form-field {
@@ -13,24 +16,22 @@
   .icon-upload {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: vars.$spacing-sm;
 
     .icon-label {
-      font-size: 14px;
+      font-size: 0.875rem;
       font-weight: 500;
-      color: rgba(0, 0, 0, 0.6);
+      color: vars.$text-secondary;
     }
 
     .icon-preview-container {
       position: relative;
       width: 100px;
       height: 100px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border: 1px solid vars.$border-color;
+      border-radius: vars.$radius-sm;
+      padding: vars.$spacing-sm;
+      @include mixins.flex-center;
 
       .icon-preview {
         max-width: 100%;
@@ -43,9 +44,13 @@
         top: -8px;
         right: -8px;
         background-color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: vars.$shadow-sm;
       }
     }
   }
+
+  @media (max-width: 600px) {
+    min-width: 300px;
+  }
 }
-/* master - MARSISCA - END 2025-12-31 */
+// master - MARSISCA - END 2026-01-08

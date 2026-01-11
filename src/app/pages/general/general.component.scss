@@ -1,5 +1,6 @@
-// master - MARSISCA - BEGIN 2024-12-24
-@use  '../../../variables' as vars;
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../styles/themes/variables' as vars;
+@use '../../../styles/utilities/mixins' as mixins;
 
 .trips-container {
   min-height: calc(100vh - 64px);
@@ -9,7 +10,7 @@
 }
 
 .trips-content {
-  padding: 3rem 2rem;
+  padding: vars.$spacing-xxl vars.$spacing-xl;
   overflow-y: auto;
   max-width: 1400px;
   margin: 0 auto;
@@ -18,7 +19,7 @@
 .loading,
 .no-trips {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: vars.$spacing-xxl vars.$spacing-xl;
   font-size: 1.5rem;
   color: vars.$text-secondary;
   font-family: vars.$font-primary-italic;
@@ -28,15 +29,15 @@
 .trips-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 2.5rem;
-  padding-bottom: 2rem;
+  gap: vars.$spacing-xxl;
+  padding-bottom: vars.$spacing-xl;
 }
 
 .trip-card {
   background-color: white;
-  border-radius: 16px;
+  border-radius: vars.$radius-lg;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: vars.$shadow-md;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
   display: flex;
@@ -84,11 +85,7 @@
   }
 
   .trip-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    @include mixins.absolute-cover;
     background: linear-gradient(
       to bottom,
       rgba(8, 31, 92, 0.2) 0%,
@@ -102,15 +99,15 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 2rem 1.75rem 1.5rem;
-    z-index: 2;
+    padding: vars.$spacing-xl 1.75rem 1.5rem;
+    z-index: vars.$z-dropdown;
   }
 
   .trip-title {
     color: white;
     font-size: 2rem;
     font-weight: 700;
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 vars.$spacing-sm 0;
     font-family: vars.$font-primary-italic;
     font-style: italic;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -138,10 +135,8 @@
   .trip-footer {
     padding: 1.25rem 1.75rem;
     background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
+    @include mixins.flex-between;
+    gap: vars.$spacing-md;
     flex: 1;
     min-height: 0;
   }
@@ -149,7 +144,7 @@
   .trip-dates {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: vars.$spacing-sm;
     color: vars.$text-secondary;
     font-size: 0.9rem;
     font-weight: 500;
@@ -179,40 +174,71 @@
   }
 }
 
-.fab-button {
+// master - MARSISCA - BEGIN 2026-01-10
+// Container for stacked FAB buttons
+.fab-buttons {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  z-index: 1000;
+  bottom: vars.$spacing-xl;
+  right: vars.$spacing-xl;
+  z-index: vars.$z-fab;
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-md;
+}
+
+// Individual FAB button styles
+.fab-button {
   box-shadow: 0 4px 16px rgba(255, 127, 0, 0.3);
   width: 64px;
   height: 64px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   &:hover {
     box-shadow: 0 6px 24px rgba(255, 127, 0, 0.45);
-    transform: scale(1.1) rotate(90deg);
+    transform: scale(1.1);
   }
 
   mat-icon {
     transition: transform 0.3s ease;
   }
+
+  // Photo upload button (top button)
+  &--photos {
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+
+    &:hover mat-icon {
+      transform: scale(1.1);
+    }
+  }
+
+  // Manual trip creation button (main button with rotation)
+  &--main {
+    &:hover mat-icon {
+      transform: rotate(90deg);
+    }
+  }
 }
+// master - MARSISCA - END 2026-01-10
 
 @media (max-width: 1200px) {
   .trips-grid {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 2rem;
+    gap: vars.$spacing-xl;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: vars.$breakpoint-tablet) {
   .trips-content {
-    padding: 2rem 1rem;
+    padding: vars.$spacing-xl vars.$spacing-md;
   }
 
   .trips-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: vars.$spacing-lg;
   }
 
   .trip-card {
@@ -233,8 +259,8 @@
     .trip-footer {
       flex-direction: column;
       align-items: flex-start;
-      gap: 0.75rem;
-      padding: 1rem 1.5rem;
+      gap: vars.$spacing-sm;
+      padding: vars.$spacing-md vars.$spacing-lg;
     }
 
     .trip-dates span {
@@ -242,24 +268,35 @@
     }
   }
 
+  // master - MARSISCA - BEGIN 2026-01-10
+  .fab-buttons {
+    bottom: vars.$spacing-lg;
+    right: vars.$spacing-lg;
+  }
+
   .fab-button {
-    bottom: 1.5rem;
-    right: 1.5rem;
     width: 56px;
     height: 56px;
+
+    &--photos mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
   }
+  // master - MARSISCA - END 2026-01-10
 }
 
-@media (max-width: 480px) {
+@media (max-width: vars.$breakpoint-mobile) {
   .trips-content {
-    padding: 1.5rem 0.75rem;
+    padding: vars.$spacing-lg vars.$spacing-sm;
   }
 
   .trip-card {
-    border-radius: 12px;
+    border-radius: vars.$radius-md;
 
     .trip-content {
-      padding: 1.5rem 1.25rem 1.25rem;
+      padding: vars.$spacing-lg 1.25rem 1.25rem;
     }
 
     .trip-title {
@@ -267,4 +304,4 @@
     }
   }
 }
-// master - MARSISCA - END 2024-12-24
+// master - MARSISCA - END 2026-01-08

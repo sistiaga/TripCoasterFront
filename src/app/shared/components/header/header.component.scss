@@ -1,25 +1,24 @@
-// master - MARSISCA - BEGIN 2024-12-24
-@use '../../../../variables' as vars;
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
 
 .app-header {
   background-color: vars.$primary-color;
   width: 100%;
   padding: 0;
   margin: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: vars.$shadow-sm;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: vars.$z-fixed;
 }
 
 .header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
+  @include mixins.flex-between;
+  padding: vars.$spacing-md vars.$spacing-lg;
   max-width: 100%;
-  gap: 2rem;
+  gap: vars.$spacing-xl;
 }
 
 .app-name {
@@ -32,7 +31,7 @@
 
 .nav-menu {
   display: flex;
-  gap: 1.5rem;
+  gap: vars.$spacing-lg;
   flex: 1;
 
   a {
@@ -40,9 +39,9 @@
     text-decoration: none;
     font-size: 1rem;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    padding: vars.$spacing-sm vars.$spacing-md;
+    border-radius: vars.$radius-sm;
+    transition: background-color vars.$transition-base;
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -55,15 +54,11 @@
 }
 
 .user-icon {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.3s ease;
+  @include mixins.button-reset;
+  padding: vars.$spacing-sm;
+  @include mixins.flex-center;
+  border-radius: vars.$radius-full;
+  transition: background-color vars.$transition-base;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -77,4 +72,4 @@
     display: block;
   }
 }
-// master - MARSISCA - END 2024-12-24
+// master - MARSISCA - END 2026-01-08

@@ -22,6 +22,10 @@ export interface TripPhoto {
   cameraMake?: string;
   cameraModel?: string;
   dateTaken?: string;
+  // master - MARSISCA - BEGIN 2026-01-10
+  dateTakenUTC?: string;
+  timezone?: string;
+  // master - MARSISCA - END 2026-01-10
   caption?: string;
   createdAt: string;
   updatedAt?: string;
@@ -42,7 +46,7 @@ export interface Trip {
   // master - MARSISCA - BEGIN 2025-12-28
   locations?: TripLocationDetail[];
   // master - MARSISCA - END 2025-12-28
-  // master - MARSISCA - BEGIN 2026-01-03
+  // master - MARSISCA - BEGIN 2026-01-09
   weatherId?: number;
   weather?: Weather;
   accommodationId?: number;
@@ -50,8 +54,13 @@ export interface Trip {
   transportationTypeId?: number;
   transportationType?: TransportationType;
   countryId?: number;
-  country?: Country;
-  // master - MARSISCA - END 2026-01-03
+  countries?: Country[];
+  // master - MARSISCA - END 2026-01-09
+  // master - MARSISCA - BEGIN 2026-01-10
+  diaries?: import('./diary.model').Diary[];
+  mainCountryId?: number;
+  mainCountry?: Country;
+  // master - MARSISCA - END 2026-01-10
   createdAt: string;
   updatedAt: string;
 }
@@ -72,3 +81,36 @@ export interface PhotoResponse {
   data?: TripPhoto;
 }
 // master - MARSISCA - END 2025-12-08
+
+// master - MARSISCA - BEGIN 2026-01-10
+/**
+ * Statistics returned when creating a trip from photos
+ */
+export interface TripCreationStats {
+  photosProcessed: number;
+  photosUploaded: number;
+  photosFailed: number;
+  diariesCreated: number;
+  locationsFound: number;
+  countriesVisited: number;
+  daysOfTravel: number;
+}
+
+/**
+ * Response from creating a trip from photos
+ */
+export interface TripCreationResponse {
+  trip: Trip;
+  stats: TripCreationStats;
+  warnings: string[];
+}
+
+/**
+ * API response for trip creation from photos
+ */
+export interface TripCreationApiResponse {
+  success: boolean;
+  message: string;
+  data: TripCreationResponse;
+}
+// master - MARSISCA - END 2026-01-10

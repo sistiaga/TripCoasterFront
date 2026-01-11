@@ -8,6 +8,13 @@
   </div>
 
   <table mat-table [dataSource]="weathers" class="mat-elevation-z2">
+    <!-- master - MARSISCA - BEGIN 2026-01-10 -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+    <!-- master - MARSISCA - END 2026-01-10 -->
+
     <ng-container matColumnDef="nameSpanish">
       <th mat-header-cell *matHeaderCellDef>{{ 'WEATHERS.NAME_SPANISH' | translate }}</th>
       <td mat-cell *matCellDef="let element">{{ element.nameSpanish }}</td>

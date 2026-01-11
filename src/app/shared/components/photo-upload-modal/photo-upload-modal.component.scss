@@ -1,0 +1,370 @@
+// master - MARSISCA - BEGIN 2026-01-10
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
+.photo-upload {
+  min-width: 700px;
+  max-width: 900px;
+
+  @include mixins.respond-to(mobile) {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  // Title
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-sm;
+    color: vars.$primary-color;
+    font-weight: 600;
+    margin: 0;
+    padding: vars.$spacing-lg;
+    border-bottom: 1px solid vars.$border-color;
+  }
+
+  &__title-icon {
+    color: vars.$primary-color;
+  }
+
+  // Content
+  &__content {
+    padding: vars.$spacing-lg;
+    min-height: 400px;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  // Drop zone (idle state)
+  &__drop-zone {
+    width: 100%;
+  }
+
+  &__file-input {
+    display: none;
+  }
+
+  &__drop-area {
+    border: 3px dashed vars.$border-color;
+    border-radius: vars.$radius-lg;
+    padding: vars.$spacing-xxl;
+    text-align: center;
+    cursor: pointer;
+    transition: all vars.$transition-base;
+    background-color: vars.$surface-color;
+
+    &:hover {
+      border-color: vars.$primary-color;
+      background-color: rgba(255, 127, 0, 0.05);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__drop-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: vars.$primary-color;
+    margin-bottom: vars.$spacing-md;
+  }
+
+  &__drop-title {
+    margin: 0 0 vars.$spacing-xs 0;
+    color: vars.$text-primary;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  &__drop-subtitle {
+    margin: 0 0 vars.$spacing-lg 0;
+    color: vars.$text-secondary;
+    font-size: 16px;
+  }
+
+  &__drop-info {
+    display: flex;
+    justify-content: center;
+    gap: vars.$spacing-lg;
+    margin-top: vars.$spacing-lg;
+
+    @include mixins.respond-to(mobile) {
+      flex-direction: column;
+      align-items: center;
+      gap: vars.$spacing-sm;
+    }
+  }
+
+  &__drop-info-item {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-xs;
+    color: vars.$text-secondary;
+    font-size: 14px;
+
+    mat-icon {
+      color: vars.$success-color;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Validating state
+  &__validating {
+    @include mixins.flex-center;
+    flex-direction: column;
+    gap: vars.$spacing-md;
+    padding: vars.$spacing-xxl;
+    text-align: center;
+
+    h3 {
+      margin: 0;
+      color: vars.$text-primary;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 0;
+      color: vars.$text-secondary;
+    }
+
+    mat-progress-bar {
+      width: 100%;
+      max-width: 400px;
+      margin-top: vars.$spacing-md;
+    }
+  }
+
+  &__progress-text {
+    margin-top: vars.$spacing-sm;
+    color: vars.$primary-color;
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  // Validated state
+  &__validated {
+    // Photo grid is rendered here
+  }
+
+  // Uploading state
+  &__uploading {
+    @include mixins.flex-center;
+    padding: vars.$spacing-xxl;
+  }
+
+  &__upload-progress {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+
+    h3 {
+      margin: vars.$spacing-md 0;
+      color: vars.$text-primary;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 0 0 vars.$spacing-lg 0;
+      color: vars.$text-secondary;
+    }
+
+    mat-progress-bar {
+      width: 100%;
+      margin-top: vars.$spacing-md;
+    }
+  }
+
+  &__upload-icon {
+    font-size: 60px;
+    width: 60px;
+    height: 60px;
+    color: vars.$primary-color;
+  }
+
+  // Processing state
+  &__processing {
+    @include mixins.flex-center;
+    padding: vars.$spacing-xxl;
+  }
+
+  &__process-steps {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+
+    h3 {
+      margin: vars.$spacing-md 0;
+      color: vars.$text-primary;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 0 0 vars.$spacing-lg 0;
+      color: vars.$text-secondary;
+    }
+  }
+
+  &__steps {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-sm;
+    margin-top: vars.$spacing-lg;
+    padding: vars.$spacing-md;
+    background-color: vars.$surface-color;
+    border-radius: vars.$radius-md;
+  }
+
+  &__step {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-sm;
+    padding: vars.$spacing-sm;
+    color: vars.$text-secondary;
+    border-radius: vars.$radius-sm;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &--done {
+      color: vars.$success-color;
+
+      mat-icon {
+        color: vars.$success-color;
+      }
+    }
+
+    &--active {
+      background-color: rgba(255, 127, 0, 0.1);
+      color: vars.$primary-color;
+
+      mat-icon {
+        color: vars.$primary-color;
+        animation: spin 2s linear infinite;
+      }
+    }
+  }
+
+  &__estimate {
+    margin-top: vars.$spacing-md;
+    color: vars.$text-secondary;
+    font-size: 13px;
+    font-style: italic;
+  }
+
+  // Success state
+  &__success {
+    @include mixins.flex-center;
+    padding: vars.$spacing-xxl;
+  }
+
+  &__success-content {
+    text-align: center;
+
+    h3 {
+      margin: vars.$spacing-md 0;
+      color: vars.$success-color;
+      font-size: 24px;
+    }
+
+    p {
+      margin: 0 0 vars.$spacing-lg 0;
+      color: vars.$text-secondary;
+    }
+  }
+
+  &__success-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: vars.$success-color;
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  // Error state
+  &__error {
+    @include mixins.flex-center;
+    padding: vars.$spacing-xxl;
+  }
+
+  &__error-content {
+    text-align: center;
+    max-width: 500px;
+
+    h3 {
+      margin: vars.$spacing-md 0;
+      color: vars.$error-color;
+      font-size: 24px;
+    }
+
+    p {
+      margin: 0 0 vars.$spacing-lg 0;
+      color: vars.$text-secondary;
+    }
+
+    button {
+      margin-top: vars.$spacing-md;
+    }
+  }
+
+  &__error-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: vars.$error-color;
+  }
+
+  &__error-message {
+    padding: vars.$spacing-md;
+    background-color: vars.$error-bg;
+    border-radius: vars.$radius-sm;
+    color: vars.$text-primary;
+    margin-bottom: vars.$spacing-md;
+  }
+
+  // Actions
+  &__actions {
+    padding: vars.$spacing-md vars.$spacing-lg;
+    border-top: 1px solid vars.$border-color;
+    display: flex;
+    justify-content: flex-end;
+    gap: vars.$spacing-sm;
+  }
+
+  &__button {
+    &--cancel {
+      color: vars.$text-secondary;
+    }
+
+    &--upload {
+      mat-icon {
+        margin-right: vars.$spacing-xs;
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+// master - MARSISCA - END 2026-01-10

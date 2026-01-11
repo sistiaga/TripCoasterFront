@@ -1,0 +1,257 @@
+// master - MARSISCA - BEGIN 2026-01-10
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
+.photo-grid {
+  width: 100%;
+
+  // Empty state
+  &__empty {
+    @include mixins.flex-center;
+    flex-direction: column;
+    padding: vars.$spacing-xl;
+    text-align: center;
+    color: vars.$text-secondary;
+  }
+
+  &__empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: vars.$text-secondary;
+    margin-bottom: vars.$spacing-md;
+  }
+
+  &__empty-text {
+    margin: 0;
+    font-size: 18px;
+    color: vars.$text-secondary;
+  }
+
+  // Grid container
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: vars.$spacing-md;
+    padding: vars.$spacing-sm;
+
+    @include mixins.respond-to(mobile) {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: vars.$spacing-sm;
+    }
+
+    @include mixins.respond-to(tablet) {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    @include mixins.respond-to(desktop) {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: vars.$spacing-lg;
+    }
+  }
+
+  // Individual photo item
+  &__item {
+    display: flex;
+    flex-direction: column;
+    border-radius: vars.$radius-md;
+    background: vars.$surface-color;
+    box-shadow: vars.$shadow-sm;
+    overflow: hidden;
+    transition: all vars.$transition-base;
+
+    &:hover {
+      box-shadow: vars.$shadow-md;
+      transform: translateY(-2px);
+    }
+
+    &--invalid {
+      border: 2px solid vars.$error-color;
+    }
+  }
+
+  // Photo preview container
+  &__preview {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; // 1:1 aspect ratio
+    background-color: vars.$secondary-color;
+    overflow: hidden;
+  }
+
+  &__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform vars.$transition-base;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  // Overlay with buttons and badges
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: vars.$spacing-xs;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    opacity: 0;
+    transition: opacity vars.$transition-base;
+
+    .photo-grid__item:hover & {
+      opacity: 1;
+    }
+  }
+
+  // Remove button
+  &__remove {
+    align-self: flex-end;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: vars.$error-color;
+    width: 32px;
+    height: 32px;
+
+    &:hover {
+      background-color: vars.$error-color;
+      color: white;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Status badges container
+  &__badges {
+    display: flex;
+    gap: vars.$spacing-xs;
+    align-self: flex-start;
+  }
+
+  &__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: vars.$radius-sm;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: vars.$shadow-sm;
+
+    &--success {
+      background-color: rgba(76, 175, 80, 0.9);
+      color: white;
+    }
+
+    &--warning {
+      background-color: rgba(255, 127, 0, 0.9);
+      color: white;
+    }
+  }
+
+  &__badge-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  // Error indicator
+  &__error {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    @include mixins.flex-center;
+    gap: vars.$spacing-xs;
+    padding: vars.$spacing-xs;
+    background-color: vars.$error-color;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &__error-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &__error-text {
+    font-size: 13px;
+  }
+
+  // Photo info
+  &__info {
+    padding: vars.$spacing-sm;
+    background-color: vars.$surface-color;
+  }
+
+  &__name {
+    margin: 0 0 vars.$spacing-xs 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: vars.$text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__size {
+    margin: 0;
+    font-size: 12px;
+    color: vars.$text-secondary;
+  }
+
+  // Summary section
+  &__summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: vars.$spacing-md;
+    padding: vars.$spacing-md;
+    margin-top: vars.$spacing-md;
+    background-color: vars.$surface-color;
+    border-radius: vars.$radius-md;
+    box-shadow: vars.$shadow-sm;
+  }
+
+  &__summary-item {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-xs;
+    font-size: 14px;
+    color: vars.$text-primary;
+
+    &--success {
+      color: vars.$success-color;
+    }
+
+    &--warning {
+      color: vars.$warning-color;
+    }
+  }
+
+  &__summary-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+// master - MARSISCA - END 2026-01-10

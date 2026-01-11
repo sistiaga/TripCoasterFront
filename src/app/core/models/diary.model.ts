@@ -13,6 +13,12 @@ export interface Diary {
     name: string;
     description: string;
   };
+  // master - MARSISCA - BEGIN 2026-01-10
+  diaryWeatherId?: number | null;
+  diaryWeather?: import('./diary-weather.model').DiaryWeather;
+  locations?: import('./location.model').Location[];
+  photos?: import('./trip.model').TripPhoto[];
+  // master - MARSISCA - END 2026-01-10
 }
 // master - MARSISCA - END 2025-12-08
 

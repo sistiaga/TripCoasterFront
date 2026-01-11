@@ -10,6 +10,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { Accommodation } from '../../../core/models/accommodation.model';
 import { AccommodationService } from '../../../core/services/accommodation.service';
 import { AccommodationFormModal } from '../accommodation-form-modal/accommodation-form-modal';
+// master - MARSISCA - BEGIN 2026-01-10
+import { environment } from '../../../../environments/environment';
+// master - MARSISCA - END 2026-01-10
 
 @Component({
   selector: 'app-accommodations',
@@ -27,7 +30,9 @@ import { AccommodationFormModal } from '../accommodation-form-modal/accommodatio
 })
 export class Accommodations implements OnInit, OnDestroy {
   accommodations: Accommodation[] = [];
-  displayedColumns: string[] = ['nameSpanish', 'nameEnglish', 'actions'];
+  // master - MARSISCA - BEGIN 2026-01-10
+  displayedColumns: string[] = ['nameSpanish', 'nameEnglish', 'icon', 'actions'];
+  // master - MARSISCA - END 2026-01-10
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -112,5 +117,20 @@ export class Accommodations implements OnInit, OnDestroy {
     const currentLang = this.translateService.currentLang || 'en';
     return currentLang === 'es' ? accommodation.nameSpanish : accommodation.nameEnglish;
   }
+
+  // master - MARSISCA - BEGIN 2026-01-10
+  getIconUrl(icon: string | undefined): string | null {
+    if (!icon) return null;
+
+    // If it's already a full URL, return it
+    if (icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('data:')) {
+      return icon;
+    }
+
+    // If it's a relative path, construct the full URL
+    const baseUrl = environment.apiUrl.replace('/api', '');
+    return `${baseUrl}/${icon}`;
+  }
+  // master - MARSISCA - END 2026-01-10
 }
 // master - MARSISCA - END 2025-12-31

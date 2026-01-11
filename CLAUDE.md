@@ -128,12 +128,47 @@ Use these exact HEX color codes throughout the application:
 - **Font Source**: Google Fonts (via CDN)
 - **Fallback Stack**: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`
 
-### SCSS Variables
+### SCSS Architecture (Updated 2026-01-08)
 
-All styles should reference SCSS variables defined in `styles.scss`:
-- `$primary-color`: Main orange color
-- `$secondary-color`: Black color
-- `$accent-light`: Light gray
-- `$accent-dark`: Blue
-- `$font-primary`: Montserrat Italic
-- `$font-secondary`: Montserrat
+**CRITICAL**: The project uses a modular SCSS architecture. Follow these rules strictly:
+
+#### Styles Folder Structure
+
+```
+src/styles/
+├── base/           - Typography, layout, resets
+├── themes/         - Variables, Material theme, global overrides
+├── components/     - Reusable component styles (forms, dialogs, buttons, cards)
+├── utilities/      - Mixins, helpers, animations
+└── vendor/         - Third-party library fixes
+```
+
+#### Rules for Component Styles
+
+1. **NEVER use `::ng-deep`** - All Material overrides go in `src/styles/themes/_material-overrides.scss`
+2. **ALWAYS import variables and mixins**:
+   ```scss
+   @use '../../../../styles/themes/variables' as vars;
+   @use '../../../../styles/utilities/mixins' as mixins;
+   ```
+3. **ALWAYS use SCSS variables** instead of hardcoded values:
+   - Colors: `vars.$primary-color`, `vars.$secondary-color`, etc.
+   - Spacing: `vars.$spacing-sm`, `vars.$spacing-md`, `vars.$spacing-lg`
+   - Border radius: `vars.$radius-sm`, `vars.$radius-md`, `vars.$radius-lg`
+   - Shadows: `vars.$shadow-sm`, `vars.$shadow-md`, `vars.$shadow-lg`
+4. **Use mixins for common patterns**:
+   - `@include mixins.flex-center;`
+   - `@include mixins.respond-to(mobile);`
+   - `@include mixins.hover-lift;`
+5. **Use utility classes in templates** when appropriate:
+   - `.full-width`, `.d-flex`, `.align-center`, `.gap-2`, etc.
+
+#### Reference Component
+
+See `src/app/shared/components/trip-form-modal/trip-form-modal.scss` as the reference implementation.
+
+#### Complete Documentation
+
+- Architecture guide: `/docs/Cambio de estilos.md`
+- Implementation details: `/docs/implementacion-fase-1.md`
+- Quick reference: `/src/styles/README.md`

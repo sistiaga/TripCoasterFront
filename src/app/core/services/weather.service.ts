@@ -14,7 +14,9 @@ import {
   providedIn: 'root'
 })
 export class WeatherService {
-  private readonly endpoint = '/weathers';
+  // master - MARSISCA - BEGIN 2026-01-10
+  private readonly endpoint = '/weather-types';
+  // master - MARSISCA - END 2026-01-10
 
   constructor(private apiService: ApiService) {}
 

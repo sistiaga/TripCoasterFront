@@ -6,6 +6,9 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+// master - MARSISCA - BEGIN 2026-01-10
+import { MatIconModule } from '@angular/material/icon';
+// master - MARSISCA - END 2026-01-10
 import { TranslateModule } from '@ngx-translate/core';
 import { Accommodation } from '../../../core/models/accommodation.model';
 import { AccommodationService } from '../../../core/services/accommodation.service';
@@ -24,6 +27,9 @@ export interface AccommodationFormModalData {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    // master - MARSISCA - BEGIN 2026-01-10
+    MatIconModule,
+    // master - MARSISCA - END 2026-01-10
     TranslateModule
   ],
   templateUrl: './accommodation-form-modal.html',
@@ -32,6 +38,10 @@ export interface AccommodationFormModalData {
 export class AccommodationFormModal implements OnInit {
   form: FormGroup;
   isEditMode: boolean;
+  // master - MARSISCA - BEGIN 2026-01-10
+  selectedIconFile: File | null = null;
+  iconPreview: string | null = null;
+  // master - MARSISCA - END 2026-01-10
 
   constructor(
     private fb: FormBuilder,
@@ -52,8 +62,33 @@ export class AccommodationFormModal implements OnInit {
         nameSpanish: this.data.accommodation.nameSpanish,
         nameEnglish: this.data.accommodation.nameEnglish
       });
+      // master - MARSISCA - BEGIN 2026-01-10
+      if (this.data.accommodation.icon) {
+        this.iconPreview = this.data.accommodation.icon;
+      }
+      // master - MARSISCA - END 2026-01-10
     }
   }
+
+  // master - MARSISCA - BEGIN 2026-01-10
+  onIconSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedIconFile = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.iconPreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(this.selectedIconFile);
+    }
+  }
+
+  removeIcon(): void {
+    this.selectedIconFile = null;
+    this.iconPreview = null;
+  }
+  // master - MARSISCA - END 2026-01-10
 
   onSubmit(): void {
     if (this.form.invalid) {
@@ -62,10 +97,21 @@ export class AccommodationFormModal implements OnInit {
 
     const formValue = this.form.value;
 
+    // master - MARSISCA - BEGIN 2026-01-10
     if (this.isEditMode && this.data.accommodation) {
       this.accommodationService.updateAccommodation(this.data.accommodation.id, formValue).subscribe({
         next: (response) => {
-          if (response.success) {
+          if (response.success && this.selectedIconFile) {
+            this.accommodationService.uploadIcon(this.data.accommodation!.id, this.selectedIconFile).subscribe({
+              next: () => {
+                this.dialogRef.close(true);
+              },
+              error: (error) => {
+                console.error('Error uploading icon:', error);
+                this.dialogRef.close(true);
+              }
+            });
+          } else {
             this.dialogRef.close(true);
           }
         },
@@ -76,7 +122,17 @@ export class AccommodationFormModal implements OnInit {
     } else {
       this.accommodationService.createAccommodation(formValue).subscribe({
         next: (response) => {
-          if (response.success) {
+          if (response.success && this.selectedIconFile && response.data) {
+            this.accommodationService.uploadIcon(response.data.id, this.selectedIconFile).subscribe({
+              next: () => {
+                this.dialogRef.close(true);
+              },
+              error: (error) => {
+                console.error('Error uploading icon:', error);
+                this.dialogRef.close(true);
+              }
+            });
+          } else {
             this.dialogRef.close(true);
           }
         },
@@ -85,6 +141,7 @@ export class AccommodationFormModal implements OnInit {
         }
       });
     }
+    // master - MARSISCA - END 2026-01-10
   }
 
   onCancel(): void {

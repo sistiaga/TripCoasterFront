@@ -1,0 +1,171 @@
+<!-- master - MARSISCA - BEGIN 2026-01-10 -->
+<div class="photo-upload">
+  <!-- Modal Header -->
+  <h2 mat-dialog-title class="photo-upload__title">
+    <mat-icon class="photo-upload__title-icon">add_photo_alternate</mat-icon>
+    Create Trip from Photos
+  </h2>
+
+  <!-- Modal Content -->
+  <mat-dialog-content class="photo-upload__content">
+
+    <!-- IDLE STATE: File selection -->
+    <div class="photo-upload__drop-zone" *ngIf="getStateType() === 'idle'">
+      <input
+        type="file"
+        #fileInput
+        multiple
+        accept="image/jpeg,image/jpg,image/png,image/heic"
+        (change)="onFilesSelected($event)"
+        class="photo-upload__file-input"
+      />
+
+      <div
+        class="photo-upload__drop-area"
+        (dragover)="onDragOver($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()"
+      >
+        <mat-icon class="photo-upload__drop-icon">cloud_upload</mat-icon>
+        <h3 class="photo-upload__drop-title">Drag & Drop Photos Here</h3>
+        <p class="photo-upload__drop-subtitle">or click to browse</p>
+
+        <div class="photo-upload__drop-info">
+          <div class="photo-upload__drop-info-item">
+            <mat-icon>check_circle</mat-icon>
+            <span>JPEG, PNG, HEIC</span>
+          </div>
+          <div class="photo-upload__drop-info-item">
+            <mat-icon>check_circle</mat-icon>
+            <span>Max 10MB per photo</span>
+          </div>
+          <div class="photo-upload__drop-info-item">
+            <mat-icon>check_circle</mat-icon>
+            <span>Up to 100 photos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALIDATING STATE -->
+    <div class="photo-upload__validating" *ngIf="getStateType() === 'validating'">
+      <mat-spinner diameter="60"></mat-spinner>
+      <h3>Validating Photos...</h3>
+      <p>Checking photo metadata ({{ photoCount() }} photos)</p>
+      <mat-progress-bar mode="determinate" [value]="uploadProgress()"></mat-progress-bar>
+      <span class="photo-upload__progress-text">{{ uploadProgress() }}%</span>
+    </div>
+
+    <!-- VALIDATED STATE: Show photo grid -->
+    <div class="photo-upload__validated" *ngIf="getStateType() === 'validated'">
+      <app-photo-grid
+        [photos]="selectedPhotos()"
+        [validationResults]="validationResults()"
+        (photoRemoved)="onPhotoRemoved($event)"
+      ></app-photo-grid>
+    </div>
+
+    <!-- UPLOADING STATE -->
+    <div class="photo-upload__uploading" *ngIf="getStateType() === 'uploading'">
+      <div class="photo-upload__upload-progress">
+        <mat-icon class="photo-upload__upload-icon">cloud_upload</mat-icon>
+        <h3>Uploading Photos...</h3>
+        <p>Uploading {{ photoCount() }} photos to server</p>
+        <mat-progress-bar mode="determinate" [value]="uploadProgress()"></mat-progress-bar>
+        <span class="photo-upload__progress-text">{{ uploadProgress() }}%</span>
+      </div>
+    </div>
+
+    <!-- PROCESSING STATE -->
+    <div class="photo-upload__processing" *ngIf="getStateType() === 'processing'">
+      <div class="photo-upload__process-steps">
+        <mat-spinner diameter="60"></mat-spinner>
+        <h3>Creating Your Trip...</h3>
+        <p>This may take a few moments</p>
+
+        <div class="photo-upload__steps">
+          <div class="photo-upload__step photo-upload__step--done">
+            <mat-icon>check_circle</mat-icon>
+            <span>Photos uploaded</span>
+          </div>
+          <div class="photo-upload__step photo-upload__step--active">
+            <mat-icon>autorenew</mat-icon>
+            <span>Extracting metadata</span>
+          </div>
+          <div class="photo-upload__step">
+            <mat-icon>location_on</mat-icon>
+            <span>Finding locations</span>
+          </div>
+          <div class="photo-upload__step">
+            <mat-icon>cloud</mat-icon>
+            <span>Getting weather data</span>
+          </div>
+          <div class="photo-upload__step">
+            <mat-icon>book</mat-icon>
+            <span>Creating diary entries</span>
+          </div>
+        </div>
+
+        <p class="photo-upload__estimate">Estimated time: ~30 seconds</p>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="photo-upload__success" *ngIf="getStateType() === 'success'">
+      <div class="photo-upload__success-content">
+        <mat-icon class="photo-upload__success-icon">check_circle</mat-icon>
+        <h3>Trip Created Successfully!</h3>
+        <p>Your trip is ready. Redirecting...</p>
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div class="photo-upload__error" *ngIf="isErrorState()">
+      <div class="photo-upload__error-content">
+        <mat-icon class="photo-upload__error-icon">error</mat-icon>
+        <h3>Upload Failed</h3>
+        <p class="photo-upload__error-message">{{ getError()?.message }}</p>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onRetryClicked()"
+          *ngIf="getError()?.recoverable"
+        >
+          <mat-icon>refresh</mat-icon>
+          Retry
+        </button>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+
+  <!-- Modal Actions -->
+  <mat-dialog-actions class="photo-upload__actions">
+    <!-- Cancel button (always visible except in success state) -->
+    <button
+      mat-button
+      (click)="onCancelClicked()"
+      class="photo-upload__button photo-upload__button--cancel"
+      *ngIf="getStateType() !== 'success'"
+      [disabled]="isUploading()"
+    >
+      Cancel
+    </button>
+
+    <!-- Upload button (only in validated state) -->
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onUploadClicked()"
+      [disabled]="!canUpload()"
+      class="photo-upload__button photo-upload__button--upload"
+      *ngIf="getStateType() === 'validated'"
+    >
+      <mat-icon>cloud_upload</mat-icon>
+      Create Trip ({{ photoCount() }} photos)
+    </button>
+  </mat-dialog-actions>
+</div>
+<!-- master - MARSISCA - END 2026-01-10 -->

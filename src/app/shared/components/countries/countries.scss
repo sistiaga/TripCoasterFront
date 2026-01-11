@@ -1,35 +1,37 @@
-// master - MARSISCA - BEGIN 2026-01-02
+// master - MARSISCA - BEGIN 2026-01-08
+@use '../../../../styles/themes/variables' as vars;
+
 .countries-container {
-  padding: 1rem;
-}
+  padding: vars.$spacing-md;
 
-.header {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: vars.$spacing-md;
+  }
 
-table {
-  width: 100%;
-}
+  table {
+    width: 100%;
+  }
 
-.mat-cell, .mat-header-cell {
-  padding: 0.5rem;
-}
+  .mat-cell, .mat-header-cell {
+    padding: vars.$spacing-sm;
+  }
 
-.mat-row:hover {
-  background-color: rgba(0, 0, 0, 0.04);
-}
+  .mat-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
 
-.mat-icon-button {
-  margin: 0 0.25rem;
-}
+  .mat-icon-button {
+    margin: 0 vars.$spacing-xs;
+  }
 
-.flag-icon {
-  width: 32px;
-  height: 24px;
-  object-fit: cover;
-  border: 1px solid #ddd;
-  border-radius: 2px;
+  .flag-icon {
+    width: 32px;
+    height: 24px;
+    object-fit: cover;
+    border: 1px solid vars.$border-color;
+    border-radius: 2px;
+  }
 }
-// master - MARSISCA - END 2026-01-02
+// master - MARSISCA - END 2026-01-08
