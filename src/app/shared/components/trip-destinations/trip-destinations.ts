@@ -96,9 +96,7 @@ export class TripDestinations implements OnInit, OnDestroy {
   private performSearch(query: string): Observable<LocationSuggestion[]> {
     return this.locationService.search(query).pipe(
       switchMap(response => {
-        console.log('Search response:', response);
         if (response.success && response.data) {
-          console.log('Search data:', response.data);
 
           // Validate that all suggestions have required fields
           const validSuggestions = response.data.filter(suggestion => {
@@ -117,7 +115,6 @@ export class TripDestinations implements OnInit, OnDestroy {
             return isValid;
           });
 
-          console.log('Valid suggestions:', validSuggestions);
           return of(validSuggestions);
         } else {
           throw new Error(response.message || 'Search failed');
@@ -147,9 +144,6 @@ export class TripDestinations implements OnInit, OnDestroy {
         next: (response) => {
           if (response.success && response.data) {
             this.tripLocations = response.data;
-            // master - MARSISCA - BEGIN 2024-12-24
-            console.log('Loaded trip locations:', this.tripLocations);
-            // master - MARSISCA - END 2024-12-24
           }
           this.isLoading = false;
         },
@@ -166,8 +160,6 @@ export class TripDestinations implements OnInit, OnDestroy {
    */
   onLocationSelected(event: any): void {
     const location: LocationSuggestion = event;
-    console.log('Location selected event:', event);
-    console.log('Location selected:', location);
 
     const hasIdentifier = (location?.id !== undefined && location?.id !== null) ||
                          (location?.externalId !== undefined && location?.externalId !== null);
@@ -240,21 +232,18 @@ export class TripDestinations implements OnInit, OnDestroy {
     this.errorMessage = '';
     this.successMessage = '';
 
-    console.log('Step 1: Creating location in database', location);
 
     // Step 1: Create the location in the database
     this.locationService.createLocation(location)
       .pipe(
         takeUntil(this.destroy$),
         switchMap((createResponse) => {
-          console.log('Location created:', createResponse);
 
           if (!createResponse.success || !createResponse.data) {
             throw new Error(createResponse.message || 'Error creating location');
           }
 
           const createdLocationId = createResponse.data.id;
-          console.log('Step 2: Associating location', createdLocationId, 'with trip', this.tripId);
 
           // Step 2: Associate the created location with the trip
           return this.locationService.addLocationToTrip(this.tripId!, createdLocationId);
@@ -263,9 +252,6 @@ export class TripDestinations implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.success && response.data) {
-            // master - MARSISCA - BEGIN 2024-12-24
-            console.log('Location added successfully, received data:', response.data);
-            // master - MARSISCA - END 2024-12-24
             this.tripLocations.push(response.data);
             this.successMessage = `${location.name} added successfully`;
             this.selectedLocation = null;

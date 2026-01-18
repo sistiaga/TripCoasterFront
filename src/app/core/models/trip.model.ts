@@ -6,6 +6,19 @@ import { TransportationType } from './transportation-type.model';
 import { Country } from './country.model';
 // master - MARSISCA - END 2026-01-03
 
+export interface PhotoWeather {
+  id: number;
+  dateTime: string;
+  wmoCode: number;
+  temperature: number;
+  precipitationMm: number;
+  windSpeed: number;
+  cloudCoverage: number;
+  source: string;
+  latitude: number;
+  longitude: number;
+}
+
 export interface TripPhoto {
   id: number;
   url: string;
@@ -22,11 +35,10 @@ export interface TripPhoto {
   cameraMake?: string;
   cameraModel?: string;
   dateTaken?: string;
-  // master - MARSISCA - BEGIN 2026-01-10
   dateTakenUTC?: string;
   timezone?: string;
-  // master - MARSISCA - END 2026-01-10
   caption?: string;
+  photoWeather?: PhotoWeather;
   createdAt: string;
   updatedAt?: string;
 }
@@ -47,10 +59,10 @@ export interface Trip {
   locations?: TripLocationDetail[];
   // master - MARSISCA - END 2025-12-28
   // master - MARSISCA - BEGIN 2026-01-09
-  weatherId?: number;
-  weather?: Weather;
-  accommodationId?: number;
-  accommodation?: Accommodation;
+  weatherTypeId?: number;
+  weatherType?: Weather;
+  accommodationTypeId?: number;
+  accommodationType?: Accommodation;
   transportationTypeId?: number;
   transportationType?: TransportationType;
   countryId?: number;

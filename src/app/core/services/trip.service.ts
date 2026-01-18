@@ -80,6 +80,10 @@ export class TripService {
     return this.apiService.delete(`/photos/${photoId}`);
   }
 
+  getPhotoById(photoId: number): Observable<PhotoResponse> {
+    return this.apiService.get<PhotoResponse>(`/photos/${photoId}`);
+  }
+
   // master - MARSISCA - BEGIN 2026-01-10
   /**
    * Get trip with full details (including diaries, photos, locations, etc.)

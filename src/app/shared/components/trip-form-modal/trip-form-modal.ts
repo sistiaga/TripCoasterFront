@@ -121,8 +121,8 @@ export class TripFormModal implements OnInit {
       endDate: ['', [Validators.required]],
       rating: [null, [Validators.min(0), Validators.max(5)]],
       // master - MARSISCA - BEGIN 2026-01-03
-      weatherId: [null],
-      accommodationId: [null],
+      weatherTypeId: [null],
+      accommodationTypeId: [null],
       transportationTypeId: [null],
       countryId: [null]
       // master - MARSISCA - END 2026-01-03
@@ -257,17 +257,12 @@ export class TripFormModal implements OnInit {
 
 // master - MARSISCA - BEGIN 2026-01-03
   private populateForm(trip: Trip): void {
-    console.log('Populating form with trip data:', trip);
 
-    // master - MARSISCA - BEGIN 2026-01-09
     // Extract IDs from nested objects if they exist
-    const weatherId = trip.weatherId || trip.weather?.id || null;
-    const accommodationId = trip.accommodationId || trip.accommodation?.id || null;
+    const weatherTypeId = trip.weatherTypeId || trip.weatherType?.id || null;
+    const accommodationTypeId = trip.accommodationTypeId || trip.accommodationType?.id || null;
     const transportationTypeId = trip.transportationTypeId || trip.transportationType?.id || null;
     const countryId = trip.countryId || (trip.countries && trip.countries.length > 0 ? trip.countries[0].id : null);
-    // master - MARSISCA - END 2026-01-09
-
-    console.log('Extracted IDs:', { weatherId, accommodationId, transportationTypeId, countryId });
 
     this.tripForm.patchValue({
       name: trip.name,
@@ -275,8 +270,8 @@ export class TripFormModal implements OnInit {
       startDate: new Date(trip.startDate),
       endDate: new Date(trip.endDate),
       rating: trip.rating,
-      weatherId: weatherId,
-      accommodationId: accommodationId,
+      weatherTypeId: weatherTypeId,
+      accommodationTypeId: accommodationTypeId,
       transportationTypeId: transportationTypeId,
       countryId: countryId
     });
@@ -287,21 +282,13 @@ export class TripFormModal implements OnInit {
       const country = this.countries.find(c => c.id === countryId);
       if (country) {
         this.countryControl.setValue(country);
-        console.log('Country set:', country);
       } else if (trip.countries && trip.countries.length > 0) {
         // Fallback: use trip.countries[0] if provided
         this.countryControl.setValue(trip.countries[0]);
-        console.log('Country set from trip.countries[0]:', trip.countries[0]);
       }
     }
-    // master - MARSISCA - END 2026-01-09
-
-    console.log('Form values after populate:', this.tripForm.value);
-    console.log('Country control value:', this.countryControl.value);
   }
-  // master - MARSISCA - END 2026-01-03
 
-// master - MARSISCA - BEGIN 2026-01-01
   private dateRangeValidator(group: FormGroup): { [key: string]: any } | null {
     const startDate = group.get('startDate')?.value;
     const endDate = group.get('endDate')?.value;
@@ -336,8 +323,6 @@ export class TripFormModal implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    // master - MARSISCA - BEGIN 2026-01-03
-    console.log('Form values before sending:', this.tripForm.value);
 
     const tripData = {
       name: this.tripForm.value.name?.trim(),
@@ -346,14 +331,11 @@ export class TripFormModal implements OnInit {
       endDate: this.formatDate(this.tripForm.value.endDate),
       rating: this.tripForm.value.rating ? parseFloat(this.tripForm.value.rating) : undefined,
       userId: user.id,
-      weatherId: this.tripForm.value.weatherId !== null ? this.tripForm.value.weatherId : undefined,
-      accommodationId: this.tripForm.value.accommodationId !== null ? this.tripForm.value.accommodationId : undefined,
+      weatherTypeId: this.tripForm.value.weatherTypeId !== null ? this.tripForm.value.weatherTypeId : undefined,
+      accommodationTypeId: this.tripForm.value.accommodationTypeId !== null ? this.tripForm.value.accommodationTypeId : undefined,
       transportationTypeId: this.tripForm.value.transportationTypeId !== null ? this.tripForm.value.transportationTypeId : undefined,
       countryId: this.tripForm.value.countryId !== null ? this.tripForm.value.countryId : undefined
     };
-
-    console.log('Trip data being sent to backend:', tripData);
-    // master - MARSISCA - END 2026-01-03
 
     if (this.mode === 'create') {
       this.tripService.createTrip(tripData).subscribe({

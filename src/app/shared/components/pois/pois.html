@@ -1,0 +1,52 @@
+<!-- master - MARSISCA - BEGIN 2026-01-18 -->
+<div class="pois-container">
+  <table mat-table [dataSource]="pois" class="mat-elevation-z2">
+    <ng-container matColumnDef="nameSpanish">
+      <th mat-header-cell *matHeaderCellDef>{{ 'POIS.NAME_SPANISH' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.nameSpanish }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nameEnglish">
+      <th mat-header-cell *matHeaderCellDef>{{ 'POIS.NAME_ENGLISH' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{ element.nameEnglish }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>{{ 'POIS.CATEGORY' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.category) {
+          {{ element.category }}
+        } @else {
+          <span>-</span>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="coordinates">
+      <th mat-header-cell *matHeaderCellDef>{{ 'POIS.COORDINATES' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{ formatCoordinates(element.latitude, element.longitude) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{ 'POIS.ACTIONS' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="openEditDialog(element)" [title]="'POIS.EDIT' | translate">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deletePOI(element)" [title]="'POIS.DELETE' | translate">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        {{ 'POIS.NO_DATA' | translate }}
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- master - MARSISCA - END 2026-01-18 -->

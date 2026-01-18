@@ -1,11 +1,9 @@
-// master - MARSISCA - BEGIN 2026-01-08
 @use '../../../styles/themes/variables' as vars;
 @use '../../../styles/utilities/mixins' as mixins;
 
 // =============================================================================
-// Trip Detail Page - Complex layout with hero section
-// All hardcoded values replaced with variables
-// ::ng-deep eliminated (star rating styles now global)
+// Trip Detail Page
+// Uses global styles from /styles/components/_cards.scss
 // =============================================================================
 
 .trip-detail-page {
@@ -14,73 +12,119 @@
 }
 
 // Hero Section
-.hero-section {
+.hero-section-redesigned {
   position: relative;
-  height: 500px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: vars.$background-color;
+  box-shadow: vars.$shadow-sm;
+  margin-top: 64px;
 
-  .hero-overlay {
-    @include mixins.absolute-cover;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+  .back-button {
+    position: absolute;
+    top: vars.$spacing-lg;
+    left: vars.$spacing-lg;
+    background: rgba(255, 255, 255, 0.95);
+    color: vars.$text-primary;
+    z-index: 10;
+    box-shadow: vars.$shadow-sm;
+
+    &:hover {
+      background: vars.$background-color;
+    }
+  }
+
+  .hero-container {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: vars.$spacing-lg;
+    min-height: 320px;
+    max-height: 400px;
 
-    .back-button {
-      position: absolute;
-      top: vars.$spacing-lg;
-      left: vars.$spacing-lg;
-      background: rgba(255, 255, 255, 0.9);
-      color: vars.$text-primary;
+    .hero-photo-container {
+      flex: 0 0 35%;
+      max-width: 35%;
+      position: relative;
+      overflow: hidden;
+      background: vars.$surface-color;
+      @include mixins.flex-center;
+      padding: vars.$spacing-md;
 
-      &:hover {
-        background: white;
+      .hero-photo {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        border-radius: vars.$radius-md;
+      }
+
+      .hero-photo-placeholder {
+        @include mixins.flex-center;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, vars.$surface-color 0%, vars.$border-color 100%);
+
+        mat-icon {
+          font-size: 120px;
+          width: 120px;
+          height: 120px;
+          color: vars.$border-color;
+        }
       }
     }
 
-    .hero-content {
-      margin-top: auto;
-      margin-bottom: vars.$spacing-xxl;
-      color: white;
+    .hero-info-container {
+      flex: 1;
+      padding: vars.$spacing-xxl;
+      display: flex;
+      flex-direction: column;
+      gap: vars.$spacing-lg;
+      position: relative;
 
       .trip-title {
-        font-size: 48px;
+        font-size: 36px;
         font-weight: 700;
-        margin: 0 0 vars.$spacing-md 0;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin: 0;
+        color: vars.$text-primary;
+        line-height: 1.2;
       }
 
       .trip-meta {
         display: flex;
-        align-items: center;
-        gap: vars.$spacing-lg;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: vars.$spacing-md;
 
-        .trip-dates {
+        .meta-item {
           display: flex;
           align-items: center;
           gap: vars.$spacing-sm;
-          font-size: 18px;
-          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+          color: vars.$text-secondary;
 
           mat-icon {
-            font-size: 24px;
-            width: 24px;
-            height: 24px;
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+            color: vars.$primary-color;
+          }
+
+          span {
+            font-size: 16px;
           }
         }
+      }
 
-        .hero-rating {
-          // Star styles now come from global star-rating component
-          // No ::ng-deep needed
-          .star {
-            font-size: 28px;
-            color: #ffd700;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-          }
+      .trip-description-preview {
+        flex: 1;
+
+        p {
+          margin: 0;
+          color: vars.$text-primary;
+          font-size: 16px;
+          line-height: 1.6;
+          max-height: 4.8em;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
         }
       }
 
@@ -88,34 +132,68 @@
         display: flex;
         gap: vars.$spacing-md;
         flex-wrap: wrap;
-        margin-top: vars.$spacing-md;
 
         .attribute-item {
           display: flex;
           align-items: center;
           gap: vars.$spacing-sm;
           padding: vars.$spacing-sm vars.$spacing-md;
-          background-color: rgba(255, 255, 255, 0.2);
-          backdrop-filter: blur(10px);
+          background-color: vars.$accent-light;
           border-radius: vars.$radius-xl;
-          font-size: 16px;
-          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+          font-size: 14px;
+          color: vars.$text-primary;
 
           .attribute-icon {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             object-fit: contain;
-            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
           }
         }
       }
-    }
 
-    .edit-fab {
-      position: absolute;
-      bottom: -28px;
-      right: vars.$spacing-xxl;
-      box-shadow: vars.$shadow-md;
+      .countries-section {
+        h3 {
+          font-size: 18px;
+          font-weight: 600;
+          color: vars.$text-primary;
+          margin: 0 0 vars.$spacing-md 0;
+        }
+
+        .countries-flags {
+          display: flex;
+          gap: vars.$spacing-sm;
+          flex-wrap: wrap;
+
+          .country-flag-item {
+            width: 48px;
+            height: 36px;
+            border-radius: vars.$radius-sm;
+            overflow: hidden;
+            box-shadow: vars.$shadow-sm;
+            cursor: pointer;
+            transition: all vars.$transition-base;
+
+            &:hover {
+              transform: scale(1.1);
+              box-shadow: vars.$shadow-md;
+            }
+
+            .country-flag {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              display: block;
+            }
+          }
+        }
+      }
+
+      .edit-fab {
+        position: absolute;
+        bottom: vars.$spacing-lg;
+        right: vars.$spacing-lg;
+        box-shadow: vars.$shadow-md;
+      }
     }
   }
 }
@@ -127,161 +205,73 @@
   padding: 60px vars.$spacing-lg vars.$spacing-xxl;
 }
 
-// Section Styles
-.section {
-  background: white;
-  border-radius: vars.$radius-lg;
-  box-shadow: vars.$shadow-sm;
+// Map Container
+.map-container {
+  width: 100%;
   margin-bottom: vars.$spacing-xl;
+  border-radius: vars.$radius-md;
   overflow: hidden;
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: vars.$spacing-sm;
-    padding: vars.$spacing-lg vars.$spacing-xl;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-
-    mat-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
-    }
-
-    h2 {
-      flex: 1;
-      margin: 0;
-      font-size: 24px;
-      font-weight: 600;
-    }
-
-    button {
-      background-color: rgba(255, 255, 255, 0.2);
-      color: white;
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-      }
-    }
-  }
-
-  .section-content {
-    padding: vars.$spacing-xl;
-  }
+  box-shadow: vars.$shadow-sm;
 }
 
-// Info Section
-.info-section {
-  .trip-description {
-    font-size: 16px;
-    line-height: 1.8;
-    color: vars.$text-primary;
-    margin: 0;
-    white-space: pre-wrap;
-  }
-
-  .no-content {
-    color: vars.$text-secondary;
-    font-style: italic;
-    text-align: center;
-    padding: vars.$spacing-lg;
-  }
-}
-
-// Destinations Section
+// Destinations Grid
 .destinations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: vars.$spacing-lg;
 
-  .destination-card {
-    display: flex;
-    gap: vars.$spacing-md;
-    padding: vars.$spacing-lg;
-    border: 2px solid vars.$border-color;
-    border-radius: vars.$radius-md;
-    transition: all vars.$transition-base;
+  .destination-info {
+    flex: 1;
 
-    &:hover {
-      border-color: #667eea;
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-      transform: translateY(-2px);
+    h3 {
+      margin: 0 0 vars.$spacing-xs 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: vars.$text-primary;
     }
 
-    .destination-icon {
-      flex-shrink: 0;
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: vars.$radius-full;
-      @include mixins.flex-center;
-
-      mat-icon {
-        color: white;
-        font-size: 28px;
-        width: 28px;
-        height: 28px;
-      }
-    }
-
-    .destination-info {
-      flex: 1;
-
-      h3 {
-        margin: 0 0 vars.$spacing-xs 0;
-        font-size: 18px;
-        font-weight: 600;
-        color: vars.$text-primary;
-      }
-
-      p {
-        margin: 0 0 vars.$spacing-sm 0;
-        color: vars.$text-secondary;
-        font-size: 0.875rem;
-      }
-
-      .coordinates {
-        font-size: 0.75rem;
-        color: vars.$text-secondary;
-        font-family: monospace;
-      }
+    .coordinates {
+      font-size: 0.75rem;
+      color: vars.$text-secondary;
+      font-family: monospace;
     }
   }
 }
 
-// Diary Section
+// Diary Section - specific padding override
 .diary-section {
-  .section-content {
+  .section-card-content {
     padding: vars.$spacing-md vars.$spacing-xl vars.$spacing-xl;
   }
 }
 
-// Photos Section
+// Photos Grid - Thumbnails that show complete photos
 .photos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: vars.$spacing-md;
 
   .photo-item {
     position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-    overflow: hidden;
+    width: 150px;
+    height: 120px;
     border-radius: vars.$radius-md;
     cursor: pointer;
     box-shadow: vars.$shadow-sm;
     transition: all vars.$transition-base;
-    background: #f0f0f0;
+    background: vars.$surface-color;
+    border: 2px solid vars.$border-color;
 
     &:hover {
       transform: scale(1.05);
       box-shadow: vars.$shadow-md;
+      border-color: vars.$primary-color;
     }
 
     .photo-wrapper {
-      @include mixins.absolute-cover;
+      width: 100%;
+      height: 100%;
+      @include mixins.flex-center;
 
       &:hover .photo-actions {
         opacity: 1;
@@ -290,130 +280,79 @@
 
     .photo-actions {
       position: absolute;
-      top: vars.$spacing-sm;
-      right: vars.$spacing-sm;
+      top: vars.$spacing-xs;
+      right: vars.$spacing-xs;
       display: flex;
       gap: vars.$spacing-xs;
       opacity: 0;
-      transition: opacity 0.2s;
+      transition: opacity vars.$transition-fast;
 
       .photo-action-btn {
         background-color: rgba(0, 0, 0, 0.6);
-        color: white;
-        width: 32px;
-        height: 32px;
+        color: vars.$text-on-primary;
+        width: 28px;
+        height: 28px;
 
         &.is-main {
-          color: #ffd700;
+          color: vars.$warning-color;
         }
 
         &.delete-btn:hover {
-          background-color: rgba(244, 67, 54, 0.8);
+          background-color: vars.$error-color;
         }
 
         mat-icon {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
         }
       }
     }
 
     img {
-      @include mixins.absolute-cover;
-      object-fit: cover;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
       display: block;
+      border-radius: vars.$radius-sm;
     }
   }
 
   .more-photos {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-    overflow: hidden;
+    width: 150px;
+    height: 120px;
     border-radius: vars.$radius-md;
     cursor: pointer;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: vars.$primary-color;
     transition: all vars.$transition-base;
+    @include mixins.flex-center;
 
     &:hover {
       transform: scale(1.05);
       box-shadow: vars.$shadow-md;
+      background: vars.$primary-hover;
     }
 
     .more-photos-overlay {
-      @include mixins.absolute-cover;
       @include mixins.flex-center;
       flex-direction: column;
-      color: white;
+      color: vars.$text-on-primary;
       text-align: center;
 
       span {
-        font-size: 48px;
+        font-size: 32px;
         font-weight: 700;
-        margin-bottom: vars.$spacing-sm;
+        margin-bottom: vars.$spacing-xs;
       }
 
       p {
         margin: 0;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 500;
       }
     }
-  }
-}
-
-// Empty States
-.empty-state {
-  @include mixins.flex-center;
-  flex-direction: column;
-  padding: 60px vars.$spacing-lg;
-  text-align: center;
-
-  mat-icon {
-    font-size: 80px;
-    width: 80px;
-    height: 80px;
-    color: #ccc;
-    margin-bottom: vars.$spacing-md;
-  }
-
-  p {
-    color: vars.$text-secondary;
-    font-size: 16px;
-    margin: 0 0 vars.$spacing-lg 0;
-  }
-}
-
-// Loading State
-.loading-container {
-  @include mixins.flex-center;
-  flex-direction: column;
-  min-height: 100vh;
-  background: vars.$surface-color;
-
-  .loading-icon {
-    font-size: 80px;
-    width: 80px;
-    height: 80px;
-    color: #667eea;
-    animation: bounce 1.5s ease-in-out infinite;
-  }
-
-  p {
-    margin-top: vars.$spacing-md;
-    font-size: 18px;
-    color: vars.$text-secondary;
-  }
-}
-
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
   }
 }
 
@@ -443,25 +382,36 @@
 
 // Responsive Design
 @media (max-width: vars.$breakpoint-tablet) {
-  .hero-section {
-    height: 400px;
+  .hero-section-redesigned {
+    .hero-container {
+      flex-direction: column;
+      min-height: auto;
+      max-height: none;
 
-    .hero-overlay {
-      .hero-content {
+      .hero-photo-container {
+        flex: 0 0 auto;
+        max-width: 100%;
+        height: 250px;
+        padding: vars.$spacing-md;
+      }
+
+      .hero-info-container {
+        padding: vars.$spacing-lg;
+
         .trip-title {
-          font-size: 32px;
+          font-size: 28px;
         }
 
-        .trip-meta {
-          .trip-dates {
-            font-size: 16px;
-          }
+        .edit-fab {
+          bottom: vars.$spacing-sm;
+          right: vars.$spacing-sm;
         }
       }
+    }
 
-      .edit-fab {
-        right: vars.$spacing-lg;
-      }
+    .back-button {
+      top: vars.$spacing-sm;
+      left: vars.$spacing-sm;
     }
   }
 
@@ -469,12 +419,12 @@
     padding: vars.$spacing-xxl vars.$spacing-sm vars.$spacing-lg;
   }
 
-  .section {
-    .section-header {
-      padding: vars.$spacing-lg vars.$spacing-lg;
+  .section-card {
+    .section-card-header {
+      padding: vars.$spacing-lg;
     }
 
-    .section-content {
+    .section-card-content {
       padding: vars.$spacing-lg;
     }
   }
@@ -484,8 +434,13 @@
   }
 
   .photos-grid {
-    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
     gap: vars.$spacing-sm;
+
+    .photo-item,
+    .more-photos {
+      width: 120px;
+      height: 100px;
+    }
   }
 }
-// master - MARSISCA - END 2026-01-08

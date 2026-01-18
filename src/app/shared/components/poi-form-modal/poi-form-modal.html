@@ -1,0 +1,78 @@
+<!-- master - MARSISCA - BEGIN 2026-01-18 -->
+<h2 mat-dialog-title>
+  {{ 'POI_FORM.EDIT_TITLE' | translate }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="poi-form">
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'POI_FORM.NAMESPANISH' | translate }}</mat-label>
+      <input matInput formControlName="nameSpanish" [placeholder]="'POI_FORM.NAMESPANISH_PLACEHOLDER' | translate">
+      @if (form.get('nameSpanish')?.hasError('required')) {
+        <mat-error>{{ 'POI_FORM.NAMESPANISH_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('nameSpanish')?.hasError('maxlength')) {
+        <mat-error>{{ 'POI_FORM.NAMESPANISH_MAX_LENGTH' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'POI_FORM.NAMEENGLISH' | translate }}</mat-label>
+      <input matInput formControlName="nameEnglish" [placeholder]="'POI_FORM.NAMEENGLISH_PLACEHOLDER' | translate">
+      @if (form.get('nameEnglish')?.hasError('required')) {
+        <mat-error>{{ 'POI_FORM.NAMEENGLISH_REQUIRED' | translate }}</mat-error>
+      }
+      @if (form.get('nameEnglish')?.hasError('maxlength')) {
+        <mat-error>{{ 'POI_FORM.NAMEENGLISH_MAX_LENGTH' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'POI_FORM.DESCRIPTION' | translate }}</mat-label>
+      <textarea matInput formControlName="description" [placeholder]="'POI_FORM.DESCRIPTION_PLACEHOLDER' | translate" rows="3"></textarea>
+      @if (form.get('description')?.hasError('maxlength')) {
+        <mat-error>{{ 'POI_FORM.DESCRIPTION_MAX_LENGTH' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'POI_FORM.CATEGORY' | translate }}</mat-label>
+      <input matInput formControlName="category" [placeholder]="'POI_FORM.CATEGORY_PLACEHOLDER' | translate">
+      @if (form.get('category')?.hasError('maxlength')) {
+        <mat-error>{{ 'POI_FORM.CATEGORY_MAX_LENGTH' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="coordinates-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'POI_FORM.LATITUDE' | translate }}</mat-label>
+        <input matInput type="number" formControlName="latitude" [placeholder]="'POI_FORM.LATITUDE_PLACEHOLDER' | translate">
+        @if (form.get('latitude')?.hasError('required')) {
+          <mat-error>{{ 'POI_FORM.LATITUDE_REQUIRED' | translate }}</mat-error>
+        }
+        @if (form.get('latitude')?.hasError('min') || form.get('latitude')?.hasError('max')) {
+          <mat-error>{{ 'POI_FORM.LATITUDE_RANGE' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'POI_FORM.LONGITUDE' | translate }}</mat-label>
+        <input matInput type="number" formControlName="longitude" [placeholder]="'POI_FORM.LONGITUDE_PLACEHOLDER' | translate">
+        @if (form.get('longitude')?.hasError('required')) {
+          <mat-error>{{ 'POI_FORM.LONGITUDE_REQUIRED' | translate }}</mat-error>
+        }
+        @if (form.get('longitude')?.hasError('min') || form.get('longitude')?.hasError('max')) {
+          <mat-error>{{ 'POI_FORM.LONGITUDE_RANGE' | translate }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{ 'POI_FORM.CANCEL' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    {{ 'POI_FORM.SAVE' | translate }}
+  </button>
+</mat-dialog-actions>
+<!-- master - MARSISCA - END 2026-01-18 -->

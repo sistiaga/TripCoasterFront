@@ -27,4 +27,134 @@
   margin: calc(-1 * vars.$spacing-lg) calc(-1 * vars.$spacing-lg) vars.$spacing-md;
 }
 
+// Section card with orange border
+.section-card {
+  background: vars.$background-color;
+  border-radius: vars.$radius-lg;
+  box-shadow: vars.$shadow-sm;
+  border: 2px solid vars.$primary-color;
+  overflow: hidden;
+  margin-bottom: vars.$spacing-xl;
+}
+
+.section-card-header {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  padding: vars.$spacing-lg vars.$spacing-xl;
+  background: vars.$background-color;
+  border-bottom: 1px solid vars.$border-color;
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: vars.$primary-color;
+  }
+
+  h2 {
+    flex: 1;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: vars.$primary-color;
+    font-family: vars.$font-primary;
+  }
+
+  button {
+    background-color: vars.$primary-color;
+    color: vars.$text-on-primary;
+
+    &:hover {
+      background-color: vars.$primary-hover;
+    }
+  }
+}
+
+.section-card-content {
+  padding: vars.$spacing-xl;
+}
+
+// Item card with hover effect (for destinations, etc.)
+.item-card {
+  display: flex;
+  gap: vars.$spacing-md;
+  padding: vars.$spacing-lg;
+  border: 2px solid vars.$border-color;
+  border-radius: vars.$radius-md;
+  transition: all vars.$transition-base;
+  background: vars.$background-color;
+
+  &:hover {
+    border-color: vars.$primary-color;
+    box-shadow: 0 4px 12px rgba(vars.$primary-color, 0.15);
+    transform: translateY(-2px);
+  }
+}
+
+.item-card-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: vars.$primary-color;
+  border-radius: vars.$radius-full;
+  @include mixins.flex-center;
+
+  mat-icon {
+    color: vars.$text-on-primary;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+// Empty state
+.empty-state {
+  @include mixins.flex-center;
+  flex-direction: column;
+  padding: 60px vars.$spacing-lg;
+  text-align: center;
+
+  mat-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: vars.$border-color;
+    margin-bottom: vars.$spacing-md;
+  }
+
+  p {
+    color: vars.$text-secondary;
+    font-size: 16px;
+    margin: 0 0 vars.$spacing-lg 0;
+  }
+}
+
+// Loading state
+.loading-state {
+  @include mixins.flex-center;
+  flex-direction: column;
+  min-height: 100vh;
+  background: vars.$surface-color;
+
+  .loading-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: vars.$primary-color;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  p {
+    margin-top: vars.$spacing-md;
+    font-size: 18px;
+    color: vars.$text-secondary;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
 // master - MARSISCA - END 2026-01-08

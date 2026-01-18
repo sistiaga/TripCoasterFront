@@ -19,6 +19,9 @@ import { StarRating } from '../../shared/components/star-rating/star-rating';
 import { TripDiary } from '../../shared/components/trip-diary/trip-diary';
 import { TripFormModal } from '../../shared/components/trip-form-modal/trip-form-modal';
 import { PhotoDetailModal } from '../../shared/components/photo-detail-modal/photo-detail-modal';
+// master - MARSISCA - BEGIN 2026-01-16
+import { TripMapComponent } from '../../shared/components/trip-map/trip-map.component';
+// master - MARSISCA - END 2026-01-16
 
 @Component({
   selector: 'app-trip-detail',
@@ -33,7 +36,10 @@ import { PhotoDetailModal } from '../../shared/components/photo-detail-modal/pho
     MatTooltipModule,
     TranslateModule,
     StarRating,
-    TripDiary
+    TripDiary,
+    // master - MARSISCA - BEGIN 2026-01-16
+    TripMapComponent
+    // master - MARSISCA - END 2026-01-16
   ],
   templateUrl: './trip-detail.html',
   styleUrl: './trip-detail.scss'
@@ -187,15 +193,26 @@ export class TripDetail implements OnInit, OnDestroy {
     return (this.trip?.photos?.length || 0) - 6;
   }
 
-  // master - MARSISCA - BEGIN 2026-01-03
+  // master - MARSISCA - BEGIN 2026-01-17
   getIconUrl(icon: string | undefined): string | null {
     if (!icon) return null;
-    if (icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('data:')) {
+
+    // If it's already a full URL, fix duplicated paths if present
+    if (icon.startsWith('http://') || icon.startsWith('https://')) {
+      // Fix duplicated path segments (e.g., uploads/flags/uploads/flags/)
+      return icon.replace(/(uploads\/flags\/)+/g, 'uploads/flags/');
+    }
+
+    if (icon.startsWith('data:')) {
       return icon;
     }
+
     const baseUrl = environment.apiUrl.replace('/api', '');
-    return `${baseUrl}/${icon}`;
+    // Remove leading slash to avoid double slashes in URL
+    const cleanIcon = icon.startsWith('/') ? icon.substring(1) : icon;
+    return `${baseUrl}/${cleanIcon}`;
   }
+  // master - MARSISCA - END 2026-01-17
 
   getCurrentLangName(item: { nameSpanish: string; nameEnglish: string }): string {
     const currentLang = this.translateService.currentLang || 'en';

@@ -1,0 +1,23 @@
+// master - MARSISCA - BEGIN 2026-01-18
+@use '../../../../styles/themes/variables' as vars;
+
+.locations-container {
+  table {
+    width: 100%;
+  }
+
+  .mat-row {
+    &.mat-row:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .mat-cell {
+    &[colspan] {
+      text-align: center;
+      padding: vars.$spacing-lg;
+      color: vars.$text-secondary;
+    }
+  }
+}
+// master - MARSISCA - END 2026-01-18

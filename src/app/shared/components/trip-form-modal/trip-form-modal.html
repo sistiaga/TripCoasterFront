@@ -65,7 +65,7 @@
             <!-- Weather -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ 'TRIP_FORM.WEATHER' | translate }}</mat-label>
-              <mat-select formControlName="weatherId">
+              <mat-select formControlName="weatherTypeId">
                 <mat-option [value]="null">{{ 'TRIP_FORM.NO_WEATHER' | translate }}</mat-option>
                 @for (weather of weathers; track weather.id) {
                   <mat-option [value]="weather.id">
@@ -83,7 +83,7 @@
             <!-- Accommodation -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ 'TRIP_FORM.ACCOMMODATION' | translate }}</mat-label>
-              <mat-select formControlName="accommodationId">
+              <mat-select formControlName="accommodationTypeId">
                 <mat-option [value]="null">{{ 'TRIP_FORM.NO_ACCOMMODATION' | translate }}</mat-option>
                 @for (accommodation of accommodations; track accommodation.id) {
                   <mat-option [value]="accommodation.id">

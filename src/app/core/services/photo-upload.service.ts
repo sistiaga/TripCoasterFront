@@ -77,28 +77,22 @@ export class PhotoUploadService {
     userId: number,
     manualLocation?: ManualLocation
   ): Observable<UploadProgress> {
-    console.log('[PhotoUploadService] Creating trip from', photos.length, 'photos');
-    console.log('[PhotoUploadService] User ID:', userId);
-    console.log('[PhotoUploadService] Manual location:', manualLocation);
 
     return new Observable<UploadProgress>((observer: Observer<UploadProgress>) => {
       const formData = this.buildFormData(photos, userId, manualLocation);
       const xhr = this.createXHRWithProgress(observer);
 
       const url = `${this.apiUrl}/trips/create-from-photos`;
-      console.log('[PhotoUploadService] POST to:', url);
       xhr.open('POST', url);
 
       // Add authorization header if token exists
       const token = this.getAuthToken();
       if (token) {
-        console.log('[PhotoUploadService] Adding auth token');
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       } else {
         console.warn('[PhotoUploadService] No auth token found');
       }
 
-      console.log('[PhotoUploadService] Sending request...');
       xhr.send(formData);
 
       // Return cleanup function
@@ -188,23 +182,18 @@ export class PhotoUploadService {
     xhr.upload.addEventListener('progress', (event: ProgressEvent) => {
       if (event.lengthComputable) {
         const progress = Math.round((event.loaded / event.total) * 100);
-        console.log('[PhotoUploadService] Upload progress:', progress + '%', `(${event.loaded}/${event.total} bytes)`);
         observer.next({ type: 'uploading', progress });
       }
     });
 
     // Handle successful response
     xhr.addEventListener('load', () => {
-      console.log('[PhotoUploadService] Response received - Status:', xhr.status);
-      console.log('[PhotoUploadService] Response body:', xhr.responseText);
 
       if (xhr.status >= 200 && xhr.status < 300) {
         try {
           const response: TripCreationApiResponse = JSON.parse(xhr.responseText);
-          console.log('[PhotoUploadService] Parsed response:', response);
 
           if (response.success && response.data) {
-            console.log('[PhotoUploadService] Success! Trip created:', response.data.trip.id);
             observer.next({ type: 'success', data: response.data });
             observer.complete();
           } else {

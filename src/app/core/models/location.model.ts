@@ -87,4 +87,30 @@ export interface CreateLocationResponse {
   };
 }
 // master - MARSISCA - END 2024-12-24
+
+// master - MARSISCA - BEGIN 2026-01-18
+export interface LocationsResponse {
+  success: boolean;
+  message: string;
+  data: Location[];
+}
+
+export interface LocationResponse {
+  success: boolean;
+  message: string;
+  data?: Location;
+}
+
+export interface UpdateLocationRequest {
+  name?: string;
+  latitude?: number;
+  longitude?: number;
+  countryId?: number;
+}
+
+export interface DeleteLocationResponse {
+  success: boolean;
+  message: string;
+}
+// master - MARSISCA - END 2026-01-18
 // master - MARSISCA - END 2025-11-15

@@ -35,7 +35,6 @@ export class PhotoValidationService {
    * @returns PhotoValidation result
    */
   async validatePhoto(file: File): Promise<PhotoValidation> {
-    console.log('[PhotoValidation] Validating photo:', file.name, 'type:', file.type, 'size:', file.size);
     const errors: string[] = [];
     let hasGPS = false;
     let hasDate = false;
@@ -43,14 +42,12 @@ export class PhotoValidationService {
 
     // Check format
     const isValidFormat = this.isValidFormat(file);
-    console.log('[PhotoValidation] Format valid?', isValidFormat, 'File type:', file.type);
     if (!isValidFormat) {
       errors.push('Invalid file format. Only JPEG, PNG, and HEIC are supported.');
     }
 
     // Check size
     const isValidSize = this.isValidSize(file);
-    console.log('[PhotoValidation] Size valid?', isValidSize, 'Size:', (file.size / 1024 / 1024).toFixed(2), 'MB');
     if (!isValidSize) {
       errors.push('File size exceeds 10MB limit.');
     }
@@ -59,17 +56,13 @@ export class PhotoValidationService {
     // Extract EXIF metadata if format is valid
     if (isValidFormat) {
       try {
-        console.log('[PhotoValidation] Attempting to extract EXIF from', file.name);
         metadata = await this.extractExifData(file);
-        console.log('[PhotoValidation] EXIF metadata:', metadata);
 
         // Check for GPS coordinates
         hasGPS = !!(metadata?.latitude && metadata?.longitude);
-        console.log('[PhotoValidation] Has GPS?', hasGPS, 'Lat:', metadata?.latitude, 'Lng:', metadata?.longitude);
 
         // Check for date taken
         hasDate = !!(metadata?.DateTimeOriginal || metadata?.DateTimeDigitized);
-        console.log('[PhotoValidation] Has Date?', hasDate, 'DateOriginal:', metadata?.DateTimeOriginal, 'DateDigitized:', metadata?.DateTimeDigitized);
 
         // NOTE: Date validation is temporarily disabled in frontend
         // Backend will handle date validation
@@ -82,8 +75,6 @@ export class PhotoValidationService {
       }
     }
 
-    console.log('[PhotoValidation] Final validation result:', { hasGPS, hasDate, isValidFormat, isValidSize, errors });
-    // master - MARSISCA - END 2026-01-10
 
     return {
       file,
@@ -179,8 +170,6 @@ export class PhotoValidationService {
     const fileName = file.name.toLowerCase();
     const extension = fileName.substring(fileName.lastIndexOf('.'));
 
-    console.log('[PhotoValidation] Checking format - MIME:', mimeType, 'Extension:', extension);
-
     // Check by MIME type first
     if (this.SUPPORTED_FORMATS.includes(mimeType)) {
       return true;
@@ -190,8 +179,6 @@ export class PhotoValidationService {
     // This is common with HEIC files in some browsers
     const validExtensions = ['.jpg', '.jpeg', '.png', '.heic', '.heif'];
     const isValidExtension = validExtensions.includes(extension);
-
-    console.log('[PhotoValidation] MIME type not recognized, checking extension:', extension, 'Valid?', isValidExtension);
 
     return isValidExtension;
   }

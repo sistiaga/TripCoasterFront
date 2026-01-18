@@ -13,6 +13,22 @@
     </mat-tab>
 
     <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.LOCATIONS' | translate }}</ng-template>
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.LOCATIONS_DESCRIPTION' | translate }}</p>
+        <app-locations></app-locations>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.POIS' | translate }}</ng-template>
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.POIS_DESCRIPTION' | translate }}</p>
+        <app-pois></app-pois>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
       <ng-template mat-tab-label>{{ 'SETTINGS.DIARY_TYPES' | translate }}</ng-template>
       <div class="tab-content">
         <p>{{ 'SETTINGS.DIARY_TYPES_DESCRIPTION' | translate }}</p>
@@ -25,14 +41,6 @@
       <div class="tab-content">
         <p>{{ 'SETTINGS.WEATHERS_DESCRIPTION' | translate }}</p>
         <app-weathers></app-weathers>
-      </div>
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>{{ 'SETTINGS.SPORTS' | translate }}</ng-template>
-      <div class="tab-content">
-        <p>{{ 'SETTINGS.SPORTS_DESCRIPTION' | translate }}</p>
-        <app-sports></app-sports>
       </div>
     </mat-tab>
 
@@ -51,6 +59,15 @@
         <app-transportation-types></app-transportation-types>
       </div>
     </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>{{ 'SETTINGS.SPORTS' | translate }}</ng-template>
+      <div class="tab-content">
+        <p>{{ 'SETTINGS.SPORTS_DESCRIPTION' | translate }}</p>
+        <app-sports></app-sports>
+      </div>
+    </mat-tab>
+
   </mat-tab-group>
 </div>
 <!-- master - MARSISCA - END 2026-01-01 -->

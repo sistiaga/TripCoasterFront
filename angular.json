@@ -18,7 +18,8 @@
           "builder": "@angular/build:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "leaflet"
+              "leaflet",
+              "exifr"
             ],
             "browser": "src/main.ts",
             "polyfills": [

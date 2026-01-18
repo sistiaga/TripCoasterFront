@@ -9,6 +9,10 @@ import { Weathers } from '../../shared/components/weathers/weathers';
 import { Sports } from '../../shared/components/sports/sports';
 import { Accommodations } from '../../shared/components/accommodations/accommodations';
 import { TransportationTypes } from '../../shared/components/transportation-types/transportation-types';
+// master - MARSISCA - BEGIN 2026-01-18
+import { Locations } from '../../shared/components/locations/locations';
+import { POIs } from '../../shared/components/pois/pois';
+// master - MARSISCA - END 2026-01-18
 
 @Component({
   selector: 'app-settings',
@@ -22,7 +26,11 @@ import { TransportationTypes } from '../../shared/components/transportation-type
     Weathers,
     Sports,
     Accommodations,
-    TransportationTypes
+    TransportationTypes,
+    // master - MARSISCA - BEGIN 2026-01-18
+    Locations,
+    POIs
+    // master - MARSISCA - END 2026-01-18
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.scss'

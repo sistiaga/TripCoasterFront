@@ -10,8 +10,14 @@ import {
   AddLocationToTripResponse,
   // master - MARSISCA - BEGIN 2024-12-24
   CreateLocationRequest,
-  CreateLocationResponse
+  CreateLocationResponse,
   // master - MARSISCA - END 2024-12-24
+  // master - MARSISCA - BEGIN 2026-01-18
+  LocationsResponse,
+  LocationResponse,
+  UpdateLocationRequest,
+  DeleteLocationResponse
+  // master - MARSISCA - END 2026-01-18
 } from '../models/location.model';
 
 @Injectable({
@@ -45,7 +51,6 @@ export class LocationService {
       longitude: locationData.longitude
     };
 
-    console.log('Creating location with data:', requestData);
     return this.apiService.post<CreateLocationResponse>('locations', requestData);
   }
   // master - MARSISCA - END 2024-12-24
@@ -57,8 +62,6 @@ export class LocationService {
    * @returns Observable with the created trip-location relationship
    */
   addLocationToTrip(tripId: number, locationId: number | string): Observable<AddLocationToTripResponse> {
-
-    console.log(`Adding location ${locationId} to trip ${tripId}`);
 
     return this.apiService.post<AddLocationToTripResponse>(
       `trips/${tripId}/locations`,
@@ -84,5 +87,43 @@ export class LocationService {
   removeLocationFromTrip(tripId: number, locationId: number | string): Observable<any> {
     return this.apiService.delete(`trips/${tripId}/locations/${locationId}`);
   }
+
+  // master - MARSISCA - BEGIN 2026-01-18
+  /**
+   * Get all locations
+   * @returns Observable with array of locations
+   */
+  getLocations(): Observable<LocationsResponse> {
+    return this.apiService.get<LocationsResponse>('locations');
+  }
+
+  /**
+   * Get a single location by ID
+   * @param id - Location ID
+   * @returns Observable with the location
+   */
+  getLocation(id: number): Observable<LocationResponse> {
+    return this.apiService.get<LocationResponse>(`locations/${id}`);
+  }
+
+  /**
+   * Update a location
+   * @param id - Location ID
+   * @param locationData - Updated location data
+   * @returns Observable with the updated location
+   */
+  updateLocation(id: number, locationData: UpdateLocationRequest): Observable<LocationResponse> {
+    return this.apiService.put<LocationResponse>(`locations/${id}`, locationData);
+  }
+
+  /**
+   * Delete a location
+   * @param id - Location ID
+   * @returns Observable with the result
+   */
+  deleteLocation(id: number): Observable<DeleteLocationResponse> {
+    return this.apiService.delete<DeleteLocationResponse>(`locations/${id}`);
+  }
+  // master - MARSISCA - END 2026-01-18
 }
 // master - MARSISCA - END 2025-11-15

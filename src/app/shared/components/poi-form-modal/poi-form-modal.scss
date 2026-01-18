@@ -1,0 +1,33 @@
+// master - MARSISCA - BEGIN 2026-01-18
+@use '../../../../styles/themes/variables' as vars;
+
+.poi-form {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-md;
+  padding: vars.$spacing-md 0;
+  min-width: 400px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .coordinates-row {
+    display: flex;
+    gap: vars.$spacing-md;
+
+    mat-form-field {
+      flex: 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    min-width: 300px;
+
+    .coordinates-row {
+      flex-direction: column;
+      gap: vars.$spacing-sm;
+    }
+  }
+}
+// master - MARSISCA - END 2026-01-18
