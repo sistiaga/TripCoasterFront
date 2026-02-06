@@ -60,6 +60,8 @@
     "EDIT_TITLE": "Edit Diary Entry",
     "DATE": "Date",
     "DATE_REQUIRED": "Date is required",
+    "TIME": "Time",
+    "TIME_REQUIRED": "Time is required",
     "TITLE": "Title",
     "TITLE_PLACEHOLDER": "e.g., Exploring the old town",
     "TITLE_REQUIRED": "Title is required",
@@ -71,6 +73,9 @@
     "DIARY_TYPE": "Type",
     "DIARY_TYPE_PLACEHOLDER": "Select a type",
     "NO_TYPE": "No type",
+    "WEATHER_TYPE": "Weather",
+    "WEATHER_TYPE_PLACEHOLDER": "Select weather",
+    "NO_WEATHER": "No weather",
     "CANCEL": "Cancel",
     "SAVE": "Save"
   },

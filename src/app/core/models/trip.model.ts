@@ -6,10 +6,12 @@ import { TransportationType } from './transportation-type.model';
 import { Country } from './country.model';
 // master - MARSISCA - END 2026-01-03
 
+// master - MARSISCA - BEGIN 2026-01-24
 export interface PhotoWeather {
   id: number;
   dateTime: string;
   wmoCode: number;
+  weatherIconUrl?: string;
   temperature: number;
   precipitationMm: number;
   windSpeed: number;
@@ -18,6 +20,7 @@ export interface PhotoWeather {
   latitude: number;
   longitude: number;
 }
+// master - MARSISCA - END 2026-01-24
 
 export interface TripPhoto {
   id: number;

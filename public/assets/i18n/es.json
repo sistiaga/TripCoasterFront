@@ -60,6 +60,8 @@
     "EDIT_TITLE": "Editar Entrada de Diario",
     "DATE": "Fecha",
     "DATE_REQUIRED": "La fecha es obligatoria",
+    "TIME": "Hora",
+    "TIME_REQUIRED": "La hora es obligatoria",
     "TITLE": "Título",
     "TITLE_PLACEHOLDER": "ej., Explorando el casco antiguo",
     "TITLE_REQUIRED": "El título es obligatorio",
@@ -71,6 +73,9 @@
     "DIARY_TYPE": "Tipo",
     "DIARY_TYPE_PLACEHOLDER": "Selecciona un tipo",
     "NO_TYPE": "Sin tipo",
+    "WEATHER_TYPE": "Tiempo",
+    "WEATHER_TYPE_PLACEHOLDER": "Selecciona el tiempo",
+    "NO_WEATHER": "Sin tiempo",
     "CANCEL": "Cancelar",
     "SAVE": "Guardar"
   },

@@ -56,11 +56,17 @@
               {{ 'PHOTO_DETAIL.WEATHER_AT_TIME' | translate }}
             </h3>
             <div class="weather-card">
+              <!-- master - MARSISCA - BEGIN 2026-01-24 -->
               <div class="weather-main">
-                <mat-icon class="weather-icon">{{ getWeatherIcon(photoDetails!.photoWeather!.wmoCode) }}</mat-icon>
+                @if (photoDetails!.photoWeather!.weatherIconUrl) {
+                  <img [src]="photoDetails!.photoWeather!.weatherIconUrl" alt="Weather icon" class="weather-icon-img">
+                } @else {
+                  <mat-icon class="weather-icon">{{ getWeatherIcon(photoDetails!.photoWeather!.wmoCode) }}</mat-icon>
+                }
                 <div class="weather-temp">{{ formatTemperature(photoDetails!.photoWeather!.temperature) }}</div>
                 <div class="weather-description">{{ getWeatherDescription(photoDetails!.photoWeather!.wmoCode) }}</div>
               </div>
+              <!-- master - MARSISCA - END 2026-01-24 -->
               <div class="weather-details">
                 <div class="weather-detail-item">
                   <mat-icon>air</mat-icon>

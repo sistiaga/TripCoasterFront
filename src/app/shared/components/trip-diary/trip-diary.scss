@@ -52,9 +52,33 @@
           line-height: 1.6;
         }
 
-        .diary-type-chip {
+        // master - MARSISCA - BEGIN 2026-01-24
+        .diary-chips {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
           margin-top: 8px;
+
+          .diary-type-chip,
+          .weather-type-chip {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            mat-icon {
+              font-size: 16px;
+              width: 16px;
+              height: 16px;
+            }
+
+            .weather-icon {
+              width: 20px;
+              height: 20px;
+              object-fit: contain;
+            }
+          }
         }
+        // master - MARSISCA - END 2026-01-24
       }
     }
   }

@@ -1,19 +1,30 @@
-<!-- master - MARSISCA - BEGIN 2025-12-08 -->
+<!-- master - MARSISCA - BEGIN 2026-01-24 -->
 <h2 mat-dialog-title>
   {{ (isEditMode ? 'DIARY_FORM.EDIT_TITLE' : 'DIARY_FORM.ADD_TITLE') | translate }}
 </h2>
 
 <mat-dialog-content>
   <form [formGroup]="form" class="diary-entry-form">
-    <mat-form-field appearance="outline">
-      <mat-label>{{ 'DIARY_FORM.DATE' | translate }}</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date" [min]="minDate" [max]="maxDate">
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="form.get('date')?.hasError('required')">
-        {{ 'DIARY_FORM.DATE_REQUIRED' | translate }}
-      </mat-error>
-    </mat-form-field>
+    <div class="datetime-row">
+      <mat-form-field appearance="outline" class="date-field">
+        <mat-label>{{ 'DIARY_FORM.DATE' | translate }}</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" [min]="minDate" [max]="maxDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('date')?.hasError('required')">
+          {{ 'DIARY_FORM.DATE_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="time-field">
+        <mat-label>{{ 'DIARY_FORM.TIME' | translate }}</mat-label>
+        <input matInput type="time" formControlName="time">
+        <mat-icon matSuffix>schedule</mat-icon>
+        <mat-error *ngIf="form.get('time')?.hasError('required')">
+          {{ 'DIARY_FORM.TIME_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
 
     <mat-form-field appearance="outline">
       <mat-label>{{ 'DIARY_FORM.TITLE' | translate }}</mat-label>
@@ -37,15 +48,30 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>{{ 'DIARY_FORM.DIARY_TYPE' | translate }}</mat-label>
-      <mat-select formControlName="diaryTypeId" [placeholder]="'DIARY_FORM.DIARY_TYPE_PLACEHOLDER' | translate">
-        <mat-option [value]="null">{{ 'DIARY_FORM.NO_TYPE' | translate }}</mat-option>
-        <mat-option *ngFor="let type of diaryTypes" [value]="type.id">
-          {{ type.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="type-selectors-row">
+      <mat-form-field appearance="outline" class="type-field">
+        <mat-label>{{ 'DIARY_FORM.DIARY_TYPE' | translate }}</mat-label>
+        <mat-select formControlName="diaryTypeId" [placeholder]="'DIARY_FORM.DIARY_TYPE_PLACEHOLDER' | translate">
+          <mat-option [value]="null">{{ 'DIARY_FORM.NO_TYPE' | translate }}</mat-option>
+          <mat-option *ngFor="let type of diaryTypes" [value]="type.id">
+            {{ type.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="type-field">
+        <mat-label>{{ 'DIARY_FORM.WEATHER_TYPE' | translate }}</mat-label>
+        <mat-select formControlName="weatherTypeId" [placeholder]="'DIARY_FORM.WEATHER_TYPE_PLACEHOLDER' | translate">
+          <mat-option [value]="null">{{ 'DIARY_FORM.NO_WEATHER' | translate }}</mat-option>
+          <mat-option *ngFor="let weather of weatherTypes" [value]="weather.id">
+            <span class="weather-option">
+              <img *ngIf="weather.icon" [src]="weather.icon" alt="" class="weather-option-icon">
+              {{ getWeatherName(weather) }}
+            </span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </form>
 </mat-dialog-content>
 
@@ -55,4 +81,4 @@
     {{ 'DIARY_FORM.SAVE' | translate }}
   </button>
 </mat-dialog-actions>
-<!-- master - MARSISCA - END 2025-12-08 -->
+<!-- master - MARSISCA - END 2026-01-24 -->

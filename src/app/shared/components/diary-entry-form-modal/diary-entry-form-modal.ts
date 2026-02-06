@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2026-01-01
+// master - MARSISCA - BEGIN 2026-01-24
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -8,13 +8,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { Subject, takeUntil } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { Diary } from '../../../core/models/diary.model';
 import { DiaryType } from '../../../core/models/diary-type.model';
+import { Weather } from '../../../core/models/weather.model';
 import { DiaryService } from '../../../core/services/diary.service';
 import { DiaryTypeService } from '../../../core/services/diary-type.service';
+import { WeatherService } from '../../../core/services/weather.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { format, addDays } from 'date-fns';
 
@@ -51,6 +54,7 @@ export interface DiaryEntryFormModalData {
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatIconModule,
     TranslateModule
   ],
 // master - MARSISCA - BEGIN 2026-01-01
@@ -62,10 +66,12 @@ export interface DiaryEntryFormModalData {
   templateUrl: './diary-entry-form-modal.html',
   styleUrl: './diary-entry-form-modal.scss'
 })
+// master - MARSISCA - BEGIN 2026-01-24
 export class DiaryEntryFormModal implements OnInit, OnDestroy {
   form: FormGroup;
   isEditMode: boolean;
   diaryTypes: DiaryType[] = [];
+  weatherTypes: Weather[] = [];
   minDate: Date | null = null;
   maxDate: Date | null = null;
   private destroy$ = new Subject<void>();
@@ -74,7 +80,9 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private diaryService: DiaryService,
     private diaryTypeService: DiaryTypeService,
+    private weatherService: WeatherService,
     private authService: AuthService,
+    private translateService: TranslateService,
     private dialogRef: MatDialogRef<DiaryEntryFormModal>,
     @Inject(MAT_DIALOG_DATA) public data: DiaryEntryFormModalData
   ) {
@@ -88,91 +96,97 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
       this.maxDate = new Date(data.tripEndDate);
     }
 
-// master - MARSISCA - BEGIN 2026-01-01
     const initialDate = this.minDate ? this.minDate : new Date();
 
     this.form = this.fb.group({
       date: [initialDate, [Validators.required]],
+      time: ['12:00', [Validators.required]],
       title: ['', [Validators.required, Validators.maxLength(200)]],
       description: ['', [Validators.required, Validators.maxLength(2000)]],
-      diaryTypeId: [null]
+      diaryTypeId: [null],
+      weatherTypeId: [null]
     });
-    // master - MARSISCA - END 2026-01-01
   }
+  // master - MARSISCA - END 2026-01-24
 
+  // master - MARSISCA - BEGIN 2026-01-24
   ngOnInit(): void {
-    this.loadDiaryTypes();
-
-    if (this.isEditMode && this.data.diary) {
-      // Convert day string back to moment date
-      const diaryDate = this.calculateDateFromDay(this.data.diary.day);
-
-      this.form.patchValue({
-        date: diaryDate,
-        title: this.data.diary.title,
-        description: this.data.diary.description,
-        diaryTypeId: this.data.diary.diaryTypeId
-      });
-    }
+    this.loadFormData();
   }
 
-// master - MARSISCA - BEGIN 2026-01-01
-  calculateDateFromDay(day: any): Date {
-    // If day is already a date string (ISO format), parse it directly
-    if (typeof day === 'string' && day.includes('-')) {
-      return new Date(day);
-    }
-    // Otherwise treat as number (legacy format)
-    if (this.minDate) {
-      return addDays(this.minDate, day - 1);
-    }
-    return new Date();
-  }
-  // master - MARSISCA - END 2026-01-01
+  loadFormData(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
 
+    forkJoin({
+      diaryTypes: this.diaryTypeService.getUserDiaryTypes(currentUser.id),
+      weatherTypes: this.weatherService.getWeathers()
+    }).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (responses) => {
+        if (responses.diaryTypes.success) {
+          this.diaryTypes = responses.diaryTypes.data;
+        }
+        if (responses.weatherTypes.success) {
+          this.weatherTypes = responses.weatherTypes.data;
+        }
+        // Patch form after data is loaded
+        if (this.isEditMode && this.data.diary) {
+          this.patchFormValues();
+        }
+      },
+      error: (error) => {
+        console.error('Error loading form data:', error);
+      }
+    });
+  }
+
+  patchFormValues(): void {
+    if (!this.data.diary) return;
+
+    const dateTime = new Date(this.data.diary.dateTime);
+    const timeString = format(dateTime, 'HH:mm');
+
+    this.form.patchValue({
+      date: dateTime,
+      time: timeString,
+      title: this.data.diary.title,
+      description: this.data.diary.description,
+      diaryTypeId: this.data.diary.diaryTypeId,
+      weatherTypeId: this.data.diary.weatherTypeId
+    });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  loadDiaryTypes(): void {
-    const currentUser = this.authService.getCurrentUser();
-    if (!currentUser) return;
-
-    this.diaryTypeService
-      .getUserDiaryTypes(currentUser.id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.diaryTypes = response.data;
-          }
-        },
-        error: (error) => {
-          console.error('Error loading diary types:', error);
-        }
-      });
+  getWeatherName(weather: Weather): string {
+    const currentLang = this.translateService.currentLang || 'en';
+    return currentLang === 'es' ? weather.nameSpanish : weather.nameEnglish;
   }
+  // master - MARSISCA - END 2026-01-24
 
+  // master - MARSISCA - BEGIN 2026-01-24
   onSubmit(): void {
     if (this.form.invalid) {
       return;
     }
 
-// master - MARSISCA - BEGIN 2026-01-01
     const formValue = this.form.value;
 
-    // Convert date to ISO 8601 format (yyyy-MM-dd)
+    // Combine date and time into ISO 8601 datetime format
     const selectedDate = formValue.date instanceof Date ? formValue.date : new Date(formValue.date);
-    const dayFormatted = format(selectedDate, 'yyyy-MM-dd');
-    // master - MARSISCA - END 2026-01-01
+    const [hours, minutes] = formValue.time.split(':').map(Number);
+    selectedDate.setHours(hours, minutes, 0, 0);
+    const dateTimeFormatted = format(selectedDate, "yyyy-MM-dd'T'HH:mm:ss");
 
     const dataToSend = {
-      day: dayFormatted,
+      dateTime: dateTimeFormatted,
       title: formValue.title,
       description: formValue.description,
-      diaryTypeId: formValue.diaryTypeId
+      diaryTypeId: formValue.diaryTypeId,
+      weatherTypeId: formValue.weatherTypeId
     };
 
     if (this.isEditMode && this.data.diary) {
@@ -204,6 +218,7 @@ export class DiaryEntryFormModal implements OnInit, OnDestroy {
       });
     }
   }
+  // master - MARSISCA - END 2026-01-24
 
   onCancel(): void {
     this.dialogRef.close(false);

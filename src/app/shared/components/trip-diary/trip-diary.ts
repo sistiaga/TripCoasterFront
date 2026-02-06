@@ -1,4 +1,4 @@
-// master - MARSISCA - BEGIN 2026-01-01
+// master - MARSISCA - BEGIN 2026-01-24
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,13 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Diary } from '../../../core/models/diary.model';
 import { DiaryService } from '../../../core/services/diary.service';
 import { DiaryEntryFormModal } from '../diary-entry-form-modal/diary-entry-form-modal';
 import { format } from 'date-fns';
-// master - MARSISCA - END 2026-01-01
+// master - MARSISCA - END 2026-01-24
 
 @Component({
   selector: 'app-trip-diary',
@@ -37,10 +37,13 @@ export class TripDiary implements OnInit, OnDestroy {
   diaries: Diary[] = [];
   private destroy$ = new Subject<void>();
 
+  // master - MARSISCA - BEGIN 2026-01-24
   constructor(
     private diaryService: DiaryService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translateService: TranslateService
   ) {}
+  // master - MARSISCA - END 2026-01-24
 
   ngOnInit(): void {
     if (this.tripId) {
@@ -53,6 +56,7 @@ export class TripDiary implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  // master - MARSISCA - BEGIN 2026-01-24
   loadDiaries(): void {
     this.diaryService
       .getTripDiaries(this.tripId)
@@ -60,8 +64,8 @@ export class TripDiary implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.success) {
-            // Sort by day (ISO date string format)
-            this.diaries = response.data.sort((a, b) => a.day.localeCompare(b.day));
+            // Sort by dateTime (ISO datetime string format)
+            this.diaries = response.data.sort((a, b) => a.dateTime.localeCompare(b.dateTime));
           }
         },
         error: (error) => {
@@ -69,6 +73,7 @@ export class TripDiary implements OnInit, OnDestroy {
         }
       });
   }
+  // master - MARSISCA - END 2026-01-24
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(DiaryEntryFormModal, {
@@ -105,8 +110,9 @@ export class TripDiary implements OnInit, OnDestroy {
     });
   }
 
+  // master - MARSISCA - BEGIN 2026-01-24
   deleteDiary(diary: Diary): void {
-    const formattedDate = this.formatDate(diary.day);
+    const formattedDate = this.formatDateTime(diary.dateTime);
     if (confirm(`Are you sure you want to delete entry from ${formattedDate}: "${diary.title}"?`)) {
       this.diaryService
         .deleteDiary(diary.id)
@@ -124,14 +130,20 @@ export class TripDiary implements OnInit, OnDestroy {
     }
   }
 
-// master - MARSISCA - BEGIN 2026-01-01
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
+  formatDateTime(dateTimeString: string): string {
+    const date = new Date(dateTimeString);
     if (isNaN(date.getTime())) {
-      return dateString;
+      return dateTimeString;
     }
-    return format(date, 'dd/MM/yyyy');
+    return format(date, 'dd/MM/yyyy HH:mm');
   }
-  // master - MARSISCA - END 2026-01-01
+
+  getWeatherName(diary: Diary): string {
+    if (!diary.weatherType) {
+      return '';
+    }
+    const currentLang = this.translateService.currentLang || 'en';
+    return currentLang === 'es' ? diary.weatherType.nameSpanish : diary.weatherType.nameEnglish;
+  }
+  // master - MARSISCA - END 2026-01-24
 }
-// master - MARSISCA - END 2026-01-01
