@@ -1,0 +1,519 @@
+// master - MARSISCA - BEGIN 2026-02-07
+@use '../../../styles/themes/variables' as vars;
+@use '../../../styles/utilities/mixins' as mixins;
+
+.calendar-container {
+  min-height: 100vh;
+  background: vars.$surface-color;
+  padding: vars.$spacing-xl vars.$spacing-lg;
+  margin-top: 64px;
+}
+
+.calendar-card {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: vars.$background-color;
+  border-radius: vars.$radius-xl;
+  box-shadow: vars.$shadow-lg;
+  overflow: visible;
+}
+
+// Header
+.calendar-header {
+  background: linear-gradient(135deg, vars.$secondary-color 0%, vars.$accent-dark 100%);
+  color: vars.$text-on-primary;
+  padding: vars.$spacing-xl;
+  position: relative;
+  overflow: visible;
+  border-radius: vars.$radius-xl vars.$radius-xl 0 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: vars.$spacing-lg;
+  margin-bottom: vars.$spacing-md;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-md;
+
+  h1 {
+    font-family: vars.$font-primary-italic;
+    font-style: italic;
+    font-size: 1.875rem;
+    font-weight: 800;
+    margin: 0;
+    color: vars.$text-on-primary;
+  }
+}
+
+.calendar-icon {
+  font-size: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: vars.$primary-color;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+}
+
+.nav-btn {
+  color: vars.$text-on-primary !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.today-btn {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: vars.$text-on-primary !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  font-weight: 600;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+  }
+}
+
+.current-month {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+// Search
+.search-section {
+  position: relative;
+  margin-top: vars.$spacing-lg;
+  z-index: vars.$z-dropdown;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: vars.$spacing-md;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.search-input {
+  width: 100%;
+  padding: vars.$spacing-md vars.$spacing-xl vars.$spacing-md 48px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: vars.$radius-md;
+  font-size: 1rem;
+  font-family: vars.$font-family-base;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: vars.$text-on-primary;
+  transition: all vars.$transition-base;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+  }
+}
+
+.clear-btn {
+  position: absolute;
+  right: vars.$spacing-sm;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  @include mixins.flex-center;
+  cursor: pointer;
+  color: vars.$text-on-primary;
+  z-index: 2;
+  transition: all vars.$transition-fast;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + vars.$spacing-sm);
+  left: 0;
+  width: 100%;
+  background: vars.$background-color;
+  border: 1px solid vars.$border-color;
+  border-radius: vars.$radius-md;
+  box-shadow: vars.$shadow-lg;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: vars.$z-dropdown + 1;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-md;
+  padding: vars.$spacing-md vars.$spacing-lg;
+  cursor: pointer;
+  transition: background vars.$transition-fast;
+  border-bottom: 1px solid vars.$border-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba(vars.$primary-color, 0.05);
+  }
+}
+
+.result-icon {
+  color: vars.$primary-color;
+  flex-shrink: 0;
+}
+
+.result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-name {
+  font-weight: 600;
+  color: vars.$text-primary;
+  @include mixins.truncate;
+}
+
+.result-date {
+  font-size: 0.875rem;
+  color: vars.$text-secondary;
+}
+
+.result-arrow {
+  color: vars.$primary-color;
+  flex-shrink: 0;
+}
+
+.no-results {
+  position: absolute;
+  top: calc(100% + vars.$spacing-sm);
+  left: 0;
+  width: 100%;
+  background: vars.$background-color;
+  border: 1px solid vars.$border-color;
+  border-radius: vars.$radius-md;
+  box-shadow: vars.$shadow-lg;
+  padding: vars.$spacing-lg;
+  text-align: center;
+  color: vars.$text-secondary;
+  z-index: vars.$z-dropdown + 1;
+}
+
+// Calendar body
+.calendar-body {
+  padding: vars.$spacing-xl;
+}
+
+.weekdays-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: vars.$spacing-sm;
+  margin-bottom: vars.$spacing-md;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 700;
+  color: vars.$primary-color;
+  font-size: 0.875rem;
+  padding: vars.$spacing-sm;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(vars.$primary-color, 0.05);
+  border-radius: vars.$radius-sm;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: vars.$spacing-sm;
+}
+
+.day-cell {
+  min-height: 120px;
+  border: 1px solid vars.$border-color;
+  border-radius: vars.$radius-md;
+  padding: vars.$spacing-sm;
+  background: vars.$background-color;
+  transition: all vars.$transition-base;
+
+  &:hover:not(.empty) {
+    border-color: vars.$border-color-hover;
+    box-shadow: vars.$shadow-md;
+    transform: translateY(-2px);
+  }
+
+  &.empty {
+    border-color: transparent;
+    background: transparent;
+    pointer-events: none;
+  }
+}
+
+.day-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-number {
+  font-size: 1rem;
+  font-weight: 700;
+  color: vars.$text-primary;
+  margin-bottom: vars.$spacing-sm;
+
+  &.today {
+    background: vars.$primary-color;
+    color: vars.$text-on-primary;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    @include mixins.flex-center;
+    box-shadow: 0 2px 8px rgba(vars.$primary-color, 0.4);
+  }
+}
+
+.trips-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.trip-block {
+  height: 28px;
+  padding: 4px vars.$spacing-sm;
+  color: vars.$text-on-primary;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all vars.$transition-fast;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.1);
+  }
+
+  &.trip-start {
+    border-radius: vars.$radius-md vars.$radius-sm vars.$radius-sm vars.$radius-md;
+  }
+
+  &.trip-end {
+    border-radius: vars.$radius-sm vars.$radius-md vars.$radius-md vars.$radius-sm;
+  }
+
+  &.trip-middle {
+    border-radius: vars.$radius-sm;
+  }
+
+  &.trip-single {
+    border-radius: vars.$radius-md;
+  }
+}
+
+.trip-name {
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+// Legend
+.legend {
+  margin-top: vars.$spacing-xl;
+  padding: vars.$spacing-lg;
+  background: rgba(vars.$accent-light, 0.5);
+  border-radius: vars.$radius-md;
+  border: 1px solid vars.$border-color;
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: vars.$primary-color;
+    margin: 0 0 vars.$spacing-md 0;
+  }
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: vars.$spacing-md;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  padding: vars.$spacing-xs vars.$spacing-md;
+  background: vars.$background-color;
+  border-radius: 9999px;
+  box-shadow: vars.$shadow-sm;
+  cursor: pointer;
+  transition: all vars.$transition-fast;
+
+  &:hover {
+    @include mixins.hover-lift;
+  }
+}
+
+.legend-color {
+  width: 20px;
+  height: 20px;
+  border-radius: vars.$radius-sm;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.legend-text {
+  font-size: 0.875rem;
+  color: vars.$text-primary;
+  font-weight: 500;
+}
+
+// No trips
+.no-trips {
+  text-align: center;
+  padding: vars.$spacing-xxl;
+
+  .no-trips-icon {
+    font-size: 4rem;
+    width: 4rem;
+    height: 4rem;
+    color: vars.$text-secondary;
+    margin-bottom: vars.$spacing-md;
+  }
+
+  p {
+    color: vars.$text-secondary;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+// Responsive
+@media (max-width: vars.$breakpoint-desktop) {
+  .days-grid {
+    gap: vars.$spacing-xs;
+  }
+
+  .day-cell {
+    min-height: 100px;
+  }
+}
+
+@media (max-width: vars.$breakpoint-tablet) {
+  .calendar-container {
+    padding: vars.$spacing-md vars.$spacing-sm;
+  }
+
+  .calendar-header {
+    padding: vars.$spacing-lg;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-title {
+    justify-content: center;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .header-controls {
+    justify-content: center;
+  }
+
+  .calendar-body {
+    padding: vars.$spacing-md;
+  }
+
+  .day-cell {
+    min-height: 80px;
+    padding: 4px;
+  }
+
+  .trip-block {
+    font-size: 0.65rem;
+    padding: 2px 4px;
+    height: 24px;
+  }
+}
+
+@media (max-width: vars.$breakpoint-mobile) {
+  .header-title h1 {
+    font-size: 1.25rem;
+  }
+
+  .weekday {
+    font-size: 0.7rem;
+    padding: 4px;
+  }
+
+  .day-cell {
+    min-height: 70px;
+  }
+
+  .day-number {
+    font-size: 0.875rem;
+
+    &.today {
+      width: 26px;
+      height: 26px;
+      font-size: 0.75rem;
+    }
+  }
+
+  .trip-block {
+    height: 20px;
+    font-size: 0.6rem;
+  }
+}
+// master - MARSISCA - END 2026-02-07

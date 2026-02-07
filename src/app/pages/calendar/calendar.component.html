@@ -1,0 +1,144 @@
+<!-- master - MARSISCA - BEGIN 2026-02-07 -->
+<div class="calendar-container">
+  <div class="calendar-card">
+
+    <!-- Header -->
+    <div class="calendar-header">
+      <div class="header-content">
+        <div class="header-title">
+          <mat-icon class="calendar-icon">calendar_month</mat-icon>
+          <h1>{{ 'CALENDAR.TITLE' | translate }}</h1>
+        </div>
+        <div class="header-controls">
+          <button mat-icon-button (click)="previousMonth()" class="nav-btn" matTooltip="Previous month">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <button mat-flat-button (click)="goToToday()" class="today-btn">
+            {{ 'CALENDAR.TODAY' | translate }}
+          </button>
+          <button mat-icon-button (click)="nextMonth()" class="nav-btn" matTooltip="Next month">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="current-month">
+        {{ months[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}
+      </div>
+
+      <!-- Search -->
+      <div class="search-section">
+        <div class="search-container">
+          <mat-icon class="search-icon">search</mat-icon>
+          <input
+            type="text"
+            class="search-input"
+            [placeholder]="'CALENDAR.SEARCH_PLACEHOLDER' | translate"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+          />
+          @if (searchQuery) {
+            <button class="clear-btn" (click)="clearSearch()">
+              <mat-icon>close</mat-icon>
+            </button>
+          }
+
+          <!-- Search results dropdown -->
+          @if (showSearchResults && searchResults.length > 0) {
+            <div class="search-results">
+              @for (trip of searchResults; track trip.id) {
+                <div class="search-result-item" (click)="goToTripMonth(trip)">
+                  <mat-icon class="result-icon">place</mat-icon>
+                  <div class="result-info">
+                    <div class="result-name">{{ trip.name }}</div>
+                    <div class="result-date">
+                      {{ formatSearchDate(trip.startDate) }}
+                      <span> &middot; {{ getDuration(trip) }} {{ getDuration(trip) === 1 ? ('CALENDAR.DAY' | translate) : ('CALENDAR.DAYS' | translate) }}</span>
+                    </div>
+                  </div>
+                  <mat-icon class="result-arrow">arrow_forward</mat-icon>
+                </div>
+              }
+            </div>
+          }
+
+          @if (showSearchResults && searchQuery && searchResults.length === 0) {
+            <div class="no-results">
+              {{ 'CALENDAR.NO_RESULTS' | translate }}
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Body -->
+    <div class="calendar-body">
+      <!-- Week days header -->
+      <div class="weekdays-grid">
+        @for (day of weekDays; track day) {
+          <div class="weekday">{{ day }}</div>
+        }
+      </div>
+
+      <!-- Days grid -->
+      <div class="days-grid">
+        @for (calDay of calendarDays; track $index) {
+          <div class="day-cell" [class.empty]="!calDay.day">
+            @if (calDay.day) {
+              <div class="day-content">
+                <div class="day-number" [class.today]="isToday(calDay)">{{ calDay.day }}</div>
+
+                <div class="trips-container">
+                  @for (trip of calDay.trips; track trip.id) {
+                    <div
+                      class="trip-block"
+                      [class.trip-start]="trip.position === 'start' || trip.position === 'single'"
+                      [class.trip-middle]="trip.position === 'middle'"
+                      [class.trip-end]="trip.position === 'end'"
+                      [class.trip-single]="trip.position === 'single'"
+                      [style.background-color]="trip.color"
+                      (click)="goToTrip(trip.id)"
+                      [matTooltip]="trip.name + ' (' + getDuration(trip) + ' days)'"
+                    >
+                      @if (trip.position === 'start' || trip.position === 'single') {
+                        <span class="trip-name">{{ trip.name }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Legend -->
+      @if (tripsForMonth.length > 0) {
+        <div class="legend">
+          <h3>{{ 'CALENDAR.TRIPS_THIS_MONTH' | translate }}</h3>
+          <div class="legend-items">
+            @for (trip of tripsForMonth; track trip.id) {
+              <div class="legend-item" (click)="goToTrip(trip.id)">
+                <div class="legend-color" [style.background-color]="tripColors[(trip.id || 0) % tripColors.length]"></div>
+                <span class="legend-text">
+                  {{ trip.name }}
+                  ({{ getDuration(trip) }} {{ getDuration(trip) === 1 ? ('CALENDAR.DAY' | translate) : ('CALENDAR.DAYS' | translate) }})
+                </span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- No trips message -->
+      @if (tripsForMonth.length === 0) {
+        <div class="no-trips">
+          <mat-icon class="no-trips-icon">event_busy</mat-icon>
+          <p>{{ 'CALENDAR.NO_TRIPS' | translate }}</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>
+<!-- master - MARSISCA - END 2026-02-07 -->

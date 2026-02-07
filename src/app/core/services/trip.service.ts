@@ -119,6 +119,16 @@ export class TripService {
   }
   // master - MARSISCA - END 2026-02-07
 
+  // master - MARSISCA - BEGIN 2026-02-07
+  getTripsByMonth(year: number, month: number, userId: number): Observable<Trip[]> {
+    return this.http.get<{ success: boolean; data: Trip[] }>(
+      `${this.apiConfig.rootUrl}/calendar/${year}/${month}?userId=${userId}`
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+  // master - MARSISCA - END 2026-02-07
+
   // master - MARSISCA - BEGIN 2026-01-10
   getTripWithFullDetails(tripId: number): Observable<Trip> {
     return this.http.get<{ success: boolean; message: string; data: Trip }>(
