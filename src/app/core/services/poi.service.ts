@@ -1,7 +1,8 @@
 // master - MARSISCA - BEGIN 2026-01-18
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { ApiConfiguration } from '../../api/api-configuration';
 import {
   POI,
   POIsResponse,
@@ -11,55 +12,53 @@ import {
   DeletePOIResponse
 } from '../models/poi.model';
 
+// master - MARSISCA - BEGIN 2026-02-07
+import { getAllPois } from '../../api/fn/po-is/get-all-pois';
+import { getPoiById } from '../../api/fn/po-is/get-poi-by-id';
+import { createPoi } from '../../api/fn/po-is/create-poi';
+import { updatePoi } from '../../api/fn/po-is/update-poi';
+import { deletePoi } from '../../api/fn/po-is/delete-poi';
+// master - MARSISCA - END 2026-02-07
+
 @Injectable({
   providedIn: 'root'
 })
 export class POIService {
-  constructor(private apiService: ApiService) {}
+  // master - MARSISCA - BEGIN 2026-02-07
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfiguration
+  ) {}
 
-  /**
-   * Get all POIs
-   * @returns Observable with array of POIs
-   */
   getPOIs(): Observable<POIsResponse> {
-    return this.apiService.get<POIsResponse>('pois');
+    return getAllPois(this.http, this.apiConfig.rootUrl).pipe(
+      map(r => r.body as POIsResponse)
+    );
   }
 
-  /**
-   * Get a single POI by ID
-   * @param id - POI ID
-   * @returns Observable with the POI
-   */
   getPOI(id: number): Observable<POIResponse> {
-    return this.apiService.get<POIResponse>(`pois/${id}`);
+    return getPoiById(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as POIResponse)
+    );
   }
 
-  /**
-   * Create a new POI
-   * @param poiData - POI data to create
-   * @returns Observable with the created POI
-   */
   createPOI(poiData: CreatePOIRequest): Observable<POIResponse> {
-    return this.apiService.post<POIResponse>('pois', poiData);
+    return createPoi(this.http, this.apiConfig.rootUrl, { body: poiData as any }).pipe(
+      map(r => r.body as POIResponse)
+    );
   }
 
-  /**
-   * Update a POI
-   * @param id - POI ID
-   * @param poiData - Updated POI data
-   * @returns Observable with the updated POI
-   */
   updatePOI(id: number, poiData: UpdatePOIRequest): Observable<POIResponse> {
-    return this.apiService.put<POIResponse>(`pois/${id}`, poiData);
+    return updatePoi(this.http, this.apiConfig.rootUrl, { id, body: poiData as any }).pipe(
+      map(r => r.body as POIResponse)
+    );
   }
 
-  /**
-   * Delete a POI
-   * @param id - POI ID
-   * @returns Observable with the result
-   */
   deletePOI(id: number): Observable<DeletePOIResponse> {
-    return this.apiService.delete<DeletePOIResponse>(`pois/${id}`);
+    return deletePoi(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as DeletePOIResponse)
+    );
   }
+  // master - MARSISCA - END 2026-02-07
 }
 // master - MARSISCA - END 2026-01-18

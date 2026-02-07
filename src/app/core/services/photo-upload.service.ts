@@ -1,8 +1,11 @@
 // master - MARSISCA - BEGIN 2026-01-10
 import { Injectable } from '@angular/core';
-import { Observable, Observer } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Observer, map } from 'rxjs';
+// master - MARSISCA - BEGIN 2026-02-07
+import { ApiConfiguration } from '../../api/api-configuration';
+import { validatePhotos } from '../../api/fn/trips/validate-photos';
+// master - MARSISCA - END 2026-02-07
 import { ValidationResult, ValidationApiResponse } from '../models/validation-result.model';
 import { TripCreationApiResponse, TripCreationResponse } from '../models/trip.model';
 import { ManualLocation } from '../models/manual-location.model';
@@ -35,33 +38,20 @@ export interface UploadError {
 })
 export class PhotoUploadService {
 
-  private apiUrl = environment.apiUrl;
+  // master - MARSISCA - BEGIN 2026-02-07
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfiguration
+  ) {}
 
-  constructor(private apiService: ApiService) {}
-
-  /**
-   * Validate photos on server before upload
-   * This is an optional pre-check before creating the trip
-   * @param photos - Array of photo files to validate
-   * @returns Observable with validation result
-   */
   validatePhotosOnServer(photos: File[]): Observable<ValidationResult> {
-    const formData = this.buildFormData(photos);
-
-    return new Observable<ValidationResult>((observer: Observer<ValidationResult>) => {
-      this.apiService.post<ValidationApiResponse>('trips/validate-photos', formData)
-        .subscribe({
-          next: (response) => {
-            observer.next(response.data);
-            observer.complete();
-          },
-          error: (error) => {
-            observer.error(this.parseError(error));
-            observer.complete();
-          }
-        });
-    });
+    return validatePhotos(this.http, this.apiConfig.rootUrl, {
+      body: { photos }
+    }).pipe(
+      map(r => r.body?.data as unknown as ValidationResult)
+    );
   }
+  // master - MARSISCA - END 2026-02-07
 
   /**
    * Create a trip from photos with upload progress tracking
@@ -82,7 +72,7 @@ export class PhotoUploadService {
       const formData = this.buildFormData(photos, userId, manualLocation);
       const xhr = this.createXHRWithProgress(observer);
 
-      const url = `${this.apiUrl}/trips/create-from-photos`;
+      const url = `${this.apiConfig.rootUrl}/trips/create-from-photos`;
       xhr.open('POST', url);
 
       // Add authorization header if token exists
@@ -120,7 +110,7 @@ export class PhotoUploadService {
       const formData = this.buildFormData(photos);
       const xhr = this.createXHRWithProgress(observer);
 
-      xhr.open('POST', `${this.apiUrl}/trips/${tripId}/add-photos`);
+      xhr.open('POST', `${this.apiConfig.rootUrl}/trips/${tripId}/add-photos`);
 
       const token = this.getAuthToken();
       if (token) {

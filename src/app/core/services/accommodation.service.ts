@@ -1,7 +1,8 @@
 // master - MARSISCA - BEGIN 2025-12-31
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { ApiConfiguration } from '../../api/api-configuration';
 import {
   Accommodation,
   AccommodationsResponse,
@@ -10,42 +11,60 @@ import {
   UpdateAccommodationRequest
 } from '../models/accommodation.model';
 
+// master - MARSISCA - BEGIN 2026-02-07
+import { getAllAccommodationTypes } from '../../api/fn/settings/get-all-accommodation-types';
+import { getAccommodationTypeById } from '../../api/fn/settings/get-accommodation-type-by-id';
+import { createAccommodationType } from '../../api/fn/settings/create-accommodation-type';
+import { updateAccommodationType } from '../../api/fn/settings/update-accommodation-type';
+import { deleteAccommodationType } from '../../api/fn/settings/delete-accommodation-type';
+import { uploadAccommodationTypeIcon } from '../../api/fn/settings/upload-accommodation-type-icon';
+// master - MARSISCA - END 2026-02-07
+
 @Injectable({
   providedIn: 'root'
 })
 export class AccommodationService {
-  // master - MARSISCA - BEGIN 2026-01-10
-  private readonly endpoint = '/accommodation-types';
-  // master - MARSISCA - END 2026-01-10
-
-  constructor(private apiService: ApiService) {}
+  // master - MARSISCA - BEGIN 2026-02-07
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfiguration
+  ) {}
 
   getAccommodations(): Observable<AccommodationsResponse> {
-    return this.apiService.get<AccommodationsResponse>(this.endpoint);
+    return getAllAccommodationTypes(this.http, this.apiConfig.rootUrl).pipe(
+      map(r => r.body as AccommodationsResponse)
+    );
   }
 
   getAccommodation(id: number): Observable<AccommodationResponse> {
-    return this.apiService.get<AccommodationResponse>(`${this.endpoint}/${id}`);
+    return getAccommodationTypeById(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as AccommodationResponse)
+    );
   }
 
   createAccommodation(data: CreateAccommodationRequest): Observable<AccommodationResponse> {
-    return this.apiService.post<AccommodationResponse>(this.endpoint, data);
+    return createAccommodationType(this.http, this.apiConfig.rootUrl, { body: data as any }).pipe(
+      map(r => r.body as AccommodationResponse)
+    );
   }
 
   updateAccommodation(id: number, data: UpdateAccommodationRequest): Observable<AccommodationResponse> {
-    return this.apiService.put<AccommodationResponse>(`${this.endpoint}/${id}`, data);
+    return updateAccommodationType(this.http, this.apiConfig.rootUrl, { id, body: data as any }).pipe(
+      map(r => r.body as AccommodationResponse)
+    );
   }
 
   deleteAccommodation(id: number): Observable<{ success: boolean; message: string }> {
-    return this.apiService.delete<{ success: boolean; message: string }>(`${this.endpoint}/${id}`);
+    return deleteAccommodationType(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as { success: boolean; message: string })
+    );
   }
 
-  // master - MARSISCA - BEGIN 2026-01-10
   uploadIcon(id: number, iconFile: File): Observable<AccommodationResponse> {
-    const formData = new FormData();
-    formData.append('icon', iconFile);
-    return this.apiService.post<AccommodationResponse>(`${this.endpoint}/${id}/icon`, formData);
+    return uploadAccommodationTypeIcon(this.http, this.apiConfig.rootUrl, { id, body: { icon: iconFile } }).pipe(
+      map(r => r.body as AccommodationResponse)
+    );
   }
-  // master - MARSISCA - END 2026-01-10
+  // master - MARSISCA - END 2026-02-07
 }
 // master - MARSISCA - END 2025-12-31

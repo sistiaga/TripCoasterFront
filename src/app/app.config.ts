@@ -7,6 +7,10 @@ import { TranslateModule } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { routes } from './app.routes';
+// master - MARSISCA - BEGIN 2026-02-06
+import { provideApiConfiguration } from './api/api-configuration';
+import { environment } from '../environments/environment';
+// master - MARSISCA - END 2026-02-06
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +22,10 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       TranslateModule.forRoot()
     ),
-    provideTranslateHttpLoader()
+    provideTranslateHttpLoader(),
+    // master - MARSISCA - BEGIN 2026-02-06
+    provideApiConfiguration(environment.apiUrl)
+    // master - MARSISCA - END 2026-02-06
   ]
 };
 // master - MARSISCA - END 2025-12-08

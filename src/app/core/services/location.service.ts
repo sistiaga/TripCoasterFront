@@ -1,8 +1,8 @@
 // master - MARSISCA - BEGIN 2025-11-15
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { ApiConfiguration } from '../../api/api-configuration';
 import {
   LocationSuggestion,
   LocationSearchResponse,
@@ -20,28 +20,34 @@ import {
   // master - MARSISCA - END 2026-01-18
 } from '../models/location.model';
 
+// master - MARSISCA - BEGIN 2026-02-07
+import { getAllLocations } from '../../api/fn/locations/get-all-locations';
+import { getLocationById } from '../../api/fn/locations/get-location-by-id';
+import { createLocation } from '../../api/fn/locations/create-location';
+import { deleteLocation } from '../../api/fn/locations/delete-location';
+import { searchLocations } from '../../api/fn/locations/search-locations';
+import { getLocationsByTripId } from '../../api/fn/trips/get-locations-by-trip-id';
+import { addLocationToTrip } from '../../api/fn/trips/add-location-to-trip';
+import { removeLocationFromTrip } from '../../api/fn/trips/remove-location-from-trip';
+// master - MARSISCA - END 2026-02-07
+
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
-  constructor(private apiService: ApiService) {}
+  // master - MARSISCA - BEGIN 2026-02-07
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfiguration
+  ) {}
 
-  /**
-   * Search for locations by query string
-   * @param query - Search text for location name
-   * @returns Observable with array of location suggestions
-   */
   search(query: string): Observable<LocationSearchResponse> {
-    const params = new HttpParams().set('query', query);
-    return this.apiService.get<LocationSearchResponse>('locations/search', params);
+    return searchLocations(this.http, this.apiConfig.rootUrl, { q: query }).pipe(
+      map(r => r.body as LocationSearchResponse)
+    );
   }
 
   // master - MARSISCA - BEGIN 2024-12-24
-  /**
-   * Create a new location in the database
-   * @param locationData - Location data to create
-   * @returns Observable with the created location
-   */
   createLocation(locationData: LocationSuggestion): Observable<CreateLocationResponse> {
     const requestData: CreateLocationRequest = {
       externalId: locationData.externalId,
@@ -51,79 +57,59 @@ export class LocationService {
       longitude: locationData.longitude
     };
 
-    return this.apiService.post<CreateLocationResponse>('locations', requestData);
+    return createLocation(this.http, this.apiConfig.rootUrl, { body: requestData as any }).pipe(
+      map(r => r.body as CreateLocationResponse)
+    );
   }
   // master - MARSISCA - END 2024-12-24
 
-  /**
-   * Associate a location with a trip
-   * @param tripId - ID of the trip
-   * @param locationId - ID or externalId of the location to associate
-   * @returns Observable with the created trip-location relationship
-   */
   addLocationToTrip(tripId: number, locationId: number | string): Observable<AddLocationToTripResponse> {
-
-    return this.apiService.post<AddLocationToTripResponse>(
-      `trips/${tripId}/locations`,
-      { locationId }
+    return addLocationToTrip(this.http, this.apiConfig.rootUrl, {
+      id: tripId,
+      body: { locationId } as any
+    }).pipe(
+      map(r => r.body as AddLocationToTripResponse)
     );
   }
 
-  /**
-   * Get all locations associated with a trip
-   * @param tripId - ID of the trip
-   * @returns Observable with array of trip locations
-   */
   getTripLocations(tripId: number): Observable<TripLocationsResponse> {
-    return this.apiService.get<TripLocationsResponse>(`trips/${tripId}/locations`);
+    return getLocationsByTripId(this.http, this.apiConfig.rootUrl, { id: tripId }).pipe(
+      map(r => r.body as unknown as TripLocationsResponse)
+    );
   }
 
-  /**
-   * Remove a location from a trip
-   * @param tripId - ID of the trip
-   * @param locationId - ID or externalId of the location to remove
-   * @returns Observable with the result
-   */
   removeLocationFromTrip(tripId: number, locationId: number | string): Observable<any> {
-    return this.apiService.delete(`trips/${tripId}/locations/${locationId}`);
+    return removeLocationFromTrip(this.http, this.apiConfig.rootUrl, {
+      id: tripId,
+      locationId: locationId as number
+    }).pipe(
+      map(r => r.body)
+    );
   }
 
   // master - MARSISCA - BEGIN 2026-01-18
-  /**
-   * Get all locations
-   * @returns Observable with array of locations
-   */
   getLocations(): Observable<LocationsResponse> {
-    return this.apiService.get<LocationsResponse>('locations');
+    return getAllLocations(this.http, this.apiConfig.rootUrl).pipe(
+      map(r => r.body as LocationsResponse)
+    );
   }
 
-  /**
-   * Get a single location by ID
-   * @param id - Location ID
-   * @returns Observable with the location
-   */
   getLocation(id: number): Observable<LocationResponse> {
-    return this.apiService.get<LocationResponse>(`locations/${id}`);
+    return getLocationById(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as LocationResponse)
+    );
   }
 
-  /**
-   * Update a location
-   * @param id - Location ID
-   * @param locationData - Updated location data
-   * @returns Observable with the updated location
-   */
   updateLocation(id: number, locationData: UpdateLocationRequest): Observable<LocationResponse> {
-    return this.apiService.put<LocationResponse>(`locations/${id}`, locationData);
+    return this.http.put<LocationResponse>(`${this.apiConfig.rootUrl}/locations/${id}`, locationData);
   }
 
-  /**
-   * Delete a location
-   * @param id - Location ID
-   * @returns Observable with the result
-   */
   deleteLocation(id: number): Observable<DeleteLocationResponse> {
-    return this.apiService.delete<DeleteLocationResponse>(`locations/${id}`);
+    return deleteLocation(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as DeleteLocationResponse)
+    );
   }
   // master - MARSISCA - END 2026-01-18
+  // master - MARSISCA - END 2026-02-07
 }
 // master - MARSISCA - END 2025-11-15

@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "src/api/openapi-bundled.yaml",
+  "output": "src/app/api",
+  "servicePrefix": "",
+  "serviceSuffix": "ApiService",
+  "modelPrefix": "",
+  "modelSuffix": "",
+  "enumStyle": "alias",
+  "indexFile": true
+}

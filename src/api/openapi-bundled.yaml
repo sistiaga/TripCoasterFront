@@ -1,0 +1,4674 @@
+openapi: 3.0.3
+info:
+  title: TripCoaster API
+  description: |
+    REST API for TripCoaster - A digital platform for travelers to document,
+    relive and share their travel experiences around the world.
+
+    ## Features
+    - Interactive Travel Map
+    - Travel Diary with multimedia
+    - Photo gallery with EXIF metadata
+    - Trip management and statistics
+  version: 1.0.0
+  contact:
+    name: TripCoaster Team
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+  - url: https://api.tripcoaster.com/api
+    description: Production server
+tags:
+  - name: Users
+    description: User management and authentication
+  - name: Trips
+    description: Trip management operations
+  - name: Photos
+    description: Photo upload and management
+  - name: Countries
+    description: Country management
+  - name: Locations
+    description: Location management
+  - name: Diaries
+    description: Travel diary entries and diary types
+  - name: Sports
+    description: Sports catalog management
+  - name: Sport Events
+    description: Sport events within trips
+  - name: POIs
+    description: Points of Interest management
+  - name: Settings
+    description: Application settings (weather, accommodation, transportation types)
+paths:
+  /users/login:
+    post:
+      tags:
+        - Users
+      summary: Login user
+      description: Authenticate user with email/alias and password
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+              example:
+                success: false
+                message: Invalid credentials
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      description: Retrieve a list of all registered users
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: Users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersListResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    post:
+      tags:
+        - Users
+      summary: Create new user
+      description: Register a new user account
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Validation error or duplicate email/alias
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /users/active:
+    get:
+      tags:
+        - Users
+      summary: Get active users
+      description: Retrieve only active users
+      operationId: getActiveUsers
+      responses:
+        '200':
+          description: Active users retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersListResponse'
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: Retrieve a specific user by their ID
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Users
+      summary: Update user
+      description: Update an existing user's information
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      description: Permanently delete a user account
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: User deleted successfully
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /users/{id}/activate:
+    patch:
+      tags:
+        - Users
+      summary: Activate user
+      description: Activate a deactivated user account
+      operationId: activateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /users/{id}/deactivate:
+    patch:
+      tags:
+        - Users
+      summary: Deactivate user
+      description: Deactivate an active user account
+      operationId: deactivateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User deactivated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips:
+    get:
+      tags:
+        - Trips
+      summary: Get all trips
+      description: Retrieve all trips in the system
+      operationId: getAllTrips
+      responses:
+        '200':
+          description: Trips retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripsListResponse'
+    post:
+      tags:
+        - Trips
+      summary: Create new trip
+      description: Create a new trip for a user
+      operationId: createTrip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTrip'
+      responses:
+        '201':
+          description: Trip created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/user/{userId}:
+    get:
+      tags:
+        - Trips
+      summary: Get trips by user
+      description: Retrieve all trips for a specific user
+      operationId: getTripsByUserId
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Trips retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripsListResponse'
+  /trips/date-range:
+    get:
+      tags:
+        - Trips
+      summary: Get trips by date range
+      description: Filter trips within a date range
+      operationId: getTripsByDateRange
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          description: Start date (ISO 8601)
+          schema:
+            type: string
+            format: date
+            example: '2024-01-01'
+        - name: endDate
+          in: query
+          required: true
+          description: End date (ISO 8601)
+          schema:
+            type: string
+            format: date
+            example: '2024-12-31'
+      responses:
+        '200':
+          description: Trips retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripsListResponse'
+        '400':
+          description: Invalid date format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/rating:
+    get:
+      tags:
+        - Trips
+      summary: Get trips by rating
+      description: Filter trips within a rating range
+      operationId: getTripsByRating
+      parameters:
+        - name: minRating
+          in: query
+          required: false
+          description: Minimum rating (0-10)
+          schema:
+            type: number
+            minimum: 0
+            maximum: 10
+            example: 5
+        - name: maxRating
+          in: query
+          required: false
+          description: Maximum rating (0-10)
+          schema:
+            type: number
+            minimum: 0
+            maximum: 10
+            example: 10
+      responses:
+        '200':
+          description: Trips retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripsListResponse'
+  /trips/country/{countryId}:
+    get:
+      tags:
+        - Trips
+      summary: Get trips by country
+      description: Retrieve trips associated with a specific country
+      operationId: getTripsByCountry
+      parameters:
+        - name: countryId
+          in: path
+          required: true
+          description: Country ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Trips retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripsListResponse'
+  /trips/{id}:
+    get:
+      tags:
+        - Trips
+      summary: Get trip by ID
+      description: Retrieve a specific trip by its ID
+      operationId: getTripById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Trip retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Trips
+      summary: Update trip
+      description: Update an existing trip
+      operationId: updateTrip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTrip'
+      responses:
+        '200':
+          description: Trip updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Trips
+      summary: Delete trip
+      description: Permanently delete a trip and all associated data
+      operationId: deleteTrip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Trip deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Trip deleted successfully
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/{id}/countries:
+    post:
+      tags:
+        - Trips
+      summary: Add country to trip
+      description: Associate a country with a trip
+      operationId: addCountryToTrip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCountryRequest'
+      responses:
+        '200':
+          description: Country added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '404':
+          description: Trip or country not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/{id}/countries/{countryId}:
+    delete:
+      tags:
+        - Trips
+      summary: Remove country from trip
+      description: Remove a country association from a trip
+      operationId: removeCountryFromTrip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+        - name: countryId
+          in: path
+          required: true
+          description: Country ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Country removed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '404':
+          description: Trip or country not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/{id}/locations:
+    get:
+      tags:
+        - Trips
+      summary: Get trip locations
+      description: Retrieve all locations associated with a trip
+      operationId: getLocationsByTripId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Locations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Location'
+    post:
+      tags:
+        - Trips
+      summary: Add location to trip
+      description: Associate a location with a trip
+      operationId: addLocationToTrip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddLocationRequest'
+      responses:
+        '200':
+          description: Location added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '404':
+          description: Trip or location not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/{id}/locations/{locationId}:
+    delete:
+      tags:
+        - Trips
+      summary: Remove location from trip
+      description: Remove a location association from a trip
+      operationId: removeLocationFromTrip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+        - name: locationId
+          in: path
+          required: true
+          description: Location ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Location removed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '404':
+          description: Trip or location not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/validate-photos:
+    post:
+      tags:
+        - Trips
+      summary: Validate photos for trip creation
+      description: Validate uploaded photos before creating a trip from them
+      operationId: validatePhotos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Photos to validate (max 100)
+      responses:
+        '200':
+          description: Validation results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatePhotosResponse'
+        '400':
+          description: No photos provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/create-from-photos:
+    post:
+      tags:
+        - Trips
+      summary: Create trip from photos
+      description: Create a new trip using metadata extracted from uploaded photos
+      operationId: createTripFromPhotos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Photos to create trip from (max 100)
+                userId:
+                  type: integer
+                  description: User ID for the trip
+                name:
+                  type: string
+                  description: Trip name (optional, will be generated if not provided)
+      responses:
+        '201':
+          description: Trip created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripResponse'
+        '400':
+          description: Validation error or no valid photos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /trips/{tripId}/add-photos:
+    post:
+      tags:
+        - Trips
+      summary: Add photos to existing trip
+      description: Upload and add photos to an existing trip
+      operationId: addPhotosToTrip
+      parameters:
+        - name: tripId
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Photos to add (max 100)
+      responses:
+        '200':
+          description: Photos added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotoUploadResponse'
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /photos/trips/{id}/photos:
+    get:
+      tags:
+        - Photos
+      summary: Get trip photos
+      description: Retrieve all photos for a specific trip
+      operationId: getPhotosByTripId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Photos retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotosListResponse'
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    post:
+      tags:
+        - Photos
+      summary: Upload photos to trip
+      description: Upload multiple photos to an existing trip (max 10 per request)
+      operationId: uploadPhotos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Photo files to upload (max 10)
+      responses:
+        '201':
+          description: Photos uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotoUploadResponse'
+        '400':
+          description: No photos provided or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /photos/{photoId}:
+    get:
+      tags:
+        - Photos
+      summary: Get photo by ID
+      description: Retrieve a specific photo by its ID
+      operationId: getPhotoById
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          description: Photo ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Photo retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotoResponse'
+        '404':
+          description: Photo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Photos
+      summary: Update photo
+      description: Update photo properties (e.g., isMain)
+      operationId: updatePhotoById
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          description: Photo ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePhoto'
+      responses:
+        '200':
+          description: Photo updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotoResponse'
+        '404':
+          description: Photo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Photos
+      summary: Delete photo
+      description: Permanently delete a photo
+      operationId: deletePhoto
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          description: Photo ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Photo deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Photo deleted successfully
+        '404':
+          description: Photo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /photos/{photoId}/download:
+    get:
+      tags:
+        - Photos
+      summary: Download photo
+      description: Download the original photo file
+      operationId: downloadPhoto
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          description: Photo ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Photo file
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            image/heic:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Photo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /photos/{photoId}/caption:
+    patch:
+      tags:
+        - Photos
+      summary: Update photo caption
+      description: Update or clear the caption/description of a photo
+      operationId: updatePhotoCaption
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          description: Photo ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCaption'
+      responses:
+        '200':
+          description: Caption updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotoResponse'
+        '404':
+          description: Photo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /photos/trips/{id}/photos/{photoId}/main:
+    patch:
+      tags:
+        - Photos
+      summary: Set main photo
+      description: Set a photo as the main photo for its trip
+      operationId: setMainPhoto
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+        - name: photoId
+          in: path
+          required: true
+          description: Photo ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Main photo set successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhotoResponse'
+        '400':
+          description: Photo does not belong to this trip
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '404':
+          description: Trip or photo not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /countries:
+    get:
+      tags:
+        - Countries
+      summary: Get all countries
+      description: Retrieve all countries in the system
+      operationId: getAllCountries
+      responses:
+        '200':
+          description: Countries retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountriesListResponse'
+    post:
+      tags:
+        - Countries
+      summary: Create new country
+      description: Create a new country record
+      operationId: createCountry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCountry'
+      responses:
+        '201':
+          description: Country created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /countries/{id}:
+    get:
+      tags:
+        - Countries
+      summary: Get country by ID
+      description: Retrieve a specific country by its ID
+      operationId: getCountryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Country ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Country retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '404':
+          description: Country not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Countries
+      summary: Update country
+      description: Update an existing country
+      operationId: updateCountry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Country ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCountry'
+      responses:
+        '200':
+          description: Country updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '404':
+          description: Country not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Countries
+      summary: Delete country
+      description: Permanently delete a country
+      operationId: deleteCountry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Country ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Country deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Country deleted successfully
+        '404':
+          description: Country not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /countries/{id}/flag:
+    post:
+      tags:
+        - Countries
+      summary: Upload country flag
+      description: Upload a flag image for a country
+      operationId: uploadCountryFlag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Country ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                flag:
+                  type: string
+                  format: binary
+                  description: Flag image file (PNG, JPG, SVG)
+      responses:
+        '200':
+          description: Flag uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '400':
+          description: No file provided or invalid format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '404':
+          description: Country not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Countries
+      summary: Delete country flag
+      description: Remove the flag image from a country
+      operationId: deleteCountryFlag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Country ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Flag deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountryResponse'
+        '404':
+          description: Country not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /locations:
+    get:
+      tags:
+        - Locations
+      summary: Get all locations
+      description: Retrieve all locations in the system
+      operationId: getAllLocations
+      responses:
+        '200':
+          description: Locations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationsListResponse'
+    post:
+      tags:
+        - Locations
+      summary: Create new location
+      description: Create a new location record
+      operationId: createLocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLocation'
+      responses:
+        '201':
+          description: Location created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /locations/search:
+    get:
+      tags:
+        - Locations
+      summary: Search locations
+      description: Search for locations by query string (uses external geocoding service)
+      operationId: searchLocations
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query string
+          schema:
+            type: string
+            example: Madrid, Spain
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of results
+          schema:
+            type: integer
+            default: 10
+            example: 5
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        externalId:
+                          type: string
+                          description: External ID from geocoding service
+                        name:
+                          type: string
+                          description: Location name
+                        displayName:
+                          type: string
+                          description: Full display name
+                        latitude:
+                          type: number
+                          format: double
+                        longitude:
+                          type: number
+                          format: double
+                        country:
+                          type: string
+                        countryCode:
+                          type: string
+        '400':
+          description: Missing query parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /locations/{id}:
+    get:
+      tags:
+        - Locations
+      summary: Get location by ID
+      description: Retrieve a specific location by its ID
+      operationId: getLocationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Location ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Location retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        '404':
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Locations
+      summary: Delete location
+      description: Permanently delete a location
+      operationId: deleteLocation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Location ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Location deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Location deleted successfully
+        '404':
+          description: Location not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /diaries/types:
+    get:
+      tags:
+        - Diaries
+      summary: Get all diary types
+      description: Retrieve all diary types
+      operationId: getAllDiaryTypes
+      responses:
+        '200':
+          description: Diary types retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryTypesListResponse'
+    post:
+      tags:
+        - Diaries
+      summary: Create diary type
+      description: Create a new diary type
+      operationId: createDiaryType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDiaryType'
+      responses:
+        '201':
+          description: Diary type created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryTypeResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /diaries/types/{id}:
+    get:
+      tags:
+        - Diaries
+      summary: Get diary type by ID
+      description: Retrieve a specific diary type by its ID
+      operationId: getDiaryTypeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Diary type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diary type retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryTypeResponse'
+        '404':
+          description: Diary type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Diaries
+      summary: Update diary type
+      description: Update an existing diary type
+      operationId: updateDiaryType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Diary type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDiaryType'
+      responses:
+        '200':
+          description: Diary type updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryTypeResponse'
+        '404':
+          description: Diary type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Diaries
+      summary: Delete diary type
+      description: Permanently delete a diary type
+      operationId: deleteDiaryType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Diary type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diary type deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Diary type deleted successfully
+        '404':
+          description: Diary type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /diaries:
+    get:
+      tags:
+        - Diaries
+      summary: Get all diaries
+      description: Retrieve all diary entries
+      operationId: getAllDiaries
+      responses:
+        '200':
+          description: Diaries retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiariesListResponse'
+    post:
+      tags:
+        - Diaries
+      summary: Create diary entry
+      description: Create a new diary entry for a trip
+      operationId: createDiary
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDiary'
+      responses:
+        '201':
+          description: Diary entry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /diaries/{id}:
+    get:
+      tags:
+        - Diaries
+      summary: Get diary by ID
+      description: Retrieve a specific diary entry by its ID
+      operationId: getDiaryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Diary ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diary retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryResponse'
+        '404':
+          description: Diary not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Diaries
+      summary: Update diary entry
+      description: Update an existing diary entry
+      operationId: updateDiary
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Diary ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDiary'
+      responses:
+        '200':
+          description: Diary updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '404':
+          description: Diary not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Diaries
+      summary: Delete diary entry
+      description: Permanently delete a diary entry
+      operationId: deleteDiary
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Diary ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diary deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Diary deleted successfully
+        '404':
+          description: Diary not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /diaries/trip/{tripId}:
+    get:
+      tags:
+        - Diaries
+      summary: Get diaries by trip
+      description: Retrieve all diary entries for a specific trip
+      operationId: getDiariesByTripId
+      parameters:
+        - name: tripId
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Diaries retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiariesListResponse'
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /sports:
+    get:
+      tags:
+        - Sports
+      summary: Get all sports
+      description: Retrieve all sports in the system
+      operationId: getAllSports
+      responses:
+        '200':
+          description: Sports retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportsListResponse'
+    post:
+      tags:
+        - Sports
+      summary: Create new sport
+      description: Create a new sport record
+      operationId: createSport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSport'
+      responses:
+        '201':
+          description: Sport created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /sports/{id}:
+    get:
+      tags:
+        - Sports
+      summary: Get sport by ID
+      description: Retrieve a specific sport by its ID
+      operationId: getSportById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sport ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sport retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportResponse'
+        '404':
+          description: Sport not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Sports
+      summary: Update sport
+      description: Update an existing sport
+      operationId: updateSport
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sport ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSport'
+      responses:
+        '200':
+          description: Sport updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportResponse'
+        '404':
+          description: Sport not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Sports
+      summary: Delete sport
+      description: Permanently delete a sport
+      operationId: deleteSport
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sport ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sport deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Sport deleted successfully
+        '404':
+          description: Sport not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /sports/{id}/icon:
+    post:
+      tags:
+        - Sports
+      summary: Upload sport icon
+      description: Upload an icon image for a sport
+      operationId: uploadSportIcon
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sport ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                icon:
+                  type: string
+                  format: binary
+                  description: Icon image file
+      responses:
+        '200':
+          description: Icon uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportResponse'
+        '404':
+          description: Sport not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /sport-events:
+    get:
+      tags:
+        - Sport Events
+      summary: Get all sport events
+      description: Retrieve all sport events in the system
+      operationId: getAllSportEvents
+      responses:
+        '200':
+          description: Sport events retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportEventsListResponse'
+    post:
+      tags:
+        - Sport Events
+      summary: Create new sport event
+      description: Create a new sport event record
+      operationId: createSportEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSportEvent'
+      responses:
+        '201':
+          description: Sport event created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportEventResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /sport-events/{id}:
+    get:
+      tags:
+        - Sport Events
+      summary: Get sport event by ID
+      description: Retrieve a specific sport event by its ID
+      operationId: getSportEventById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sport event ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sport event retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportEventResponse'
+        '404':
+          description: Sport event not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Sport Events
+      summary: Update sport event
+      description: Update an existing sport event
+      operationId: updateSportEvent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sport event ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSportEvent'
+      responses:
+        '200':
+          description: Sport event updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportEventResponse'
+        '404':
+          description: Sport event not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Sport Events
+      summary: Delete sport event
+      description: Permanently delete a sport event
+      operationId: deleteSportEvent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sport event ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sport event deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Sport event deleted successfully
+        '404':
+          description: Sport event not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /sport-events/trip/{tripId}:
+    get:
+      tags:
+        - Sport Events
+      summary: Get sport events by trip
+      description: Retrieve all sport events for a specific trip
+      operationId: getSportEventsByTripId
+      parameters:
+        - name: tripId
+          in: path
+          required: true
+          description: Trip ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Sport events retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SportEventsListResponse'
+        '404':
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /poi-types:
+    get:
+      tags:
+        - POIs
+      summary: Get all POI types
+      description: Retrieve all POI types
+      operationId: getAllPoiTypes
+      responses:
+        '200':
+          description: POI types retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiTypesListResponse'
+    post:
+      tags:
+        - POIs
+      summary: Create POI type
+      description: Create a new POI type
+      operationId: createPoiType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePoiType'
+      responses:
+        '201':
+          description: POI type created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiTypeResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /poi-types/{id}:
+    get:
+      tags:
+        - POIs
+      summary: Get POI type by ID
+      description: Retrieve a specific POI type by its ID
+      operationId: getPoiTypeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: POI type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: POI type retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiTypeResponse'
+        '404':
+          description: POI type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - POIs
+      summary: Update POI type
+      description: Update an existing POI type
+      operationId: updatePoiType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: POI type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePoiType'
+      responses:
+        '200':
+          description: POI type updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiTypeResponse'
+        '404':
+          description: POI type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - POIs
+      summary: Delete POI type
+      description: Permanently delete a POI type
+      operationId: deletePoiType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: POI type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: POI type deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: POI type deleted successfully
+        '404':
+          description: POI type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /pois:
+    get:
+      tags:
+        - POIs
+      summary: Get all POIs
+      description: Retrieve all points of interest
+      operationId: getAllPois
+      responses:
+        '200':
+          description: POIs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoisListResponse'
+    post:
+      tags:
+        - POIs
+      summary: Create POI
+      description: Create a new point of interest
+      operationId: createPoi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePoi'
+      responses:
+        '201':
+          description: POI created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /pois/{id}:
+    get:
+      tags:
+        - POIs
+      summary: Get POI by ID
+      description: Retrieve a specific POI by its ID
+      operationId: getPoiById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: POI ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: POI retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiResponse'
+        '404':
+          description: POI not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - POIs
+      summary: Update POI
+      description: Update an existing POI
+      operationId: updatePoi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: POI ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePoi'
+      responses:
+        '200':
+          description: POI updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoiResponse'
+        '404':
+          description: POI not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - POIs
+      summary: Delete POI
+      description: Permanently delete a POI
+      operationId: deletePoi
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: POI ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: POI deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: POI deleted successfully
+        '404':
+          description: POI not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /pois/location/{locationId}:
+    get:
+      tags:
+        - POIs
+      summary: Get POIs by location
+      description: Retrieve all POIs for a specific location
+      operationId: getPoisByLocationId
+      parameters:
+        - name: locationId
+          in: path
+          required: true
+          description: Location ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: POIs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoisListResponse'
+  /pois/poi-type/{poiTypeId}:
+    get:
+      tags:
+        - POIs
+      summary: Get POIs by type
+      description: Retrieve all POIs of a specific type
+      operationId: getPoisByPoiTypeId
+      parameters:
+        - name: poiTypeId
+          in: path
+          required: true
+          description: POI type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: POIs retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PoisListResponse'
+  /weather-types:
+    get:
+      tags:
+        - Settings
+      summary: Get all weather types
+      description: Retrieve all weather types (WMO codes)
+      operationId: getAllWeatherTypes
+      responses:
+        '200':
+          description: Weather types retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherTypesListResponse'
+    post:
+      tags:
+        - Settings
+      summary: Create weather type
+      description: Create a new weather type
+      operationId: createWeatherType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWeatherType'
+      responses:
+        '201':
+          description: Weather type created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherTypeResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /weather-types/{id}:
+    get:
+      tags:
+        - Settings
+      summary: Get weather type by ID
+      description: Retrieve a specific weather type by its ID (WMO code)
+      operationId: getWeatherTypeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Weather type ID (WMO code)
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Weather type retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherTypeResponse'
+        '404':
+          description: Weather type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Settings
+      summary: Update weather type
+      description: Update an existing weather type
+      operationId: updateWeatherType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Weather type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWeatherType'
+      responses:
+        '200':
+          description: Weather type updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherTypeResponse'
+        '404':
+          description: Weather type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Settings
+      summary: Delete weather type
+      description: Permanently delete a weather type
+      operationId: deleteWeatherType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Weather type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Weather type deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Weather type deleted successfully
+        '404':
+          description: Weather type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /weather-types/{id}/icon:
+    post:
+      tags:
+        - Settings
+      summary: Upload weather type icon
+      description: Upload an icon for a weather type
+      operationId: uploadWeatherTypeIcon
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Weather type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                icon:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Icon uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherTypeResponse'
+        '404':
+          description: Weather type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /accommodation-types:
+    get:
+      tags:
+        - Settings
+      summary: Get all accommodation types
+      description: Retrieve all accommodation types
+      operationId: getAllAccommodationTypes
+      responses:
+        '200':
+          description: Accommodation types retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccommodationTypesListResponse'
+    post:
+      tags:
+        - Settings
+      summary: Create accommodation type
+      description: Create a new accommodation type
+      operationId: createAccommodationType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccommodationType'
+      responses:
+        '201':
+          description: Accommodation type created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccommodationTypeResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /accommodation-types/{id}:
+    get:
+      tags:
+        - Settings
+      summary: Get accommodation type by ID
+      description: Retrieve a specific accommodation type by its ID
+      operationId: getAccommodationTypeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Accommodation type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Accommodation type retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccommodationTypeResponse'
+        '404':
+          description: Accommodation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Settings
+      summary: Update accommodation type
+      description: Update an existing accommodation type
+      operationId: updateAccommodationType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Accommodation type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAccommodationType'
+      responses:
+        '200':
+          description: Accommodation type updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccommodationTypeResponse'
+        '404':
+          description: Accommodation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Settings
+      summary: Delete accommodation type
+      description: Permanently delete an accommodation type
+      operationId: deleteAccommodationType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Accommodation type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Accommodation type deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Accommodation type deleted successfully
+        '404':
+          description: Accommodation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /accommodation-types/{id}/icon:
+    post:
+      tags:
+        - Settings
+      summary: Upload accommodation type icon
+      description: Upload an icon for an accommodation type
+      operationId: uploadAccommodationTypeIcon
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Accommodation type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                icon:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Icon uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccommodationTypeResponse'
+        '404':
+          description: Accommodation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /transportation-types:
+    get:
+      tags:
+        - Settings
+      summary: Get all transportation types
+      description: Retrieve all transportation types
+      operationId: getAllTransportationTypes
+      responses:
+        '200':
+          description: Transportation types retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportationTypesListResponse'
+    post:
+      tags:
+        - Settings
+      summary: Create transportation type
+      description: Create a new transportation type
+      operationId: createTransportationType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransportationType'
+      responses:
+        '201':
+          description: Transportation type created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportationTypeResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /transportation-types/{id}:
+    get:
+      tags:
+        - Settings
+      summary: Get transportation type by ID
+      description: Retrieve a specific transportation type by its ID
+      operationId: getTransportationTypeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Transportation type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Transportation type retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportationTypeResponse'
+        '404':
+          description: Transportation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    put:
+      tags:
+        - Settings
+      summary: Update transportation type
+      description: Update an existing transportation type
+      operationId: updateTransportationType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Transportation type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTransportationType'
+      responses:
+        '200':
+          description: Transportation type updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportationTypeResponse'
+        '404':
+          description: Transportation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+    delete:
+      tags:
+        - Settings
+      summary: Delete transportation type
+      description: Permanently delete a transportation type
+      operationId: deleteTransportationType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Transportation type ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Transportation type deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Transportation type deleted successfully
+        '404':
+          description: Transportation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /transportation-types/{id}/icon:
+    post:
+      tags:
+        - Settings
+      summary: Upload transportation type icon
+      description: Upload an icon for a transportation type
+      operationId: uploadTransportationTypeIcon
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Transportation type ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                icon:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Icon uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransportationTypeResponse'
+        '404':
+          description: Transportation type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        emailOrAlias:
+          type: string
+          description: User email or alias
+          example: johndoe
+        password:
+          type: string
+          description: User password
+          example: securePassword123
+      required:
+        - emailOrAlias
+        - password
+    BaseEntity:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+          example: 1
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+    User:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            alias:
+              type: string
+              maxLength: 50
+              description: Unique user alias
+              example: johndoe
+            email:
+              type: string
+              format: email
+              maxLength: 255
+              description: Unique user email
+              example: john@example.com
+            firstName:
+              type: string
+              maxLength: 100
+              description: User first name
+              example: John
+            lastName:
+              type: string
+              maxLength: 100
+              description: User last name
+              example: Doe
+            active:
+              type: boolean
+              description: Whether the user is active
+              example: true
+            lastAccessDate:
+              type: string
+              format: date-time
+              nullable: true
+              description: Last access timestamp
+          required:
+            - alias
+            - email
+            - firstName
+            - lastName
+            - active
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Login successful
+        data:
+          $ref: '#/components/schemas/User'
+    ApiResponseError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Operation failed
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            details:
+              type: string
+      required:
+        - success
+    UsersListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Users retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    CreateUser:
+      type: object
+      properties:
+        alias:
+          type: string
+          maxLength: 50
+          description: Unique user alias
+          example: johndoe
+        email:
+          type: string
+          format: email
+          description: Unique user email
+          example: john@example.com
+        password:
+          type: string
+          minLength: 6
+          description: User password (min 6 characters)
+          example: securePassword123
+        firstName:
+          type: string
+          maxLength: 100
+          description: User first name
+          example: John
+        lastName:
+          type: string
+          maxLength: 100
+          description: User last name
+          example: Doe
+      required:
+        - alias
+        - email
+        - password
+        - firstName
+        - lastName
+    UserResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: User retrieved successfully
+        data:
+          $ref: '#/components/schemas/User'
+    UpdateUser:
+      type: object
+      properties:
+        alias:
+          type: string
+          maxLength: 50
+          description: Unique user alias
+        email:
+          type: string
+          format: email
+          description: Unique user email
+        password:
+          type: string
+          minLength: 6
+          description: New password (min 6 characters)
+        firstName:
+          type: string
+          maxLength: 100
+          description: User first name
+        lastName:
+          type: string
+          maxLength: 100
+          description: User last name
+    PhotoWeather:
+      type: object
+      properties:
+        id:
+          type: integer
+        temperature:
+          type: number
+          nullable: true
+          description: Temperature at photo location
+          example: 25.5
+        humidity:
+          type: number
+          nullable: true
+          description: Humidity percentage
+          example: 65
+        description:
+          type: string
+          nullable: true
+          description: Weather description
+          example: Sunny with clouds
+        photoId:
+          type: integer
+    Photo:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            filename:
+              type: string
+              description: Generated filename
+              example: 1704067200000-abc123.jpg
+            originalName:
+              type: string
+              description: Original uploaded filename
+              example: vacation_photo.jpg
+            path:
+              type: string
+              description: File path on server
+              example: /uploads/trips/1/1704067200000-abc123.jpg
+            caption:
+              type: string
+              maxLength: 1000
+              nullable: true
+              description: Photo caption/description
+              example: Beautiful sunset at the beach
+            isMain:
+              type: boolean
+              description: Whether this is the main photo for the trip
+              example: false
+            tripId:
+              type: integer
+              description: Associated trip ID
+              example: 1
+            latitude:
+              type: number
+              format: double
+              nullable: true
+              description: GPS latitude from EXIF
+              example: 40.4168
+            longitude:
+              type: number
+              format: double
+              nullable: true
+              description: GPS longitude from EXIF
+              example: -3.7038
+            dateTaken:
+              type: string
+              format: date-time
+              nullable: true
+              description: Date photo was taken (local time)
+            dateTakenUTC:
+              type: string
+              format: date-time
+              nullable: true
+              description: Date photo was taken (UTC)
+            timezone:
+              type: string
+              nullable: true
+              description: Timezone where photo was taken
+              example: Europe/Madrid
+            cameraModel:
+              type: string
+              nullable: true
+              description: Camera model from EXIF
+              example: iPhone 15 Pro
+            cameraMake:
+              type: string
+              nullable: true
+              description: Camera make from EXIF
+              example: Apple
+            mimeType:
+              type: string
+              description: File MIME type
+              example: image/jpeg
+            size:
+              type: integer
+              description: File size in bytes
+              example: 2048576
+            metadata:
+              type: string
+              nullable: true
+              description: Additional EXIF metadata (JSON string)
+            photoWeather:
+              $ref: '#/components/schemas/PhotoWeather'
+              nullable: true
+          required:
+            - filename
+            - originalName
+            - path
+            - tripId
+            - mimeType
+            - size
+    Country:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            nameSpanish:
+              type: string
+              maxLength: 100
+              description: Country name in Spanish
+              example: Espana
+            nameEnglish:
+              type: string
+              maxLength: 100
+              description: Country name in English
+              example: Spain
+            isoCode:
+              type: string
+              maxLength: 3
+              description: ISO 3166-1 alpha-3 code
+              example: ESP
+            latitude:
+              type: number
+              format: double
+              minimum: -90
+              maximum: 90
+              description: Country center latitude
+              example: 40.4168
+            longitude:
+              type: number
+              format: double
+              minimum: -180
+              maximum: 180
+              description: Country center longitude
+              example: -3.7038
+            continent:
+              type: string
+              maxLength: 50
+              description: Continent name
+              example: Europe
+            flagPath:
+              type: string
+              nullable: true
+              description: Path to country flag image
+              example: /uploads/flags/esp.png
+          required:
+            - nameSpanish
+            - nameEnglish
+            - isoCode
+            - latitude
+            - longitude
+            - continent
+    Location:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            externalId:
+              type: string
+              nullable: true
+              description: External location ID (e.g., from geocoding service)
+            name:
+              type: string
+              description: Location name
+              example: Madrid
+            latitude:
+              type: number
+              format: double
+              minimum: -90
+              maximum: 90
+              description: Location latitude
+              example: 40.4168
+            longitude:
+              type: number
+              format: double
+              minimum: -180
+              maximum: 180
+              description: Location longitude
+              example: -3.7038
+            countryId:
+              type: integer
+              nullable: true
+              description: Associated country ID
+            country:
+              $ref: '#/components/schemas/Country'
+              nullable: true
+          required:
+            - name
+            - latitude
+            - longitude
+    WeatherType:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: WMO weather code
+          example: 0
+        nameSpanish:
+          type: string
+          description: Weather type name in Spanish
+          example: Despejado
+        nameEnglish:
+          type: string
+          description: Weather type name in English
+          example: Clear sky
+        icon:
+          type: string
+          nullable: true
+          description: Icon filename or emoji
+          example: ☀️
+        iconURL:
+          type: string
+          nullable: true
+          description: Full URL to weather icon
+        description:
+          type: string
+          nullable: true
+          description: Weather description
+      required:
+        - id
+        - nameSpanish
+        - nameEnglish
+    AccommodationType:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            nameSpanish:
+              type: string
+              description: Accommodation type name in Spanish
+              example: Hotel
+            nameEnglish:
+              type: string
+              description: Accommodation type name in English
+              example: Hotel
+            icon:
+              type: string
+              nullable: true
+              description: Icon filename
+            iconURL:
+              type: string
+              nullable: true
+              description: Full URL to accommodation icon
+          required:
+            - nameSpanish
+            - nameEnglish
+    TransportationType:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            nameSpanish:
+              type: string
+              maxLength: 100
+              description: Transportation type name in Spanish
+              example: Avion
+            nameEnglish:
+              type: string
+              maxLength: 100
+              description: Transportation type name in English
+              example: Airplane
+            icon:
+              type: string
+              nullable: true
+              description: Icon filename
+            iconUrl:
+              type: string
+              nullable: true
+              description: Full URL to transportation icon
+          required:
+            - nameSpanish
+            - nameEnglish
+    Trip:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            name:
+              type: string
+              maxLength: 255
+              description: Trip name
+              example: Summer vacation in Spain
+            description:
+              type: string
+              maxLength: 5000
+              nullable: true
+              description: Trip description
+              example: Amazing trip through southern Spain
+            startDate:
+              type: string
+              format: date
+              description: Trip start date
+              example: '2024-07-01'
+            endDate:
+              type: string
+              format: date
+              description: Trip end date
+              example: '2024-07-15'
+            rating:
+              type: number
+              minimum: 0
+              maximum: 10
+              nullable: true
+              description: Trip rating (0-10)
+              example: 8.5
+            userId:
+              type: integer
+              description: Owner user ID
+              example: 1
+            mainPhoto:
+              $ref: '#/components/schemas/Photo'
+              nullable: true
+            locations:
+              type: array
+              items:
+                $ref: '#/components/schemas/Location'
+            countries:
+              type: array
+              items:
+                $ref: '#/components/schemas/Country'
+            mainCountryId:
+              type: integer
+              nullable: true
+              description: Main country ID
+            mainCountry:
+              $ref: '#/components/schemas/Country'
+              nullable: true
+            weatherTypeId:
+              type: integer
+              nullable: true
+              description: Weather type ID
+            weatherType:
+              $ref: '#/components/schemas/WeatherType'
+              nullable: true
+            accommodationTypeId:
+              type: integer
+              nullable: true
+              description: Accommodation type ID
+            accommodationType:
+              $ref: '#/components/schemas/AccommodationType'
+              nullable: true
+            transportationTypeId:
+              type: integer
+              nullable: true
+              description: Transportation type ID
+            transportationType:
+              $ref: '#/components/schemas/TransportationType'
+              nullable: true
+          required:
+            - name
+            - startDate
+            - endDate
+            - userId
+    TripsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Trips retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trip'
+    CreateTrip:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          description: Trip name
+          example: Summer vacation in Spain
+        description:
+          type: string
+          maxLength: 5000
+          description: Trip description
+        startDate:
+          type: string
+          format: date
+          description: Trip start date (ISO 8601)
+          example: '2024-07-01'
+        endDate:
+          type: string
+          format: date
+          description: Trip end date (ISO 8601)
+          example: '2024-07-15'
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          description: Trip rating (0-10)
+        userId:
+          type: integer
+          description: Owner user ID
+          example: 1
+        weatherTypeId:
+          type: integer
+          description: Weather type ID
+        accommodationTypeId:
+          type: integer
+          description: Accommodation type ID
+        transportationTypeId:
+          type: integer
+          description: Transportation type ID
+        countryIds:
+          type: array
+          items:
+            type: integer
+          description: Array of country IDs to associate
+        countryId:
+          type: integer
+          description: Single country ID (legacy)
+        mainCountryId:
+          type: integer
+          description: Main country ID
+      required:
+        - name
+        - startDate
+        - endDate
+        - userId
+    TripResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Trip retrieved successfully
+        data:
+          $ref: '#/components/schemas/Trip'
+    UpdateTrip:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 5000
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+        weatherTypeId:
+          type: integer
+          nullable: true
+        accommodationTypeId:
+          type: integer
+          nullable: true
+        transportationTypeId:
+          type: integer
+          nullable: true
+        countryIds:
+          type: array
+          items:
+            type: integer
+        mainCountryId:
+          type: integer
+    AddCountryRequest:
+      type: object
+      properties:
+        countryId:
+          type: integer
+          description: Country ID to add
+          example: 1
+      required:
+        - countryId
+    AddLocationRequest:
+      type: object
+      properties:
+        locationId:
+          type: integer
+          description: Location ID to add
+          example: 1
+      required:
+        - locationId
+    ValidatePhotosResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            validPhotos:
+              type: integer
+              description: Number of valid photos
+            invalidPhotos:
+              type: integer
+              description: Number of invalid photos
+            suggestedName:
+              type: string
+              description: Suggested trip name based on photos
+            suggestedStartDate:
+              type: string
+              format: date
+            suggestedEndDate:
+              type: string
+              format: date
+            countries:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+    PhotoUploadResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Photos uploaded successfully
+        data:
+          type: object
+          properties:
+            uploaded:
+              type: integer
+              description: Number of photos uploaded
+              example: 5
+            photos:
+              type: array
+              items:
+                $ref: '#/components/schemas/Photo'
+    PhotosListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Photos retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Photo'
+    PhotoResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Photo retrieved successfully
+        data:
+          $ref: '#/components/schemas/Photo'
+    UpdatePhoto:
+      type: object
+      properties:
+        isMain:
+          type: boolean
+          description: Set as main photo
+    UpdateCaption:
+      type: object
+      properties:
+        caption:
+          type: string
+          maxLength: 1000
+          nullable: true
+          description: New photo caption
+          example: Updated caption for this photo
+    CountriesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Countries retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+    CreateCountry:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+          description: Country name in Spanish
+          example: Espana
+        nameEnglish:
+          type: string
+          maxLength: 100
+          description: Country name in English
+          example: Spain
+        isoCode:
+          type: string
+          maxLength: 3
+          description: ISO 3166-1 alpha-3 code
+          example: ESP
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+          description: Country center latitude
+          example: 40.4168
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+          description: Country center longitude
+          example: -3.7038
+        continent:
+          type: string
+          maxLength: 50
+          description: Continent name
+          example: Europe
+      required:
+        - nameSpanish
+        - nameEnglish
+        - isoCode
+        - latitude
+        - longitude
+        - continent
+    CountryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Country retrieved successfully
+        data:
+          $ref: '#/components/schemas/Country'
+    UpdateCountry:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+        nameEnglish:
+          type: string
+          maxLength: 100
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        continent:
+          type: string
+          maxLength: 50
+    LocationsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Locations retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    CreateLocation:
+      type: object
+      properties:
+        externalId:
+          type: string
+          description: External ID from geocoding service
+          example: '3117735'
+        name:
+          type: string
+          description: Location name
+          example: Madrid
+        country:
+          type: string
+          description: Country name
+          example: Spain
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+          description: Location latitude
+          example: 40.4168
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+          description: Location longitude
+          example: -3.7038
+        countryIsoCode:
+          type: string
+          description: Country ISO code (optional, for auto-linking)
+          example: ESP
+        countryLatitude:
+          type: number
+          format: double
+          description: Country latitude (optional)
+        countryLongitude:
+          type: number
+          format: double
+          description: Country longitude (optional)
+        continent:
+          type: string
+          description: Continent name (optional)
+          example: Europe
+      required:
+        - externalId
+        - name
+        - country
+        - latitude
+        - longitude
+    LocationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Location retrieved successfully
+        data:
+          $ref: '#/components/schemas/Location'
+    DiaryType:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            name:
+              type: string
+              maxLength: 100
+              description: Diary type name
+              example: Daily Journal
+            description:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Diary type description
+              example: Regular daily diary entries
+          required:
+            - name
+    DiaryTypesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Diary types retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiaryType'
+    CreateDiaryType:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          description: Diary type name
+          example: Daily Journal
+        description:
+          type: string
+          maxLength: 255
+          description: Diary type description
+      required:
+        - name
+    DiaryTypeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Diary type retrieved successfully
+        data:
+          $ref: '#/components/schemas/DiaryType'
+    UpdateDiaryType:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 255
+    Diary:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            day:
+              type: string
+              format: date
+              description: Date of the diary entry
+              example: '2024-07-05'
+            title:
+              type: string
+              maxLength: 255
+              description: Diary entry title
+              example: First day in Barcelona
+            description:
+              type: string
+              nullable: true
+              description: Diary entry content
+              example: We arrived at the hotel and explored the Gothic Quarter...
+            tripId:
+              type: integer
+              description: Associated trip ID
+              example: 1
+            diaryTypeId:
+              type: integer
+              nullable: true
+              description: Diary type ID
+            weatherTypeId:
+              type: integer
+              nullable: true
+              description: Weather type ID for this day
+            photos:
+              type: array
+              items:
+                $ref: '#/components/schemas/Photo'
+              description: Photos associated with this diary entry
+            locations:
+              type: array
+              items:
+                $ref: '#/components/schemas/Location'
+              description: Locations visited on this day
+          required:
+            - day
+            - title
+            - tripId
+    DiariesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Diaries retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Diary'
+    CreateDiary:
+      type: object
+      properties:
+        day:
+          type: string
+          format: date
+          description: Date of the diary entry (ISO 8601)
+          example: '2024-07-05'
+        title:
+          type: string
+          maxLength: 255
+          description: Diary entry title
+          example: First day in Barcelona
+        description:
+          type: string
+          description: Diary entry content
+        tripId:
+          type: integer
+          description: Associated trip ID
+          example: 1
+        diaryTypeId:
+          type: integer
+          description: Diary type ID
+        weatherTypeId:
+          type: integer
+          description: Weather type ID
+        photoIds:
+          type: array
+          items:
+            type: integer
+          description: Array of photo IDs to associate
+        locationIds:
+          type: array
+          items:
+            type: integer
+          description: Array of location IDs to associate
+      required:
+        - day
+        - title
+        - tripId
+    DiaryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Diary retrieved successfully
+        data:
+          $ref: '#/components/schemas/Diary'
+    UpdateDiary:
+      type: object
+      properties:
+        day:
+          type: string
+          format: date
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        tripId:
+          type: integer
+        diaryTypeId:
+          type: integer
+        weatherTypeId:
+          type: integer
+        photoIds:
+          type: array
+          items:
+            type: integer
+        locationIds:
+          type: array
+          items:
+            type: integer
+    Sport:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            nameSpanish:
+              type: string
+              maxLength: 100
+              description: Sport name in Spanish
+              example: Ciclismo
+            nameEnglish:
+              type: string
+              maxLength: 100
+              description: Sport name in English
+              example: Cycling
+            icon:
+              type: string
+              nullable: true
+              description: Icon filename
+            iconUrl:
+              type: string
+              nullable: true
+              description: Full URL to sport icon
+              example: /uploads/icons/sports/cycling.png
+          required:
+            - nameSpanish
+            - nameEnglish
+    SportsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Sports retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sport'
+    CreateSport:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+          description: Sport name in Spanish
+          example: Ciclismo
+        nameEnglish:
+          type: string
+          maxLength: 100
+          description: Sport name in English
+          example: Cycling
+        icon:
+          type: string
+          maxLength: 255
+          description: Icon filename (optional)
+      required:
+        - nameSpanish
+        - nameEnglish
+    SportResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Sport retrieved successfully
+        data:
+          $ref: '#/components/schemas/Sport'
+    UpdateSport:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+        nameEnglish:
+          type: string
+          maxLength: 100
+        icon:
+          type: string
+          maxLength: 255
+    SportEvent:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            eventDate:
+              type: string
+              format: date
+              description: Date of the sport event
+              example: '2024-07-10'
+            eventName:
+              type: string
+              maxLength: 255
+              description: Name of the event
+              example: Madrid Marathon
+            distance:
+              type: number
+              nullable: true
+              minimum: 0
+              description: Distance in kilometers
+              example: 42.195
+            bib:
+              type: string
+              maxLength: 50
+              nullable: true
+              description: Race bib number
+              example: '1234'
+            timeSpent:
+              type: string
+              nullable: true
+              description: Time spent (duration format)
+              example: '03:45:30'
+            completed:
+              type: boolean
+              description: Whether the event was completed
+              example: true
+            tripId:
+              type: integer
+              description: Associated trip ID
+            sportId:
+              type: integer
+              description: Associated sport ID
+          required:
+            - eventDate
+            - eventName
+            - completed
+            - tripId
+            - sportId
+    SportEventsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Sport events retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SportEvent'
+    CreateSportEvent:
+      type: object
+      properties:
+        eventDate:
+          type: string
+          format: date
+          description: Date of the event (ISO 8601)
+          example: '2024-07-10'
+        eventName:
+          type: string
+          maxLength: 255
+          description: Name of the event
+          example: Madrid Marathon
+        distance:
+          type: number
+          minimum: 0
+          description: Distance in kilometers
+        bib:
+          type: string
+          maxLength: 50
+          description: Race bib number
+        timeSpent:
+          type: string
+          description: Time spent (HH:MM:SS format)
+        completed:
+          type: boolean
+          description: Whether the event was completed
+          example: true
+        tripId:
+          type: integer
+          description: Associated trip ID
+          example: 1
+        sportId:
+          type: integer
+          description: Associated sport ID
+          example: 1
+      required:
+        - eventDate
+        - eventName
+        - completed
+        - tripId
+        - sportId
+    SportEventResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Sport event retrieved successfully
+        data:
+          $ref: '#/components/schemas/SportEvent'
+    UpdateSportEvent:
+      type: object
+      properties:
+        eventDate:
+          type: string
+          format: date
+        eventName:
+          type: string
+          maxLength: 255
+        distance:
+          type: number
+          minimum: 0
+        bib:
+          type: string
+          maxLength: 50
+        timeSpent:
+          type: string
+        completed:
+          type: boolean
+        tripId:
+          type: integer
+        sportId:
+          type: integer
+    PoiType:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            nameSpanish:
+              type: string
+              maxLength: 100
+              description: POI type name in Spanish
+              example: Restaurante
+            nameEnglish:
+              type: string
+              maxLength: 100
+              description: POI type name in English
+              example: Restaurant
+          required:
+            - nameSpanish
+            - nameEnglish
+    PoiTypesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: POI types retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PoiType'
+    CreatePoiType:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+          description: POI type name in Spanish
+          example: Restaurante
+        nameEnglish:
+          type: string
+          maxLength: 100
+          description: POI type name in English
+          example: Restaurant
+      required:
+        - nameSpanish
+        - nameEnglish
+    PoiTypeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: POI type retrieved successfully
+        data:
+          $ref: '#/components/schemas/PoiType'
+    UpdatePoiType:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+        nameEnglish:
+          type: string
+          maxLength: 100
+    Poi:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            nameSpanish:
+              type: string
+              maxLength: 100
+              description: POI name in Spanish
+              example: Museo del Prado
+            nameEnglish:
+              type: string
+              maxLength: 100
+              description: POI name in English
+              example: Prado Museum
+            latitude:
+              type: number
+              format: double
+              minimum: -90
+              maximum: 90
+              description: POI latitude
+              example: 40.4138
+            longitude:
+              type: number
+              format: double
+              minimum: -180
+              maximum: 180
+              description: POI longitude
+              example: -3.6921
+            osmId:
+              type: string
+              maxLength: 100
+              nullable: true
+              description: OpenStreetMap ID
+            poiType:
+              type: object
+              properties:
+                id:
+                  type: integer
+                nameSpanish:
+                  type: string
+                nameEnglish:
+                  type: string
+            location:
+              type: object
+              properties:
+                id:
+                  type: integer
+                name:
+                  type: string
+          required:
+            - nameSpanish
+            - poiType
+    PoisListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: POIs retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Poi'
+    CreatePoi:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+          description: POI name in Spanish
+          example: Museo del Prado
+        nameEnglish:
+          type: string
+          maxLength: 100
+          description: POI name in English
+          example: Prado Museum
+        poiTypeId:
+          type: integer
+          description: POI type ID
+          example: 1
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+          description: POI latitude
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+          description: POI longitude
+        locationId:
+          type: integer
+          description: Associated location ID
+        osmId:
+          type: string
+          maxLength: 100
+          description: OpenStreetMap ID (optional)
+      required:
+        - nameSpanish
+        - poiTypeId
+    PoiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: POI retrieved successfully
+        data:
+          $ref: '#/components/schemas/Poi'
+    UpdatePoi:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+        nameEnglish:
+          type: string
+          maxLength: 100
+        poiTypeId:
+          type: integer
+        latitude:
+          type: number
+          format: double
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          format: double
+          minimum: -180
+          maximum: 180
+        locationId:
+          type: integer
+        osmId:
+          type: string
+          maxLength: 100
+    WeatherTypesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Weather types retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WeatherType'
+    CreateWeatherType:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: WMO weather code
+          example: 0
+        nameSpanish:
+          type: string
+          description: Weather type name in Spanish
+          example: Despejado
+        nameEnglish:
+          type: string
+          description: Weather type name in English
+          example: Clear sky
+        icon:
+          type: string
+          description: Icon filename or emoji
+        description:
+          type: string
+          description: Weather description
+      required:
+        - id
+        - nameSpanish
+        - nameEnglish
+    WeatherTypeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Weather type retrieved successfully
+        data:
+          $ref: '#/components/schemas/WeatherType'
+    UpdateWeatherType:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+        nameEnglish:
+          type: string
+        icon:
+          type: string
+        description:
+          type: string
+    AccommodationTypesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Accommodation types retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccommodationType'
+    CreateAccommodationType:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          description: Accommodation type name in Spanish
+          example: Hotel
+        nameEnglish:
+          type: string
+          description: Accommodation type name in English
+          example: Hotel
+        icon:
+          type: string
+          description: Icon filename
+      required:
+        - nameSpanish
+        - nameEnglish
+    AccommodationTypeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Accommodation type retrieved successfully
+        data:
+          $ref: '#/components/schemas/AccommodationType'
+    UpdateAccommodationType:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+        nameEnglish:
+          type: string
+        icon:
+          type: string
+    TransportationTypesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Transportation types retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransportationType'
+    CreateTransportationType:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+          description: Transportation type name in Spanish
+          example: Avion
+        nameEnglish:
+          type: string
+          maxLength: 100
+          description: Transportation type name in English
+          example: Airplane
+        icon:
+          type: string
+          maxLength: 255
+          description: Icon filename
+      required:
+        - nameSpanish
+        - nameEnglish
+    TransportationTypeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Transportation type retrieved successfully
+        data:
+          $ref: '#/components/schemas/TransportationType'
+    UpdateTransportationType:
+      type: object
+      properties:
+        nameSpanish:
+          type: string
+          maxLength: 100
+        nameEnglish:
+          type: string
+          maxLength: 100
+        icon:
+          type: string
+          maxLength: 255
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the operation was successful
+        message:
+          type: string
+          description: Human-readable message about the operation
+        data:
+          description: Response payload (type varies by endpoint)
+        error:
+          description: Error details (only present on failure)
+      required:
+        - success
+    PaginatedResponse:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            pagination:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  example: 1
+                limit:
+                  type: integer
+                  example: 10
+                total:
+                  type: integer
+                  example: 100
+                totalPages:
+                  type: integer
+                  example: 10
+  responses:
+    BadRequest:
+      description: Bad request - validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseError'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseError'
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiResponseError'

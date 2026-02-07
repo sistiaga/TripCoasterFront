@@ -1,7 +1,8 @@
 // master - MARSISCA - BEGIN 2025-12-08
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { ApiConfiguration } from '../../api/api-configuration';
 import {
   DiaryType,
   DiaryTypesResponse,
@@ -10,32 +11,53 @@ import {
   UpdateDiaryTypeRequest
 } from '../models/diary-type.model';
 
+// master - MARSISCA - BEGIN 2026-02-07
+import { getAllDiaryTypes } from '../../api/fn/diaries/get-all-diary-types';
+import { getDiaryTypeById } from '../../api/fn/diaries/get-diary-type-by-id';
+import { createDiaryType } from '../../api/fn/diaries/create-diary-type';
+import { updateDiaryType } from '../../api/fn/diaries/update-diary-type';
+import { deleteDiaryType } from '../../api/fn/diaries/delete-diary-type';
+// master - MARSISCA - END 2026-02-07
+
 @Injectable({
   providedIn: 'root'
 })
 export class DiaryTypeService {
-  private readonly endpoint = '/diaries/types';
-
-  constructor(private apiService: ApiService) {}
+  // master - MARSISCA - BEGIN 2026-02-07
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfiguration
+  ) {}
 
   getUserDiaryTypes(userId: number): Observable<DiaryTypesResponse> {
-    return this.apiService.get<DiaryTypesResponse>(this.endpoint);
+    return getAllDiaryTypes(this.http, this.apiConfig.rootUrl).pipe(
+      map(r => r.body as DiaryTypesResponse)
+    );
   }
 
   getDiaryType(id: number): Observable<DiaryTypeResponse> {
-    return this.apiService.get<DiaryTypeResponse>(`${this.endpoint}/${id}`);
+    return getDiaryTypeById(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as DiaryTypeResponse)
+    );
   }
 
   createDiaryType(data: CreateDiaryTypeRequest): Observable<DiaryTypeResponse> {
-    return this.apiService.post<DiaryTypeResponse>(this.endpoint, data);
+    return createDiaryType(this.http, this.apiConfig.rootUrl, { body: data as any }).pipe(
+      map(r => r.body as DiaryTypeResponse)
+    );
   }
 
   updateDiaryType(id: number, data: UpdateDiaryTypeRequest): Observable<DiaryTypeResponse> {
-    return this.apiService.put<DiaryTypeResponse>(`${this.endpoint}/${id}`, data);
+    return updateDiaryType(this.http, this.apiConfig.rootUrl, { id, body: data as any }).pipe(
+      map(r => r.body as DiaryTypeResponse)
+    );
   }
 
   deleteDiaryType(id: number): Observable<{ success: boolean; message: string }> {
-    return this.apiService.delete<{ success: boolean; message: string }>(`${this.endpoint}/${id}`);
+    return deleteDiaryType(this.http, this.apiConfig.rootUrl, { id }).pipe(
+      map(r => r.body as { success: boolean; message: string })
+    );
   }
+  // master - MARSISCA - END 2026-02-07
 }
 // master - MARSISCA - END 2025-12-08
