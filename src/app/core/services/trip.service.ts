@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 // master - MARSISCA - END 2026-01-10
 import { ApiConfiguration } from '../../api/api-configuration';
-import { TripsResponse, Trip, PhotoUpdateRequest, PhotoResponse } from '../models/trip.model';
+import { TripsResponse, Trip, PhotoUpdateRequest, PhotoResponse, YearSummary, MonthSummary } from '../models/trip.model';
 
 export interface CreateTripData {
   name: string;
@@ -120,6 +120,22 @@ export class TripService {
   // master - MARSISCA - END 2026-02-07
 
   // master - MARSISCA - BEGIN 2026-02-07
+  getYearsSummary(userId: number): Observable<YearSummary[]> {
+    return this.http.get<{ success: boolean; data: YearSummary[] }>(
+      `${this.apiConfig.rootUrl}/calendar?userId=${userId}`
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+
+  getMonthsSummary(year: number, userId: number): Observable<MonthSummary[]> {
+    return this.http.get<{ success: boolean; data: MonthSummary[] }>(
+      `${this.apiConfig.rootUrl}/calendar/${year}?userId=${userId}`
+    ).pipe(
+      map(response => response.data)
+    );
+  }
+
   getTripsByMonth(year: number, month: number, userId: number): Observable<Trip[]> {
     return this.http.get<{ success: boolean; data: Trip[] }>(
       `${this.apiConfig.rootUrl}/calendar/${year}/${month}?userId=${userId}`

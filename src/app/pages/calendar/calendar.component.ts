@@ -11,7 +11,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { TripService } from '../../core/services/trip.service';
 import { AuthService } from '../../core/services/auth.service';
-import { Trip } from '../../core/models/trip.model';
+import { ApiConfiguration } from '../../api/api-configuration';
+import { Trip, YearSummary, MonthSummary, CalendarCountry } from '../../core/models/trip.model';
 
 interface CalendarDay {
   day: number | null;
@@ -42,10 +43,20 @@ interface TripInDay extends Trip {
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
+  // View mode navigation
+  viewMode: 'years' | 'months' | 'days' = 'years';
+  yearSummaries: YearSummary[] = [];
+  monthSummaries: MonthSummary[] = [];
+  selectedYear: number | null = null;
+  selectedMonth: number | null = null;
+
+  // Day view
   currentDate: Date = new Date();
   allTrips: Trip[] = [];
   tripsForMonth: Trip[] = [];
   calendarDays: CalendarDay[] = [];
+
+  // Search
   searchQuery: string = '';
   searchResults: Trip[] = [];
   showSearchResults: boolean = false;
@@ -65,11 +76,12 @@ export class CalendarComponent implements OnInit {
   constructor(
     private tripService: TripService,
     private authService: AuthService,
+    private apiConfig: ApiConfiguration,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadTripsForMonth();
+    this.loadYearsSummary();
     this.loadAllTrips();
   }
 
@@ -80,6 +92,54 @@ export class CalendarComponent implements OnInit {
       this.showSearchResults = false;
     }
   }
+
+  // --- Year view ---
+
+  loadYearsSummary(): void {
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
+
+    this.tripService.getYearsSummary(user.id).subscribe({
+      next: (summaries) => {
+        this.yearSummaries = summaries;
+      },
+      error: (error) => console.error('Error loading years summary:', error)
+    });
+  }
+
+  selectYear(year: number): void {
+    this.selectedYear = year;
+    this.loadMonthsSummary(year);
+    this.viewMode = 'months';
+  }
+
+  // --- Month view ---
+
+  loadMonthsSummary(year: number): void {
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
+
+    this.tripService.getMonthsSummary(year, user.id).subscribe({
+      next: (summaries) => {
+        this.monthSummaries = summaries;
+      },
+      error: (error) => console.error('Error loading months summary:', error)
+    });
+  }
+
+  selectMonth(month: number): void {
+    if (!this.selectedYear) return;
+    this.selectedMonth = month;
+    this.currentDate = new Date(this.selectedYear, month - 1);
+    this.loadTripsForMonth();
+    this.viewMode = 'days';
+  }
+
+  getMonthSummary(month: number): MonthSummary | undefined {
+    return this.monthSummaries.find(s => s.month === month);
+  }
+
+  // --- Day view ---
 
   loadTripsForMonth(): void {
     const user = this.authService.getCurrentUser();
@@ -97,6 +157,68 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  // --- Navigation ---
+
+  goBackToYears(): void {
+    this.viewMode = 'years';
+    this.selectedYear = null;
+    this.selectedMonth = null;
+  }
+
+  goBackToMonths(): void {
+    this.viewMode = 'months';
+    this.selectedMonth = null;
+  }
+
+  previousYear(): void {
+    if (!this.selectedYear) return;
+    this.selectedYear = this.selectedYear - 1;
+    this.loadMonthsSummary(this.selectedYear);
+  }
+
+  nextYear(): void {
+    if (!this.selectedYear) return;
+    this.selectedYear = this.selectedYear + 1;
+    this.loadMonthsSummary(this.selectedYear);
+  }
+
+  previousMonth(): void {
+    this.currentDate = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth() - 1
+    );
+    this.selectedYear = this.currentDate.getFullYear();
+    this.selectedMonth = this.currentDate.getMonth() + 1;
+    this.loadTripsForMonth();
+  }
+
+  nextMonth(): void {
+    this.currentDate = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth() + 1
+    );
+    this.selectedYear = this.currentDate.getFullYear();
+    this.selectedMonth = this.currentDate.getMonth() + 1;
+    this.loadTripsForMonth();
+  }
+
+  goToToday(): void {
+    this.currentDate = new Date();
+    this.selectedYear = this.currentDate.getFullYear();
+    this.selectedMonth = this.currentDate.getMonth() + 1;
+    this.loadTripsForMonth();
+  }
+
+  // --- Flags ---
+
+  getFlagUrl(country: CalendarCountry): string {
+    if (!country.flagPath) return '';
+    if (country.flagPath.startsWith('http')) return country.flagPath;
+    return `${this.apiConfig.rootUrl}${country.flagPath}`;
+  }
+
+  // --- Search ---
+
   loadAllTrips(): void {
     const user = this.authService.getCurrentUser();
     if (!user) return;
@@ -109,6 +231,47 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  onSearchChange(): void {
+    if (this.searchQuery.trim().length < 2) {
+      this.showSearchResults = false;
+      this.searchResults = [];
+      return;
+    }
+
+    const query = this.searchQuery.toLowerCase();
+    this.searchResults = this.allTrips.filter(trip =>
+      trip.name.toLowerCase().includes(query)
+    );
+    this.showSearchResults = true;
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.showSearchResults = false;
+  }
+
+  goToTripMonth(trip: Trip): void {
+    const tripDate = new Date(trip.startDate);
+    this.selectedYear = tripDate.getFullYear();
+    this.selectedMonth = tripDate.getMonth() + 1;
+    this.currentDate = new Date(tripDate.getFullYear(), tripDate.getMonth());
+    this.viewMode = 'days';
+    this.loadTripsForMonth();
+    this.clearSearch();
+  }
+
+  formatSearchDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  // --- Day calendar logic ---
+
   buildCalendar(): void {
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth();
@@ -117,17 +280,14 @@ export class CalendarComponent implements OnInit {
     const daysInMonth = lastDay.getDate();
     let startingDayOfWeek = firstDay.getDay();
 
-    // Convert Sunday=0 to Monday-first: Mon=0, Tue=1, ..., Sun=6
     startingDayOfWeek = (startingDayOfWeek === 0) ? 6 : startingDayOfWeek - 1;
 
     this.calendarDays = [];
 
-    // Empty cells before first day
     for (let i = 0; i < startingDayOfWeek; i++) {
       this.calendarDays.push({ day: null, trips: [] });
     }
 
-    // Days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const currentDate = new Date(year, month, day);
       const tripsForDay = this.getTripsForDay(currentDate);
@@ -180,27 +340,6 @@ export class CalendarComponent implements OnInit {
     return 'middle';
   }
 
-  previousMonth(): void {
-    this.currentDate = new Date(
-      this.currentDate.getFullYear(),
-      this.currentDate.getMonth() - 1
-    );
-    this.loadTripsForMonth();
-  }
-
-  nextMonth(): void {
-    this.currentDate = new Date(
-      this.currentDate.getFullYear(),
-      this.currentDate.getMonth() + 1
-    );
-    this.loadTripsForMonth();
-  }
-
-  goToToday(): void {
-    this.currentDate = new Date();
-    this.loadTripsForMonth();
-  }
-
   isToday(calDay: CalendarDay): boolean {
     if (!calDay.date) return false;
     const today = new Date();
@@ -216,42 +355,6 @@ export class CalendarComponent implements OnInit {
 
   getDuration(trip: Trip): number {
     return this.tripService.getTripDurationInDays(trip) + 1;
-  }
-
-  onSearchChange(): void {
-    if (this.searchQuery.trim().length < 2) {
-      this.showSearchResults = false;
-      this.searchResults = [];
-      return;
-    }
-
-    const query = this.searchQuery.toLowerCase();
-    this.searchResults = this.allTrips.filter(trip =>
-      trip.name.toLowerCase().includes(query)
-    );
-    this.showSearchResults = true;
-  }
-
-  clearSearch(): void {
-    this.searchQuery = '';
-    this.searchResults = [];
-    this.showSearchResults = false;
-  }
-
-  goToTripMonth(trip: Trip): void {
-    const tripDate = new Date(trip.startDate);
-    this.currentDate = new Date(tripDate.getFullYear(), tripDate.getMonth());
-    this.loadTripsForMonth();
-    this.clearSearch();
-  }
-
-  formatSearchDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
   }
 }
 // master - MARSISCA - END 2026-02-07

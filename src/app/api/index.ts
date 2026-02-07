@@ -85,6 +85,12 @@ export type { WeatherType } from './models/weather-type';
 export type { WeatherTypeResponse } from './models/weather-type-response';
 export type { WeatherTypesListResponse } from './models/weather-types-list-response';
 
+export type { GetYearsSummary$Params as GetYearsSummary$Params } from './fn/calendar/get-years-summary';
+export { getYearsSummary as getYearsSummary } from './fn/calendar/get-years-summary';
+export type { GetMonthsSummary$Params as GetMonthsSummary$Params } from './fn/calendar/get-months-summary';
+export { getMonthsSummary as getMonthsSummary } from './fn/calendar/get-months-summary';
+export type { GetTripsByMonth$Params as GetTripsByMonth$Params } from './fn/calendar/get-trips-by-month';
+export { getTripsByMonth as getTripsByMonth } from './fn/calendar/get-trips-by-month';
 export type { LoginUser$Params as LoginUser$Params } from './fn/users/login-user';
 export { loginUser as loginUser } from './fn/users/login-user';
 export type { GetAllUsers$Params as GetAllUsers$Params } from './fn/users/get-all-users';

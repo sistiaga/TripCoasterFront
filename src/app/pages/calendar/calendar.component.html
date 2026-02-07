@@ -9,21 +9,47 @@
           <mat-icon class="calendar-icon">calendar_month</mat-icon>
           <h1>{{ 'CALENDAR.TITLE' | translate }}</h1>
         </div>
-        <div class="header-controls">
-          <button mat-icon-button (click)="previousMonth()" class="nav-btn" matTooltip="Previous month">
-            <mat-icon>chevron_left</mat-icon>
-          </button>
-          <button mat-flat-button (click)="goToToday()" class="today-btn">
-            {{ 'CALENDAR.TODAY' | translate }}
-          </button>
-          <button mat-icon-button (click)="nextMonth()" class="nav-btn" matTooltip="Next month">
-            <mat-icon>chevron_right</mat-icon>
-          </button>
-        </div>
+
+        <!-- Month view controls (year navigation) -->
+        @if (viewMode === 'months') {
+          <div class="header-controls">
+            <button mat-icon-button (click)="previousYear()" class="nav-btn" matTooltip="Previous year">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <span class="year-label">{{ selectedYear }}</span>
+            <button mat-icon-button (click)="nextYear()" class="nav-btn" matTooltip="Next year">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        }
+
+        <!-- Day view controls (month navigation) -->
+        @if (viewMode === 'days') {
+          <div class="header-controls">
+            <button mat-icon-button (click)="previousMonth()" class="nav-btn" matTooltip="Previous month">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <button mat-flat-button (click)="goToToday()" class="today-btn">
+              {{ 'CALENDAR.TODAY' | translate }}
+            </button>
+            <button mat-icon-button (click)="nextMonth()" class="nav-btn" matTooltip="Next month">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        }
       </div>
 
-      <div class="current-month">
-        {{ months[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <span class="breadcrumb-link" (click)="goBackToYears()">{{ 'CALENDAR.TITLE' | translate }}</span>
+        @if (selectedYear) {
+          <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+          <span class="breadcrumb-link" [class.breadcrumb-current]="viewMode === 'months'" (click)="goBackToMonths()">{{ selectedYear }}</span>
+        }
+        @if (selectedMonth !== null) {
+          <mat-icon class="breadcrumb-separator">chevron_right</mat-icon>
+          <span class="breadcrumb-current">{{ months[selectedMonth - 1] }}</span>
+        }
       </div>
 
       <!-- Search -->
@@ -43,7 +69,6 @@
             </button>
           }
 
-          <!-- Search results dropdown -->
           @if (showSearchResults && searchResults.length > 0) {
             <div class="search-results">
               @for (trip of searchResults; track trip.id) {
@@ -71,73 +96,154 @@
       </div>
     </div>
 
-    <!-- Calendar Body -->
-    <div class="calendar-body">
-      <!-- Week days header -->
-      <div class="weekdays-grid">
-        @for (day of weekDays; track day) {
-          <div class="weekday">{{ day }}</div>
-        }
-      </div>
+    <!-- Content based on view mode -->
+    @switch (viewMode) {
 
-      <!-- Days grid -->
-      <div class="days-grid">
-        @for (calDay of calendarDays; track $index) {
-          <div class="day-cell" [class.empty]="!calDay.day">
-            @if (calDay.day) {
-              <div class="day-content">
-                <div class="day-number" [class.today]="isToday(calDay)">{{ calDay.day }}</div>
-
-                <div class="trips-container">
-                  @for (trip of calDay.trips; track trip.id) {
-                    <div
-                      class="trip-block"
-                      [class.trip-start]="trip.position === 'start' || trip.position === 'single'"
-                      [class.trip-middle]="trip.position === 'middle'"
-                      [class.trip-end]="trip.position === 'end'"
-                      [class.trip-single]="trip.position === 'single'"
-                      [style.background-color]="trip.color"
-                      (click)="goToTrip(trip.id)"
-                      [matTooltip]="trip.name + ' (' + getDuration(trip) + ' days)'"
-                    >
-                      @if (trip.position === 'start' || trip.position === 'single') {
-                        <span class="trip-name">{{ trip.name }}</span>
+      <!-- YEARS VIEW -->
+      @case ('years') {
+        <div class="calendar-body">
+          @if (yearSummaries.length > 0) {
+            <div class="cards-grid">
+              @for (yearSummary of yearSummaries; track yearSummary.year) {
+                <div class="year-card" (click)="selectYear(yearSummary.year)">
+                  <div class="card-title">{{ yearSummary.year }}</div>
+                  <div class="card-trip-count">
+                    {{ yearSummary.tripCount }} {{ yearSummary.tripCount === 1 ? ('CALENDAR.TRIP' | translate) : ('CALENDAR.TRIPS' | translate) }}
+                  </div>
+                  @if (yearSummary.countries.length > 0) {
+                    <div class="card-flags">
+                      @for (country of yearSummary.countries; track country.id) {
+                        <img
+                          class="flag-img"
+                          [src]="getFlagUrl(country)"
+                          [alt]="country.nameEnglish"
+                          [matTooltip]="country.nameEnglish"
+                        />
                       }
                     </div>
                   }
                 </div>
-              </div>
-            }
-          </div>
-        }
-      </div>
+              }
+            </div>
+          } @else {
+            <div class="no-trips">
+              <mat-icon class="no-trips-icon">event_busy</mat-icon>
+              <p>{{ 'CALENDAR.NO_TRIPS' | translate }}</p>
+            </div>
+          }
+        </div>
+      }
 
-      <!-- Legend -->
-      @if (tripsForMonth.length > 0) {
-        <div class="legend">
-          <h3>{{ 'CALENDAR.TRIPS_THIS_MONTH' | translate }}</h3>
-          <div class="legend-items">
-            @for (trip of tripsForMonth; track trip.id) {
-              <div class="legend-item" (click)="goToTrip(trip.id)">
-                <div class="legend-color" [style.background-color]="tripColors[(trip.id || 0) % tripColors.length]"></div>
-                <span class="legend-text">
-                  {{ trip.name }}
-                  ({{ getDuration(trip) }} {{ getDuration(trip) === 1 ? ('CALENDAR.DAY' | translate) : ('CALENDAR.DAYS' | translate) }})
-                </span>
+      <!-- MONTHS VIEW -->
+      @case ('months') {
+        <div class="calendar-body">
+          <div class="cards-grid months-grid">
+            @for (monthIndex of [1,2,3,4,5,6,7,8,9,10,11,12]; track monthIndex) {
+              @let summary = getMonthSummary(monthIndex);
+              <div
+                class="month-card"
+                [class.disabled]="!summary || summary.tripCount === 0"
+                (click)="summary && summary.tripCount > 0 ? selectMonth(monthIndex) : null"
+              >
+                <div class="card-title card-month-name">{{ months[monthIndex - 1] }}</div>
+                @if (summary && summary.tripCount > 0) {
+                  <div class="card-trip-count">
+                    {{ summary.tripCount }} {{ summary.tripCount === 1 ? ('CALENDAR.TRIP' | translate) : ('CALENDAR.TRIPS' | translate) }}
+                  </div>
+                  @if (summary.countries.length > 0) {
+                    <div class="card-flags">
+                      @for (country of summary.countries; track country.id) {
+                        <img
+                          class="flag-img"
+                          [src]="getFlagUrl(country)"
+                          [alt]="country.nameEnglish"
+                          [matTooltip]="country.nameEnglish"
+                        />
+                      }
+                    </div>
+                  }
+                } @else {
+                  <div class="card-trip-count card-empty">{{ 'CALENDAR.NO_TRIPS' | translate }}</div>
+                }
               </div>
             }
           </div>
         </div>
       }
 
-      <!-- No trips message -->
-      @if (tripsForMonth.length === 0) {
-        <div class="no-trips">
-          <mat-icon class="no-trips-icon">event_busy</mat-icon>
-          <p>{{ 'CALENDAR.NO_TRIPS' | translate }}</p>
+      <!-- DAYS VIEW -->
+      @case ('days') {
+        <div class="calendar-body">
+          <div class="current-month-label">
+            {{ months[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}
+          </div>
+
+          <!-- Week days header -->
+          <div class="weekdays-grid">
+            @for (day of weekDays; track day) {
+              <div class="weekday">{{ day }}</div>
+            }
+          </div>
+
+          <!-- Days grid -->
+          <div class="days-grid">
+            @for (calDay of calendarDays; track $index) {
+              <div class="day-cell" [class.empty]="!calDay.day">
+                @if (calDay.day) {
+                  <div class="day-content">
+                    <div class="day-number" [class.today]="isToday(calDay)">{{ calDay.day }}</div>
+
+                    <div class="trips-container">
+                      @for (trip of calDay.trips; track trip.id) {
+                        <div
+                          class="trip-block"
+                          [class.trip-start]="trip.position === 'start' || trip.position === 'single'"
+                          [class.trip-middle]="trip.position === 'middle'"
+                          [class.trip-end]="trip.position === 'end'"
+                          [class.trip-single]="trip.position === 'single'"
+                          [style.background-color]="trip.color"
+                          (click)="goToTrip(trip.id)"
+                          [matTooltip]="trip.name + ' (' + getDuration(trip) + ' days)'"
+                        >
+                          @if (trip.position === 'start' || trip.position === 'single') {
+                            <span class="trip-name">{{ trip.name }}</span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Legend -->
+          @if (tripsForMonth.length > 0) {
+            <div class="legend">
+              <h3>{{ 'CALENDAR.TRIPS_THIS_MONTH' | translate }}</h3>
+              <div class="legend-items">
+                @for (trip of tripsForMonth; track trip.id) {
+                  <div class="legend-item" (click)="goToTrip(trip.id)">
+                    <div class="legend-color" [style.background-color]="tripColors[(trip.id || 0) % tripColors.length]"></div>
+                    <span class="legend-text">
+                      {{ trip.name }}
+                      ({{ getDuration(trip) }} {{ getDuration(trip) === 1 ? ('CALENDAR.DAY' | translate) : ('CALENDAR.DAYS' | translate) }})
+                    </span>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          @if (tripsForMonth.length === 0) {
+            <div class="no-trips">
+              <mat-icon class="no-trips-icon">event_busy</mat-icon>
+              <p>{{ 'CALENDAR.NO_TRIPS' | translate }}</p>
+            </div>
+          }
         </div>
       }
-    </div>
+    }
 
   </div>
 </div>

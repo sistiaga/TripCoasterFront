@@ -73,6 +73,14 @@
   }
 }
 
+.year-label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: vars.$text-on-primary;
+  min-width: 60px;
+  text-align: center;
+}
+
 .today-btn {
   background: rgba(255, 255, 255, 0.15) !important;
   color: vars.$text-on-primary !important;
@@ -84,16 +92,41 @@
   }
 }
 
-.current-month {
-  font-size: 1.25rem;
+// Breadcrumb
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-xs;
+  margin-bottom: vars.$spacing-md;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.breadcrumb-link {
+  cursor: pointer;
+  transition: color vars.$transition-fast;
+
+  &:hover {
+    color: vars.$primary-color;
+  }
+}
+
+.breadcrumb-current {
+  color: vars.$text-on-primary;
   font-weight: 600;
-  letter-spacing: 0.05em;
+}
+
+.breadcrumb-separator {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 // Search
 .search-section {
   position: relative;
-  margin-top: vars.$spacing-lg;
+  margin-top: vars.$spacing-md;
   z-index: vars.$z-dropdown;
 }
 
@@ -243,6 +276,84 @@
   padding: vars.$spacing-xl;
 }
 
+// Cards grid (years & months)
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: vars.$spacing-lg;
+}
+
+.months-grid {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.year-card,
+.month-card {
+  background: vars.$background-color;
+  border: 2px solid vars.$primary-color;
+  border-radius: vars.$radius-lg;
+  padding: vars.$spacing-lg;
+  cursor: pointer;
+  box-shadow: vars.$shadow-sm;
+  transition: transform vars.$transition-base, box-shadow vars.$transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: vars.$shadow-lg;
+  }
+}
+
+.month-card.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  border-color: vars.$border-color;
+}
+
+.card-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: vars.$primary-color;
+  margin-bottom: vars.$spacing-xs;
+}
+
+.card-month-name {
+  font-size: 1.5rem;
+}
+
+.card-trip-count {
+  color: vars.$text-secondary;
+  font-size: 1rem;
+  margin-bottom: vars.$spacing-sm;
+}
+
+.card-empty {
+  font-style: italic;
+}
+
+.card-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: vars.$spacing-xs;
+  margin-top: vars.$spacing-sm;
+}
+
+.flag-img {
+  width: 32px;
+  height: 22px;
+  border-radius: 3px;
+  object-fit: cover;
+  box-shadow: vars.$shadow-sm;
+}
+
+// Current month label (day view)
+.current-month-label {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: vars.$primary-color;
+  margin-bottom: vars.$spacing-lg;
+}
+
+// Day calendar grid
 .weekdays-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -396,7 +507,8 @@
   transition: all vars.$transition-fast;
 
   &:hover {
-    @include mixins.hover-lift;
+    transform: translateY(-2px);
+    box-shadow: vars.$shadow-md;
   }
 }
 
@@ -475,6 +587,11 @@
     padding: vars.$spacing-md;
   }
 
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: vars.$spacing-md;
+  }
+
   .day-cell {
     min-height: 80px;
     padding: 4px;
@@ -489,6 +606,18 @@
 
 @media (max-width: vars.$breakpoint-mobile) {
   .header-title h1 {
+    font-size: 1.25rem;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+  }
+
+  .card-month-name {
     font-size: 1.25rem;
   }
 

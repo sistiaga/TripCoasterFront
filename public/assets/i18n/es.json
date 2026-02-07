@@ -4,6 +4,9 @@
     "WELCOME": "Bienvenido"
   },
   "HEADER": {
+    "MYTRIPS": "Mis viajes",
+    "CALENDAR": "Calendario",
+    "MAP": "Mapa",
     "SETTINGS": "Configuración"
   },
   "SETTINGS": {
@@ -435,6 +438,19 @@
     "LONGITUDE_RANGE": "La longitud debe estar entre -180 y 180",
     "CANCEL": "Cancelar",
     "SAVE": "Guardar"
+  },
+  "CALENDAR": {
+    "TITLE": "Calendario",
+    "TODAY": "Hoy",
+    "SEARCH_PLACEHOLDER": "Buscar",
+    "NO_RESULTS": "Sin resultados",
+    "DAY": "Día",
+    "DAYS": "Días",
+    "TRIPS_THIS_MONTH": "Viajes este mes",
+    "NO_TRIPS": "Sin viajes todavía",
+    "TRIP": "Viaje",
+    "TRIPS": "Viajes"
+
   }
 
 }

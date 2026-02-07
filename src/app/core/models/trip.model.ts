@@ -129,3 +129,26 @@ export interface TripCreationApiResponse {
   data: TripCreationResponse;
 }
 // master - MARSISCA - END 2026-01-10
+
+// master - MARSISCA - BEGIN 2026-02-07
+export interface CalendarCountry {
+  id: number;
+  nameEnglish: string;
+  nameSpanish: string;
+  isoCode: string;
+  flagPath: string | null;
+}
+
+export interface YearSummary {
+  year: number;
+  tripCount: number;
+  countries: CalendarCountry[];
+}
+
+export interface MonthSummary {
+  year: number;
+  month: number;
+  tripCount: number;
+  countries: CalendarCountry[];
+}
+// master - MARSISCA - END 2026-02-07

@@ -39,7 +39,202 @@ tags:
     description: Points of Interest management
   - name: Settings
     description: Application settings (weather, accommodation, transportation types)
+  - name: Calendar
+    description: Calendar view of trips by month
 paths:
+  /calendar:
+    get:
+      tags:
+        - Calendar
+      summary: Get calendar years summary
+      description: Returns a summary of all years that have trips for a user, including trip count and unique countries visited per year.
+      operationId: getYearsSummary
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          description: The user ID to filter trips
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Years summary with trip counts and countries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Calendar years summary retrieved successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        year:
+                          type: integer
+                          example: 2025
+                        tripCount:
+                          type: integer
+                          example: 5
+                        countries:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              nameEnglish:
+                                type: string
+                              nameSpanish:
+                                type: string
+                              isoCode:
+                                type: string
+                              flagPath:
+                                type: string
+                                nullable: true
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /calendar/{year}:
+    get:
+      tags:
+        - Calendar
+      summary: Get calendar months summary for a year
+      description: Returns a summary of months that have trips for a user in a specific year, including trip count and unique countries visited per month. Only months with trips are returned.
+      operationId: getMonthsSummary
+      parameters:
+        - name: year
+          in: path
+          required: true
+          description: The year to query
+          schema:
+            type: integer
+            example: 2025
+        - name: userId
+          in: query
+          required: true
+          description: The user ID to filter trips
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Months summary with trip counts and countries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Calendar months summary retrieved successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        year:
+                          type: integer
+                          example: 2025
+                        month:
+                          type: integer
+                          minimum: 1
+                          maximum: 12
+                          example: 6
+                        tripCount:
+                          type: integer
+                          example: 2
+                        countries:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              nameEnglish:
+                                type: string
+                              nameSpanish:
+                                type: string
+                              isoCode:
+                                type: string
+                              flagPath:
+                                type: string
+                                nullable: true
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+  /calendar/{year}/{month}:
+    get:
+      tags:
+        - Calendar
+      summary: Get trips for a specific month
+      description: Returns all trips that overlap with the given month for a specific user. A trip overlaps if its startDate is before or on the last day of the month AND its endDate is on or after the first day of the month.
+      operationId: getTripsByMonth
+      parameters:
+        - name: year
+          in: path
+          required: true
+          description: The year to query
+          schema:
+            type: integer
+            example: 2026
+        - name: month
+          in: path
+          required: true
+          description: The month to query (1-12)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+            example: 6
+        - name: userId
+          in: query
+          required: true
+          description: The user ID to filter trips
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Trips that overlap with the given month
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Calendar trips retrieved successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Trip'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseError'
+        '500':
+          $ref: '#/components/responses/InternalError'
   /users/login:
     post:
       tags:
@@ -2888,87 +3083,6 @@ paths:
                 $ref: '#/components/schemas/ApiResponseError'
 components:
   schemas:
-    Login:
-      type: object
-      properties:
-        emailOrAlias:
-          type: string
-          description: User email or alias
-          example: johndoe
-        password:
-          type: string
-          description: User password
-          example: securePassword123
-      required:
-        - emailOrAlias
-        - password
-    BaseEntity:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Unique identifier
-          example: 1
-        createdAt:
-          type: string
-          format: date-time
-          description: Creation timestamp
-        updatedAt:
-          type: string
-          format: date-time
-          description: Last update timestamp
-    User:
-      allOf:
-        - $ref: '#/components/schemas/BaseEntity'
-        - type: object
-          properties:
-            alias:
-              type: string
-              maxLength: 50
-              description: Unique user alias
-              example: johndoe
-            email:
-              type: string
-              format: email
-              maxLength: 255
-              description: Unique user email
-              example: john@example.com
-            firstName:
-              type: string
-              maxLength: 100
-              description: User first name
-              example: John
-            lastName:
-              type: string
-              maxLength: 100
-              description: User last name
-              example: Doe
-            active:
-              type: boolean
-              description: Whether the user is active
-              example: true
-            lastAccessDate:
-              type: string
-              format: date-time
-              nullable: true
-              description: Last access timestamp
-          required:
-            - alias
-            - email
-            - firstName
-            - lastName
-            - active
-    LoginResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        message:
-          type: string
-          example: Login successful
-        data:
-          $ref: '#/components/schemas/User'
     ApiResponseError:
       type: object
       properties:
@@ -2987,87 +3101,21 @@ components:
               type: string
       required:
         - success
-    UsersListResponse:
+    BaseEntity:
       type: object
       properties:
-        success:
-          type: boolean
-          example: true
-        message:
+        id:
+          type: integer
+          description: Unique identifier
+          example: 1
+        createdAt:
           type: string
-          example: Users retrieved successfully
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-    CreateUser:
-      type: object
-      properties:
-        alias:
+          format: date-time
+          description: Creation timestamp
+        updatedAt:
           type: string
-          maxLength: 50
-          description: Unique user alias
-          example: johndoe
-        email:
-          type: string
-          format: email
-          description: Unique user email
-          example: john@example.com
-        password:
-          type: string
-          minLength: 6
-          description: User password (min 6 characters)
-          example: securePassword123
-        firstName:
-          type: string
-          maxLength: 100
-          description: User first name
-          example: John
-        lastName:
-          type: string
-          maxLength: 100
-          description: User last name
-          example: Doe
-      required:
-        - alias
-        - email
-        - password
-        - firstName
-        - lastName
-    UserResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        message:
-          type: string
-          example: User retrieved successfully
-        data:
-          $ref: '#/components/schemas/User'
-    UpdateUser:
-      type: object
-      properties:
-        alias:
-          type: string
-          maxLength: 50
-          description: Unique user alias
-        email:
-          type: string
-          format: email
-          description: Unique user email
-        password:
-          type: string
-          minLength: 6
-          description: New password (min 6 characters)
-        firstName:
-          type: string
-          maxLength: 100
-          description: User first name
-        lastName:
-          type: string
-          maxLength: 100
-          description: User last name
+          format: date-time
+          description: Last update timestamp
     PhotoWeather:
       type: object
       properties:
@@ -3432,6 +3480,153 @@ components:
             - startDate
             - endDate
             - userId
+    Login:
+      type: object
+      properties:
+        emailOrAlias:
+          type: string
+          description: User email or alias
+          example: johndoe
+        password:
+          type: string
+          description: User password
+          example: securePassword123
+      required:
+        - emailOrAlias
+        - password
+    User:
+      allOf:
+        - $ref: '#/components/schemas/BaseEntity'
+        - type: object
+          properties:
+            alias:
+              type: string
+              maxLength: 50
+              description: Unique user alias
+              example: johndoe
+            email:
+              type: string
+              format: email
+              maxLength: 255
+              description: Unique user email
+              example: john@example.com
+            firstName:
+              type: string
+              maxLength: 100
+              description: User first name
+              example: John
+            lastName:
+              type: string
+              maxLength: 100
+              description: User last name
+              example: Doe
+            active:
+              type: boolean
+              description: Whether the user is active
+              example: true
+            lastAccessDate:
+              type: string
+              format: date-time
+              nullable: true
+              description: Last access timestamp
+          required:
+            - alias
+            - email
+            - firstName
+            - lastName
+            - active
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Login successful
+        data:
+          $ref: '#/components/schemas/User'
+    UsersListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Users retrieved successfully
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    CreateUser:
+      type: object
+      properties:
+        alias:
+          type: string
+          maxLength: 50
+          description: Unique user alias
+          example: johndoe
+        email:
+          type: string
+          format: email
+          description: Unique user email
+          example: john@example.com
+        password:
+          type: string
+          minLength: 6
+          description: User password (min 6 characters)
+          example: securePassword123
+        firstName:
+          type: string
+          maxLength: 100
+          description: User first name
+          example: John
+        lastName:
+          type: string
+          maxLength: 100
+          description: User last name
+          example: Doe
+      required:
+        - alias
+        - email
+        - password
+        - firstName
+        - lastName
+    UserResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: User retrieved successfully
+        data:
+          $ref: '#/components/schemas/User'
+    UpdateUser:
+      type: object
+      properties:
+        alias:
+          type: string
+          maxLength: 50
+          description: Unique user alias
+        email:
+          type: string
+          format: email
+          description: Unique user email
+        password:
+          type: string
+          minLength: 6
+          description: New password (min 6 characters)
+        firstName:
+          type: string
+          maxLength: 100
+          description: User first name
+        lastName:
+          type: string
+          maxLength: 100
+          description: User last name
     TripsListResponse:
       type: object
       properties:

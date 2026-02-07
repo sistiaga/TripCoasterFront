@@ -4,6 +4,9 @@
     "WELCOME": "Welcome to TripCoaster"
   },
   "HEADER": {
+    "MYTRIPS": "My trips",
+    "CALENDAR": "Calendar",
+    "MAP": "Map",
     "SETTINGS": "Settings"
   },
   "SETTINGS": {
@@ -435,6 +438,20 @@
     "LONGITUDE_RANGE": "Longitude must be between -180 and 180",
     "CANCEL": "Cancel",
     "SAVE": "Save"
+  },
+  "CALENDAR": {
+    "TITLE": "Calendar",
+    "TODAY": "Today",
+    "SEARCH_PLACEHOLDER": "Search",
+    "NO_RESULTS": "No results",
+    "DAY": "Day",
+    "DAYS": "Days",
+    "TRIPS_THIS_MONTH": "Trips this month",
+    "NO_TRIPS": "No trips yet",
+    "TRIP": "Trip",
+    "TRIPS": "Trips"
+
+
   }
 
 }
