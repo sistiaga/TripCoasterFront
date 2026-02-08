@@ -218,6 +218,13 @@ h2[mat-dialog-title] {
   color: rgba(vars.$primary-color, 0.7);
 }
 
+// master - MARSISCA - BEGIN 2026-02-07
+// Ensure datepicker panel opens above dialogs
+.cdk-overlay-container {
+  z-index: 2000 !important;
+}
+// master - MARSISCA - END 2026-02-07
+
 // -----------------------------------------------------------------------------
 // Mat Button - Brand styling
 // -----------------------------------------------------------------------------
