@@ -1,0 +1,335 @@
+// feature/landing-page - MARSISCA - BEGIN 2026-02-13
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
+.world-map-section {
+  padding: 64px 0;
+  background-color: vars.$surface-color;
+
+  @include mixins.respond-to(tablet) {
+    padding: 96px 0;
+  }
+}
+
+.world-map-section__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @include mixins.respond-to(desktop) {
+    padding: 0 vars.$spacing-xl;
+  }
+}
+
+.world-map-section__header {
+  text-align: center;
+  margin-bottom: vars.$spacing-xxl;
+
+  @include mixins.respond-to(tablet) {
+    margin-bottom: 64px;
+  }
+}
+
+.world-map-section__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: vars.$primary-color;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.world-map-section__title {
+  margin-top: vars.$spacing-sm + 4px;
+  font-family: vars.$font-primary-italic;
+  font-style: italic;
+  font-size: 30px;
+  color: vars.$text-primary;
+
+  @include mixins.respond-to(tablet) {
+    font-size: 48px;
+  }
+}
+
+.world-map-section__subtitle {
+  margin-top: vars.$spacing-md;
+  color: vars.$text-secondary;
+  font-size: 16px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+
+  @include mixins.respond-to(tablet) {
+    font-size: 18px;
+  }
+}
+
+// Layout: Map + Stats
+.world-map-section__layout {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-xl;
+  align-items: stretch;
+
+  @include mixins.respond-to(desktop) {
+    flex-direction: row;
+  }
+}
+
+// Map card
+.world-map-section__map-card {
+  flex: 1;
+  position: relative;
+  border-radius: vars.$radius-xl;
+  border: 1px solid vars.$border-color;
+  background-color: vars.$background-color;
+  overflow: hidden;
+  box-shadow: vars.$shadow-sm;
+}
+
+.world-map-section__tooltip {
+  position: absolute;
+  top: vars.$spacing-md;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  border-radius: 9999px;
+  background-color: rgba(vars.$secondary-color, 0.9);
+  padding: vars.$spacing-sm vars.$spacing-md;
+  font-size: 14px;
+  font-weight: 500;
+  color: vars.$text-on-primary;
+  backdrop-filter: blur(4px);
+  box-shadow: vars.$shadow-md;
+}
+
+.world-map-section__tooltip-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.world-map-section__map {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: #f0ebe6;
+
+  @include mixins.respond-to(tablet) {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+// Leaflet overrides (ViewEncapsulation.None)
+.world-map-section__map .leaflet-container {
+  background-color: #f0ebe6;
+}
+
+.world-map-section__map .leaflet-tile-pane,
+.world-map-section__map .leaflet-tile-container,
+.world-map-section__map .leaflet-grid-layer,
+.world-map-section__map .leaflet-map-pane > .leaflet-tile-pane {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+// Prevent any grid/tile lines from showing
+.world-map-section__map .leaflet-pane img {
+  display: none !important;
+}
+
+// Ensure canvas fills entire viewport without gaps
+.world-map-section__map canvas {
+  image-rendering: auto;
+}
+
+.world-map-section__map .leaflet-control-zoom {
+  border: 1px solid vars.$border-color;
+  border-radius: vars.$radius-md;
+  overflow: hidden;
+  box-shadow: vars.$shadow-sm;
+
+  a {
+    color: vars.$text-primary;
+    background-color: vars.$background-color;
+    border-color: vars.$border-color;
+
+    &:hover {
+      background-color: vars.$surface-color;
+    }
+  }
+}
+
+.world-map-section__pills {
+  padding: vars.$spacing-md;
+
+  @include mixins.respond-to(tablet) {
+    padding: vars.$spacing-lg;
+  }
+}
+
+.world-map-section__pills-label {
+  font-size: 12px;
+  color: vars.$text-secondary;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: vars.$spacing-sm + 4px;
+}
+
+.world-map-section__pills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: vars.$spacing-sm;
+}
+
+.world-map-section__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 9999px;
+  background-color: rgba(vars.$primary-color, 0.1);
+  padding: vars.$spacing-xs vars.$spacing-sm + 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: vars.$primary-color;
+}
+
+.world-map-section__pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: vars.$radius-full;
+  background-color: vars.$primary-color;
+}
+
+// Stats sidebar
+.world-map-section__stats {
+  display: flex;
+  flex-direction: row;
+  gap: vars.$spacing-md;
+
+  @include mixins.respond-to(desktop) {
+    flex-direction: column;
+    width: 288px;
+  }
+
+  @include mixins.respond-to(large) {
+    width: 320px;
+  }
+}
+
+.world-map-section__stat-card {
+  flex: 1;
+  border-radius: vars.$radius-lg;
+  border: 1px solid vars.$border-color;
+  background-color: vars.$background-color;
+  padding: vars.$spacing-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  @include mixins.respond-to(desktop) {
+    align-items: flex-start;
+    text-align: left;
+    padding: 20px;
+  }
+}
+
+.world-map-section__stat-icon-wrapper {
+  margin-bottom: vars.$spacing-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: vars.$radius-md;
+  background-color: rgba(vars.$primary-color, 0.1);
+}
+
+.world-map-section__stat-icon {
+  color: vars.$primary-color;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.world-map-section__stat-value {
+  font-family: vars.$font-primary-italic;
+  font-style: italic;
+  font-size: 24px;
+  font-weight: 700;
+  color: vars.$text-primary;
+
+  @include mixins.respond-to(tablet) {
+    font-size: 30px;
+  }
+}
+
+.world-map-section__stat-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: vars.$text-primary;
+  margin-top: 2px;
+}
+
+.world-map-section__stat-sub {
+  font-size: 12px;
+  color: vars.$text-secondary;
+  margin-top: 2px;
+}
+
+// Progress bar
+.world-map-section__progress {
+  margin-top: vars.$spacing-xl;
+  border-radius: vars.$radius-lg;
+  border: 1px solid vars.$border-color;
+  background-color: vars.$background-color;
+  padding: 20px;
+
+  @include mixins.respond-to(tablet) {
+    padding: vars.$spacing-lg;
+  }
+}
+
+.world-map-section__progress-header {
+  @include mixins.flex-between;
+  margin-bottom: vars.$spacing-sm + 4px;
+}
+
+.world-map-section__progress-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: vars.$text-primary;
+}
+
+.world-map-section__progress-percent {
+  font-size: 14px;
+  font-weight: 600;
+  color: vars.$primary-color;
+}
+
+.world-map-section__progress-bar {
+  height: 12px;
+  width: 100%;
+  border-radius: 9999px;
+  background-color: vars.$accent-light;
+  overflow: hidden;
+}
+
+.world-map-section__progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: vars.$primary-color;
+  transition: width 1s ease-out;
+}
+
+.world-map-section__progress-desc {
+  margin-top: vars.$spacing-sm;
+  font-size: 12px;
+  color: vars.$text-secondary;
+}
+// feature/landing-page - MARSISCA - END 2026-02-13

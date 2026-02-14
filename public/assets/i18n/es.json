@@ -450,7 +450,159 @@
     "NO_TRIPS": "Sin viajes todavía",
     "TRIP": "Viaje",
     "TRIPS": "Viajes"
-
+  },
+  "LANDING": {
+    "NAV": {
+      "HOME": "Inicio",
+      "FEATURES": "Funciones",
+      "TESTIMONIALS": "Testimonios",
+      "LOGIN": "Iniciar sesión",
+      "START_FREE": "Comenzar gratis",
+      "MY_TRIPS": "Mis viajes"
+    },
+    "HERO": {
+      "BADGE": "Tu mapa personal de recuerdos",
+      "TITLE_LINE1": "Cada viaje cuenta",
+      "TITLE_LINE2": "una historia",
+      "SUBTITLE": "Registra cada aventura, cuenta tus vuelos, marca los países que has visitado y conserva tus diarios de viaje en un solo lugar. Revive tus recuerdos cuando quieras.",
+      "CTA_PRIMARY": "Empieza tu diario",
+      "CTA_SECONDARY": "Ver cómo funciona",
+      "STAT_TRAVELERS": "Viajeros activos",
+      "STAT_COUNTRIES": "Países cubiertos",
+      "STAT_MEMORIES": "Recuerdos guardados"
+    },
+    "FEATURES": {
+      "LABEL": "Funciones",
+      "TITLE": "Todo lo que necesitas para conservar tus aventuras",
+      "SUBTITLE": "Desde tu primer vuelo hasta tu último diario, TripCoaster te acompaña en cada paso del camino.",
+      "COUNTRY_MAP_TITLE": "Mapa de países",
+      "COUNTRY_MAP_DESC": "Visualiza en un mapa interactivo todos los países que has visitado. Mira tu progreso y planifica tu próximo destino.",
+      "FLIGHT_COUNTER_TITLE": "Contador de vuelos",
+      "FLIGHT_COUNTER_DESC": "Lleva el registro de todos tus vuelos: horas en el aire, aerolíneas, rutas favoritas y kilómetros recorridos.",
+      "TRAVEL_DIARY_TITLE": "Diarios de viaje",
+      "TRAVEL_DIARY_DESC": "Escribe tus experiencias, anécdotas y reflexiones de cada viaje. Tu blog privado de aventuras.",
+      "PHOTO_GALLERY_TITLE": "Galería de fotos",
+      "PHOTO_GALLERY_DESC": "Organiza tus mejores fotos por viaje, destino o fecha. Revive cada momento con tus imágenes favoritas.",
+      "ROUTES_TITLE": "Rutas y recorridos",
+      "ROUTES_DESC": "Guarda las rutas que has tomado, los lugares secretos que descubriste y los restaurantes que no te puedes perder.",
+      "STATS_TITLE": "Estadísticas personales",
+      "STATS_DESC": "Descubre patrones en tus viajes: tu mes favorito para viajar, el continente más visitado y mucho más."
+    },
+    "MAP": {
+      "LABEL": "Tu mapa del mundo",
+      "TITLE": "Cada país que visitas se ilumina",
+      "SUBTITLE": "Visualiza tus aventuras en un mapa interactivo. Observa cómo tu mundo se llena de color con cada nuevo destino.",
+      "VISITED_LABEL": "Países visitados",
+      "STAT1_VALUE": "12",
+      "STAT1_LABEL": "Países visitados",
+      "STAT1_SUB": "de 195 en el mundo",
+      "STAT2_VALUE": "4",
+      "STAT2_LABEL": "Continentes",
+      "STAT2_SUB": "Europa, Asia, África, América",
+      "STAT3_VALUE": "27",
+      "STAT3_LABEL": "Vuelos realizados",
+      "STAT3_SUB": "38.420 km recorridos",
+      "STAT4_VALUE": "45",
+      "STAT4_LABEL": "Ciudades exploradas",
+      "STAT4_SUB": "y contando...",
+      "PROGRESS_TITLE": "Progreso mundial",
+      "PROGRESS_PERCENT": "6.2% del mundo explorado",
+      "PROGRESS_DESC": "Has visitado 12 de 195 países reconocidos. ¡Tu próximo objetivo: 15 países!"
+    },
+    "GALLERY": {
+      "LABEL": "Galería",
+      "TITLE": "Recuerdos que merecen ser guardados",
+      "SUBTITLE": "Tus viajeros comparten los momentos más increíbles desde todos los rincones del mundo.",
+      "PHOTO1_ALT": "Santorini, Grecia",
+      "PHOTO1_LABEL": "Santorini, Grecia",
+      "PHOTO2_ALT": "Templo japonés con cerezos en flor",
+      "PHOTO2_LABEL": "Kyoto, Japón",
+      "PHOTO3_ALT": "Aurora boreal en Islandia",
+      "PHOTO3_LABEL": "Reykjavik, Islandia",
+      "PHOTO4_ALT": "Riad marroquí con mosaicos",
+      "PHOTO4_LABEL": "Marrakech, Marruecos"
+    },
+    "STEPS": {
+      "LABEL": "Cómo funciona",
+      "TITLE": "Empieza a documentar en 4 pasos",
+      "STEP_PREFIX": "Paso",
+      "CREATE_ACCOUNT_TITLE": "Crea tu cuenta",
+      "CREATE_ACCOUNT_DESC": "Regístrate gratis en segundos y personaliza tu perfil de viajero.",
+      "REGISTER_TRIPS_TITLE": "Registra tus viajes",
+      "REGISTER_TRIPS_DESC": "Añade tus destinos, fechas, vuelos y notas de cada aventura.",
+      "WATCH_MAP_TITLE": "Mira tu mapa crecer",
+      "WATCH_MAP_DESC": "Ve cómo se iluminan los países visitados en tu mapa personal.",
+      "SHARE_TITLE": "Comparte o guarda",
+      "SHARE_DESC": "Mantiene tus diarios privados o compártelos con amigos y familia."
+    },
+    "TESTIMONIALS": {
+      "LABEL": "Testimonios",
+      "TITLE": "Lo que dicen nuestros viajeros",
+      "T1_NAME": "María González",
+      "T1_ROLE": "42 países visitados",
+      "T1_QUOTE": "TripCoaster cambió la forma en que documento mis viajes. Antes usaba cuadernos que perdía, ahora todo está en un solo lugar y puedo revivirlo cuando quiera.",
+      "T2_NAME": "Carlos Rivera",
+      "T2_ROLE": "Nómada digital",
+      "T2_QUOTE": "El contador de vuelos es increíble. No sabía que había acumulado más de 200 horas en el aire hasta que empecé a usar TripCoaster. Las estadísticas son adictivas.",
+      "T3_NAME": "Ana Torres",
+      "T3_ROLE": "Bloguera de viajes",
+      "T3_QUOTE": "La galería de fotos organizada por viaje es exactamente lo que necesitaba. Es como tener un álbum de fotos profesional de cada aventura."
+    },
+    "CTA": {
+      "TITLE_LINE1": "Tu próxima aventura",
+      "TITLE_LINE2": "empieza aquí",
+      "SUBTITLE": "Únete a miles de viajeros que ya están documentando sus aventuras. Gratis para siempre, sin límites.",
+      "BUTTON": "Crear mi cuenta gratis",
+      "DISCLAIMER": "Sin tarjeta de crédito. Configuración en 30 segundos."
+    }
+  },
+  "FOOTER": {
+    "TAGLINE": "Tu compañero de viaje digital. Documenta, recuerda y comparte cada aventura.",
+    "PRODUCT": {
+      "TITLE": "Producto",
+      "FEATURES": "Funciones",
+      "PRICING": "Precios",
+      "MOBILE_APP": "App móvil",
+      "INTEGRATIONS": "Integraciones"
+    },
+    "COMPANY": {
+      "TITLE": "Empresa",
+      "ABOUT_US": "Sobre nosotros",
+      "BLOG": "Blog",
+      "PRESS": "Prensa",
+      "CONTACT": "Contacto"
+    },
+    "LEGAL": {
+      "TITLE": "Legal",
+      "LEGAL_NOTICE": "Aviso Legal",
+      "PRIVACY": "Privacidad",
+      "COOKIES": "Cookies"
+    },
+    "COPYRIGHT": "\u00a9 {{year}} TripCoaster.com - Todos los derechos reservados. Se permite la cita de contenidos mencionando la fuente."
+  },
+  "LEGAL": {
+    "TITLE": "Aviso Legal",
+    "BACK_TO_HOME": "Volver al inicio",
+    "BACK_TO_MAIN": "Volver a la página principal",
+    "SECTION1": {
+      "TITLE": "Datos identificativos",
+      "INTRO": "En cumplimiento con el deber de información recogido en artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico, se reflejan los siguientes datos:",
+      "OWNER_LABEL": "Titular:",
+      "OWNER_VALUE": "Carlos Martínez",
+      "WEBSITE_LABEL": "Sitio web:",
+      "CONTACT_LABEL": "Contacto:",
+      "CONTACT_VALUE": "legal@TripCoaster.com"
+    },
+    "SECTION2": {
+      "TITLE": "Propiedad intelectual y uso de contenidos",
+      "PARAGRAPH1": "Carlos Martínez es titular de todos los derechos de propiedad intelectual e industrial de su página web, así como de los elementos contenidos en la misma (a título enunciativo: imágenes, sonido, audio, vídeo, software o textos; marcas o logotipos, combinaciones de colores, estructura y diseño, etc.).",
+      "PARAGRAPH2": "Cualquier uso de los contenidos de TripCoaster.com está sujeto a las siguientes condiciones:",
+      "CONDITION1": "Se permite la referencia y cita de los contenidos siempre que se indique claramente la autoría (Carlos Martínez) y se incluya un enlace directo a la fuente original en TripCoaster.com.",
+      "CONDITION2": "Queda prohibida la reproducción total o parcial con fines comerciales sin autorización previa y por escrito del titular."
+    },
+    "SECTION3": {
+      "TITLE": "Exclusión de responsabilidad",
+      "PARAGRAPH": "El titular no se hace responsable, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran ocasionar, a título enunciativo: errores u omisiones en los contenidos o falta de disponibilidad del portal."
+    }
   }
-
 }

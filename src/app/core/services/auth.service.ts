@@ -1,6 +1,7 @@
-// main - MARSISCA - BEGIN 2025-10-11
+// feature/landing-page - MARSISCA - BEGIN 2026-02-13
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable, tap, catchError, of, BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -43,18 +44,18 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.loadUserFromStorage();
   }
 
   private loadUserFromStorage(): void {
-    const userStr = localStorage.getItem('currentUser');
+    const userStr = sessionStorage.getItem('currentUser');
     if (userStr) {
       try {
         const user = JSON.parse(userStr);
         this.currentUserSubject.next(user);
       } catch (e) {
-        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
       }
     }
   }
@@ -73,7 +74,7 @@ export class AuthService {
             lastName: response.data.lastName
           };
           this.currentUserSubject.next(user);
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
         }
       }),
       catchError(error => {
@@ -89,7 +90,8 @@ export class AuthService {
 
   logout(): void {
     this.currentUserSubject.next(null);
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
+    this.router.navigate(['/']);
   }
 
   getCurrentUser(): User | null {
@@ -108,4 +110,4 @@ export class AuthService {
     return `${user.firstName} ${user.lastName}`.trim() || user.alias || user.email;
   }
 }
-// main - MARSISCA - END 2025-10-11
+// feature/landing-page - MARSISCA - END 2026-02-13

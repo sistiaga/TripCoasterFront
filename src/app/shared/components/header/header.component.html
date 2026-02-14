@@ -1,28 +1,62 @@
-<!-- master - MARSISCA - BEGIN 2025-10-18 -->
-<header class="app-header">
-  <div class="header-content">
-    <h1 class="app-name">TripCoaster</h1>
+<!-- feature/landing-page - MARSISCA - BEGIN 2026-02-13 -->
+<header class="header-navbar" [class.header-navbar--scrolled]="isScrolled">
+  <nav class="header-navbar__container">
+    <!-- Logo -->
+    <a routerLink="/general" class="header-navbar__logo">
+      <mat-icon class="header-navbar__logo-icon">place</mat-icon>
+      <span class="header-navbar__logo-text">TripCoaster</span>
+    </a>
 
+    <!-- Desktop nav links -->
     @if (isLoggedIn) {
-      <nav class="nav-menu">
-        <a routerLink="/general" routerLinkActive="active">{{ 'HEADER.MYTRIPS' | translate }}</a>
-        <a routerLink="/calendar" routerLinkActive="active">{{ 'HEADER.CALENDAR' | translate }}</a>
-        <a routerLink="/maps" routerLinkActive="active">{{ 'HEADER.MAP' | translate }}</a>
-        <a routerLink="/settings" routerLinkActive="active">{{ 'HEADER.SETTINGS' | translate }}</a>
-      </nav>
+      <div class="header-navbar__links">
+        @for (link of navLinks; track link.route) {
+          <a [routerLink]="link.route" routerLinkActive="header-navbar__link--active" class="header-navbar__link" (click)="closeMobileMenu()">
+            {{ link.label | translate }}
+          </a>
+        }
+      </div>
     }
 
+    <!-- Desktop user action -->
+    <div class="header-navbar__actions">
+      <button
+        mat-icon-button
+        (click)="onUserIconClick()"
+        [matTooltip]="userDisplayName"
+        matTooltipPosition="below"
+        class="header-navbar__user-btn"
+        aria-label="User menu">
+        <mat-icon>{{ isLoggedIn ? 'logout' : 'person' }}</mat-icon>
+      </button>
+    </div>
+
+    <!-- Mobile menu button -->
     <button
-      class="user-icon"
-      (click)="onUserIconClick()"
-      [matTooltip]="userDisplayName"
-      matTooltipPosition="below"
-      aria-label="User login"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white">
-        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-      </svg>
+      class="header-navbar__mobile-toggle"
+      (click)="toggleMobileMenu()"
+      [attr.aria-label]="isMobileMenuOpen ? 'Close menu' : 'Open menu'">
+      <mat-icon>{{ isMobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
     </button>
-  </div>
+  </nav>
+
+  <!-- Mobile nav -->
+  @if (isMobileMenuOpen && isLoggedIn) {
+    <div class="header-navbar__mobile-menu">
+      <div class="header-navbar__mobile-links">
+        @for (link of navLinks; track link.route) {
+          <a [routerLink]="link.route" routerLinkActive="header-navbar__mobile-link--active" class="header-navbar__mobile-link" (click)="closeMobileMenu()">
+            {{ link.label | translate }}
+          </a>
+        }
+      </div>
+      <div class="header-navbar__mobile-actions">
+        <button mat-button (click)="onUserIconClick()" class="header-navbar__mobile-btn">
+          <mat-icon>logout</mat-icon>
+          {{ userDisplayName }}
+        </button>
+      </div>
+    </div>
+  }
 </header>
-<!-- master - MARSISCA - END 2025-10-18 -->
+<!-- feature/landing-page - MARSISCA - END 2026-02-13 -->

@@ -1,0 +1,66 @@
+<!-- feature/landing-page - MARSISCA - BEGIN 2026-02-13 -->
+<footer class="footer">
+  <div class="footer__container">
+    <div class="footer__grid">
+      <!-- Brand column -->
+      <div class="footer__brand">
+        <a routerLink="/" class="footer__logo-link">
+          <mat-icon class="footer__logo-icon">place</mat-icon>
+          <span class="footer__logo-text">TripCoaster</span>
+        </a>
+        <p class="footer__tagline">{{ 'FOOTER.TAGLINE' | translate }}</p>
+      </div>
+
+      <!-- Product column -->
+      <div class="footer__column">
+        <h4 class="footer__column-title">{{ 'FOOTER.PRODUCT.TITLE' | translate }}</h4>
+        <ul class="footer__link-list">
+          @for (link of productLinks; track link.label) {
+            <li>
+              <a [href]="link.href" class="footer__link">{{ link.label | translate }}</a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Company column -->
+      <div class="footer__column">
+        <h4 class="footer__column-title">{{ 'FOOTER.COMPANY.TITLE' | translate }}</h4>
+        <ul class="footer__link-list">
+          @for (link of companyLinks; track link.label) {
+            <li>
+              <a [href]="link.href" class="footer__link">{{ link.label | translate }}</a>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Legal column -->
+      <div class="footer__column">
+        <h4 class="footer__column-title">{{ 'FOOTER.LEGAL.TITLE' | translate }}</h4>
+        <ul class="footer__link-list">
+          @for (link of legalLinks; track link.label) {
+            <li>
+              @if (link.route) {
+                <a [routerLink]="link.route" class="footer__link">{{ link.label | translate }}</a>
+              } @else {
+                <a [href]="link.href" class="footer__link">{{ link.label | translate }}</a>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer__bottom">
+      <p class="footer__copyright">{{ 'FOOTER.COPYRIGHT' | translate:{ year: currentYear } }}</p>
+      <div class="footer__social">
+        @for (social of socialLinks; track social.label) {
+          <a [href]="social.href" class="footer__social-link">{{ social.label }}</a>
+        }
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- feature/landing-page - MARSISCA - END 2026-02-13 -->

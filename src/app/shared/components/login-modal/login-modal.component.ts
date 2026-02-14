@@ -7,6 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+// feature/landing-page - MARSISCA - BEGIN 2026-02-13
+import { Router } from '@angular/router';
+// feature/landing-page - MARSISCA - END 2026-02-13
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -31,7 +34,10 @@ export class LoginModalComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private dialogRef: MatDialogRef<LoginModalComponent>
+    private dialogRef: MatDialogRef<LoginModalComponent>,
+    // feature/landing-page - MARSISCA - BEGIN 2026-02-13
+    private router: Router
+    // feature/landing-page - MARSISCA - END 2026-02-13
   ) {
     this.loginForm = this.fb.group({
       emailOrAlias: ['', [Validators.required]],
@@ -59,6 +65,9 @@ export class LoginModalComponent {
         if (response.success) {
           this.loginForm.reset();
           this.dialogRef.close(true);
+          // feature/landing-page - MARSISCA - BEGIN 2026-02-13
+          this.router.navigate(['/general']);
+          // feature/landing-page - MARSISCA - END 2026-02-13
         } else {
           this.errorMessage = response.error || response.message || 'Error during login';
         }

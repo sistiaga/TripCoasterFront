@@ -1,0 +1,53 @@
+<!-- feature/landing-page - MARSISCA - BEGIN 2026-02-13 -->
+<header class="landing-navbar" [class.landing-navbar--scrolled]="isScrolled">
+  <nav class="landing-navbar__container">
+    <!-- Logo -->
+    <a (click)="scrollToSection('')" class="landing-navbar__logo">
+      <mat-icon class="landing-navbar__logo-icon">place</mat-icon>
+      <span class="landing-navbar__logo-text">TripCoaster</span>
+    </a>
+
+    <!-- Desktop nav links -->
+    <div class="landing-navbar__links">
+      @for (link of navLinks; track link.label) {
+        <a (click)="scrollToSection(link.fragment)" class="landing-navbar__link">
+          {{ link.label | translate }}
+        </a>
+      }
+    </div>
+
+    <!-- Desktop auth buttons -->
+    <div class="landing-navbar__actions">
+        <button mat-button (click)="openLoginModal()" class="landing-navbar__btn-ghost">
+          {{ 'LANDING.NAV.LOGIN' | translate }}
+        </button>
+    </div>
+
+    <!-- Mobile menu button -->
+    <button
+      class="landing-navbar__mobile-toggle"
+      (click)="toggleMobileMenu()"
+      [attr.aria-label]="isMobileMenuOpen ? 'Close menu' : 'Open menu'">
+      <mat-icon>{{ isMobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </nav>
+
+  <!-- Mobile nav -->
+  @if (isMobileMenuOpen) {
+    <div class="landing-navbar__mobile-menu">
+      <div class="landing-navbar__mobile-links">
+        @for (link of navLinks; track link.label) {
+          <a (click)="scrollToSection(link.fragment)" class="landing-navbar__mobile-link">
+            {{ link.label | translate }}
+          </a>
+        }
+      </div>
+      <div class="landing-navbar__mobile-actions">
+          <button mat-button (click)="openLoginModal()" class="landing-navbar__mobile-btn">
+            {{ 'LANDING.NAV.LOGIN' | translate }}
+          </button>
+      </div>
+    </div>
+  }
+</header>
+<!-- feature/landing-page - MARSISCA - END 2026-02-13 -->

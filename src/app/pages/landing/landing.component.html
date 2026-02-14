@@ -1,0 +1,160 @@
+<!-- feature/landing-page - MARSISCA - BEGIN 2026-02-13 -->
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero__background">
+    <img src="/assets/images/landing/hero-travel.jpg" alt="Aerial view of tropical coast" class="hero__bg-image" />
+    <div class="hero__overlay"></div>
+  </div>
+
+  <div class="hero__content">
+    <div class="hero__center">
+      <!-- Badge -->
+      <div class="hero__badge">
+        <mat-icon class="hero__badge-icon">flight</mat-icon>
+        <span>{{ 'LANDING.HERO.BADGE' | translate }}</span>
+      </div>
+
+      <h1 class="hero__title">{{ 'LANDING.HERO.TITLE_LINE1' | translate }}<br />{{ 'LANDING.HERO.TITLE_LINE2' | translate }}</h1>
+
+      <p class="hero__subtitle">{{ 'LANDING.HERO.SUBTITLE' | translate }}</p>
+
+      <div class="hero__cta-group">
+        @if (isLoggedIn) {
+          <a mat-flat-button color="primary" routerLink="/general" class="hero__cta-primary">
+            {{ 'LANDING.NAV.MY_TRIPS' | translate }}
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        } @else {
+          <button mat-flat-button color="primary" (click)="openLoginModal()" class="hero__cta-primary">
+            {{ 'LANDING.HERO.CTA_PRIMARY' | translate }}
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        }
+        <button mat-stroked-button (click)="scrollToSection('how-it-works')" class="hero__cta-secondary">
+          {{ 'LANDING.HERO.CTA_SECONDARY' | translate }}
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="hero__stats">
+        <div class="hero__stat">
+          <p class="hero__stat-value">50K+</p>
+          <p class="hero__stat-label">{{ 'LANDING.HERO.STAT_TRAVELERS' | translate }}</p>
+        </div>
+        <div class="hero__stat">
+          <p class="hero__stat-value">195</p>
+          <p class="hero__stat-label">{{ 'LANDING.HERO.STAT_COUNTRIES' | translate }}</p>
+        </div>
+        <div class="hero__stat">
+          <p class="hero__stat-value">1M+</p>
+          <p class="hero__stat-label">{{ 'LANDING.HERO.STAT_MEMORIES' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section id="features" class="features">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="section__label">{{ 'LANDING.FEATURES.LABEL' | translate }}</span>
+      <h2 class="section__title">{{ 'LANDING.FEATURES.TITLE' | translate }}</h2>
+      <p class="section__subtitle">{{ 'LANDING.FEATURES.SUBTITLE' | translate }}</p>
+    </div>
+
+    <div class="features__grid">
+      @for (feature of features; track feature.titleKey) {
+        <div class="features__card">
+          <div class="features__icon-wrapper">
+            <mat-icon class="features__icon">{{ feature.icon }}</mat-icon>
+          </div>
+          <h3 class="features__card-title">{{ feature.titleKey | translate }}</h3>
+          <p class="features__card-desc">{{ feature.descriptionKey | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- WORLD MAP SECTION -->
+<app-landing-world-map></app-landing-world-map>
+
+<!-- GALLERY SECTION -->
+<section class="gallery">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="section__label">{{ 'LANDING.GALLERY.LABEL' | translate }}</span>
+      <h2 class="section__title">{{ 'LANDING.GALLERY.TITLE' | translate }}</h2>
+      <p class="section__subtitle">{{ 'LANDING.GALLERY.SUBTITLE' | translate }}</p>
+    </div>
+
+    <div class="gallery__grid">
+      @for (photo of galleryPhotos; track photo.labelKey) {
+        <div class="gallery__item" [ngClass]="photo.spanClass">
+          <img [src]="photo.src" [alt]="photo.altKey | translate" class="gallery__image" />
+          <div class="gallery__hover-overlay"></div>
+          <div class="gallery__label-wrapper">
+            <span class="gallery__label">{{ photo.labelKey | translate }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS SECTION -->
+<section id="how-it-works" class="how-it-works">
+  <div class="section__container">
+    <div class="section__header">
+      <span class="section__label">{{ 'LANDING.STEPS.LABEL' | translate }}</span>
+      <h2 class="section__title">{{ 'LANDING.STEPS.TITLE' | translate }}</h2>
+    </div>
+
+    <div class="steps__grid">
+      @for (step of steps; track step.number; let i = $index) {
+        <div class="steps__card">
+          @if (i < steps.length - 1) {
+            <div class="steps__connector"></div>
+          }
+          <div class="steps__icon-wrapper">
+            <mat-icon class="steps__icon">{{ step.icon }}</mat-icon>
+          </div>
+          <span class="steps__number">{{ 'LANDING.STEPS.STEP_PREFIX' | translate }} {{ step.number }}</span>
+          <h3 class="steps__title">{{ step.titleKey | translate }}</h3>
+          <p class="steps__desc">{{ step.descriptionKey | translate }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta">
+  <div class="section__container">
+    <div class="cta__content">
+      <div class="cta__icon-wrapper">
+        <mat-icon class="cta__icon">explore</mat-icon>
+      </div>
+      <h2 class="cta__title">{{ 'LANDING.CTA.TITLE_LINE1' | translate }}<br />{{ 'LANDING.CTA.TITLE_LINE2' | translate }}</h2>
+      <p class="cta__subtitle">{{ 'LANDING.CTA.SUBTITLE' | translate }}</p>
+      <div class="cta__button-group">
+        @if (isLoggedIn) {
+          <a mat-flat-button routerLink="/general" class="cta__button">
+            {{ 'LANDING.NAV.MY_TRIPS' | translate }}
+            <mat-icon>arrow_forward</mat-icon>
+          </a>
+        } @else {
+          <button mat-flat-button (click)="openLoginModal()" class="cta__button">
+            {{ 'LANDING.CTA.BUTTON' | translate }}
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        }
+      </div>
+      <p class="cta__disclaimer">{{ 'LANDING.CTA.DISCLAIMER' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- feature/landing-page - MARSISCA - END 2026-02-13 -->

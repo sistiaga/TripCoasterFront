@@ -305,7 +305,9 @@ export class PhotoUploadService {
   private getAuthToken(): string | null {
     // This assumes the token is stored in localStorage
     // Adjust based on your actual auth implementation
-    const userStr = localStorage.getItem('currentUser');
+    // feature/landing-page - MARSISCA - BEGIN 2026-02-13
+    const userStr = sessionStorage.getItem('currentUser');
+    // feature/landing-page - MARSISCA - END 2026-02-13
     if (userStr) {
       try {
         const user = JSON.parse(userStr);

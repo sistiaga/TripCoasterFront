@@ -450,10 +450,161 @@
     "NO_TRIPS": "No trips yet",
     "TRIP": "Trip",
     "TRIPS": "Trips"
-
-
+  },
+  "LANDING": {
+    "NAV": {
+      "HOME": "Home",
+      "FEATURES": "Features",
+      "TESTIMONIALS": "Testimonials",
+      "LOGIN": "Log in",
+      "START_FREE": "Start free",
+      "MY_TRIPS": "My trips"
+    },
+    "HERO": {
+      "BADGE": "Your personal map of memories",
+      "TITLE_LINE1": "Every journey tells",
+      "TITLE_LINE2": "a story",
+      "SUBTITLE": "Record every adventure, count your flights, mark the countries you've visited and keep your travel diaries in one place. Relive your memories whenever you want.",
+      "CTA_PRIMARY": "Start your diary",
+      "CTA_SECONDARY": "See how it works",
+      "STAT_TRAVELERS": "Active travelers",
+      "STAT_COUNTRIES": "Countries covered",
+      "STAT_MEMORIES": "Saved memories"
+    },
+    "FEATURES": {
+      "LABEL": "Features",
+      "TITLE": "Everything you need to preserve your adventures",
+      "SUBTITLE": "From your first flight to your last diary entry, TripCoaster accompanies you every step of the way.",
+      "COUNTRY_MAP_TITLE": "Country map",
+      "COUNTRY_MAP_DESC": "Visualize on an interactive map all the countries you've visited. Track your progress and plan your next destination.",
+      "FLIGHT_COUNTER_TITLE": "Flight counter",
+      "FLIGHT_COUNTER_DESC": "Keep track of all your flights: hours in the air, airlines, favorite routes and kilometers traveled.",
+      "TRAVEL_DIARY_TITLE": "Travel diaries",
+      "TRAVEL_DIARY_DESC": "Write your experiences, anecdotes and reflections from each trip. Your private adventure blog.",
+      "PHOTO_GALLERY_TITLE": "Photo gallery",
+      "PHOTO_GALLERY_DESC": "Organize your best photos by trip, destination or date. Relive every moment with your favorite images.",
+      "ROUTES_TITLE": "Routes and itineraries",
+      "ROUTES_DESC": "Save the routes you've taken, the secret places you discovered and the restaurants you can't miss.",
+      "STATS_TITLE": "Personal statistics",
+      "STATS_DESC": "Discover patterns in your travels: your favorite month to travel, the most visited continent and much more."
+    },
+    "MAP": {
+      "LABEL": "Your world map",
+      "TITLE": "Every country you visit lights up",
+      "SUBTITLE": "Visualize your adventures on an interactive map. Watch how your world fills with color with each new destination.",
+      "VISITED_LABEL": "Visited countries",
+      "STAT1_VALUE": "12",
+      "STAT1_LABEL": "Countries visited",
+      "STAT1_SUB": "of 195 in the world",
+      "STAT2_VALUE": "4",
+      "STAT2_LABEL": "Continents",
+      "STAT2_SUB": "Europe, Asia, Africa, America",
+      "STAT3_VALUE": "27",
+      "STAT3_LABEL": "Flights taken",
+      "STAT3_SUB": "38,420 km traveled",
+      "STAT4_VALUE": "45",
+      "STAT4_LABEL": "Cities explored",
+      "STAT4_SUB": "and counting...",
+      "PROGRESS_TITLE": "World progress",
+      "PROGRESS_PERCENT": "6.2% of the world explored",
+      "PROGRESS_DESC": "You've visited 12 of 195 recognized countries. Your next goal: 15 countries!"
+    },
+    "GALLERY": {
+      "LABEL": "Gallery",
+      "TITLE": "Memories worth keeping",
+      "SUBTITLE": "Your travelers share the most incredible moments from all corners of the world.",
+      "PHOTO1_ALT": "Santorini, Greece",
+      "PHOTO1_LABEL": "Santorini, Greece",
+      "PHOTO2_ALT": "Japanese temple with cherry blossoms",
+      "PHOTO2_LABEL": "Kyoto, Japan",
+      "PHOTO3_ALT": "Northern lights in Iceland",
+      "PHOTO3_LABEL": "Reykjavik, Iceland",
+      "PHOTO4_ALT": "Moroccan riad with mosaics",
+      "PHOTO4_LABEL": "Marrakech, Morocco"
+    },
+    "STEPS": {
+      "LABEL": "How it works",
+      "TITLE": "Start documenting in 4 steps",
+      "STEP_PREFIX": "Step",
+      "CREATE_ACCOUNT_TITLE": "Create your account",
+      "CREATE_ACCOUNT_DESC": "Sign up for free in seconds and customize your traveler profile.",
+      "REGISTER_TRIPS_TITLE": "Record your trips",
+      "REGISTER_TRIPS_DESC": "Add your destinations, dates, flights and notes from each adventure.",
+      "WATCH_MAP_TITLE": "Watch your map grow",
+      "WATCH_MAP_DESC": "See how visited countries light up on your personal map.",
+      "SHARE_TITLE": "Share or save",
+      "SHARE_DESC": "Keep your diaries private or share them with friends and family."
+    },
+    "TESTIMONIALS": {
+      "LABEL": "Testimonials",
+      "TITLE": "What our travelers say",
+      "T1_NAME": "Maria Gonzalez",
+      "T1_ROLE": "42 countries visited",
+      "T1_QUOTE": "TripCoaster changed the way I document my travels. Before I used notebooks that I lost, now everything is in one place and I can relive it whenever I want.",
+      "T2_NAME": "Carlos Rivera",
+      "T2_ROLE": "Digital nomad",
+      "T2_QUOTE": "The flight counter is incredible. I didn't know I had accumulated more than 200 hours in the air until I started using TripCoaster. The statistics are addictive.",
+      "T3_NAME": "Ana Torres",
+      "T3_ROLE": "Travel blogger",
+      "T3_QUOTE": "The photo gallery organized by trip is exactly what I needed. It's like having a professional photo album for every adventure."
+    },
+    "CTA": {
+      "TITLE_LINE1": "Your next adventure",
+      "TITLE_LINE2": "starts here",
+      "SUBTITLE": "Join thousands of travelers who are already documenting their adventures. Free forever, no limits.",
+      "BUTTON": "Create my free account",
+      "DISCLAIMER": "No credit card required. Setup in 30 seconds."
+    }
+  },
+  "FOOTER": {
+    "TAGLINE": "Your digital travel companion. Document, remember and share every adventure.",
+    "PRODUCT": {
+      "TITLE": "Product",
+      "FEATURES": "Features",
+      "PRICING": "Pricing",
+      "MOBILE_APP": "Mobile App",
+      "INTEGRATIONS": "Integrations"
+    },
+    "COMPANY": {
+      "TITLE": "Company",
+      "ABOUT_US": "About us",
+      "BLOG": "Blog",
+      "PRESS": "Press",
+      "CONTACT": "Contact"
+    },
+    "LEGAL": {
+      "TITLE": "Legal",
+      "LEGAL_NOTICE": "Legal Notice",
+      "PRIVACY": "Privacy",
+      "COOKIES": "Cookies"
+    },
+    "COPYRIGHT": "\u00a9 {{year}} TripCoaster.com - All rights reserved. Content citation is permitted with source attribution."
+  },
+  "LEGAL": {
+    "TITLE": "Legal Notice",
+    "BACK_TO_HOME": "Back to home",
+    "BACK_TO_MAIN": "Back to main page",
+    "SECTION1": {
+      "TITLE": "Identifying data",
+      "INTRO": "In compliance with the duty of information set out in article 10 of Law 34/2002, of July 11, on Information Society Services and Electronic Commerce, the following data is provided:",
+      "OWNER_LABEL": "Owner:",
+      "OWNER_VALUE": "Carlos Martinez",
+      "WEBSITE_LABEL": "Website:",
+      "CONTACT_LABEL": "Contact:",
+      "CONTACT_VALUE": "legal@TripCoaster.com"
+    },
+    "SECTION2": {
+      "TITLE": "Intellectual property and content use",
+      "PARAGRAPH1": "Carlos Martinez is the owner of all intellectual and industrial property rights on this website, as well as the elements contained therein (including but not limited to: images, sound, audio, video, software or text; trademarks or logos, color combinations, structure and design, etc.).",
+      "PARAGRAPH2": "Any use of the contents of TripCoaster.com is subject to the following conditions:",
+      "CONDITION1": "Reference and citation of content is permitted provided that authorship (Carlos Martinez) is clearly indicated and a direct link to the original source on TripCoaster.com is included.",
+      "CONDITION2": "Total or partial reproduction for commercial purposes is prohibited without prior written authorization from the owner."
+    },
+    "SECTION3": {
+      "TITLE": "Liability disclaimer",
+      "PARAGRAPH": "The owner is not responsible, in any case, for damages of any nature that may be caused, including but not limited to: errors or omissions in the content or lack of availability of the portal."
+    }
   }
-
 }
 
 

@@ -1,0 +1,68 @@
+<!-- feature/landing-page - MARSISCA - BEGIN 2026-02-13 -->
+<section id="world-map" class="world-map-section">
+  <div class="world-map-section__container">
+    <!-- Header -->
+    <div class="world-map-section__header">
+      <span class="world-map-section__label">{{ 'LANDING.MAP.LABEL' | translate }}</span>
+      <h2 class="world-map-section__title">{{ 'LANDING.MAP.TITLE' | translate }}</h2>
+      <p class="world-map-section__subtitle">{{ 'LANDING.MAP.SUBTITLE' | translate }}</p>
+    </div>
+
+    <!-- Map + Stats layout -->
+    <div class="world-map-section__layout">
+      <!-- Map card -->
+      <div class="world-map-section__map-card">
+        <!-- Hover tooltip -->
+        @if (hoveredCountry) {
+          <div class="world-map-section__tooltip">
+            <mat-icon class="world-map-section__tooltip-icon">place</mat-icon>
+            {{ hoveredCountry }}
+          </div>
+        }
+
+        <!-- Leaflet map -->
+        <div class="world-map-section__map" #mapContainer></div>
+
+        <!-- Country pills -->
+        <div class="world-map-section__pills">
+          <p class="world-map-section__pills-label">{{ 'LANDING.MAP.VISITED_LABEL' | translate }}</p>
+          <div class="world-map-section__pills-list">
+            @for (name of visitedCountryList; track name) {
+              <span class="world-map-section__pill">
+                <span class="world-map-section__pill-dot"></span>
+                {{ name }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats sidebar -->
+      <div class="world-map-section__stats">
+        @for (stat of stats; track stat.labelKey) {
+          <div class="world-map-section__stat-card">
+            <div class="world-map-section__stat-icon-wrapper">
+              <mat-icon class="world-map-section__stat-icon">{{ stat.icon }}</mat-icon>
+            </div>
+            <span class="world-map-section__stat-value">{{ stat.valueKey | translate }}</span>
+            <span class="world-map-section__stat-label">{{ stat.labelKey | translate }}</span>
+            <span class="world-map-section__stat-sub">{{ stat.sublabelKey | translate }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="world-map-section__progress">
+      <div class="world-map-section__progress-header">
+        <span class="world-map-section__progress-title">{{ 'LANDING.MAP.PROGRESS_TITLE' | translate }}</span>
+        <span class="world-map-section__progress-percent">{{ 'LANDING.MAP.PROGRESS_PERCENT' | translate }}</span>
+      </div>
+      <div class="world-map-section__progress-bar">
+        <div class="world-map-section__progress-fill" [style.width.%]="progressPercent"></div>
+      </div>
+      <p class="world-map-section__progress-desc">{{ 'LANDING.MAP.PROGRESS_DESC' | translate }}</p>
+    </div>
+  </div>
+</section>
+<!-- feature/landing-page - MARSISCA - END 2026-02-13 -->

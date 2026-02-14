@@ -1,6 +1,8 @@
 # ---------------- EN DESARROLLO  -----------------------
 
 
+Proceso para crea usuarios.
+
 
 
 
@@ -46,8 +48,46 @@ Mostrar gráficos con los 3 tipos de personas con un máximo de 6. por ejemplo s
   - APP para iOS
   - Securizar
 
+
+## Gestión de usuarios
+
+**Diseño de la gestión de usuarios.**
+Los usuarios deben poder elegir:
+- email
+- Idioma preferido
+- Lugar de nacimiento/residencia (para detectar cuando es un viaje nacional / internacional). Aqui podemos entrar en matices.
+- Poder cambiar la clave
+- Posibilidad de meter sus credenciales con google maps, spotify, redes para publicar cosas...
+
+Proceso de cambio de clave
+
+Proceso de doble factor
+
+
+## Mail
+
+Crear cuentas de mail:
+- Social para darnos de alta en redes
+- Legal para los temas de privacidad
+
+
+## Marketing
+
+Crear cuentas en todas las redes sociales asociados a una cuenta de marketing.
+
+
+## Footer
+
+Poder incluir una zona de **Pricing** si tenemos opciones de pago.
+Enlace con la **aplicación móvil**
+Incluir zona de compañía: quienes somos, prensa, contacto
+
+En la parte legal, hacer un documento de privacidad y cookies
+
+Enlace con redes como YouTube, Twitter/X o Instagram. Enlazarlo con un mail de tripcoaster para marketing.
+
+
 ## Otras ideas
-  - Crear un calendario con los viajes
   - Asociar una canción al viaje.
   - Presupuesto del viaje
   

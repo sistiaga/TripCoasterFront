@@ -1,0 +1,135 @@
+// feature/landing-page - MARSISCA - BEGIN 2026-02-13
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
+.footer {
+  border-top: 1px solid vars.$border-color;
+  background-color: vars.$background-color;
+  padding: vars.$spacing-xxl vars.$spacing-md;
+
+  @include mixins.respond-to(tablet) {
+    padding: 64px vars.$spacing-lg;
+  }
+}
+
+.footer__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 vars.$spacing-md;
+
+  @include mixins.respond-to(desktop) {
+    padding: 0 vars.$spacing-xl;
+  }
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: vars.$spacing-xl;
+
+  @include mixins.respond-to(tablet) {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+  }
+}
+
+.footer__brand {
+  grid-column: span 2;
+
+  @include mixins.respond-to(tablet) {
+    grid-column: span 1;
+  }
+}
+
+.footer__logo-link {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  text-decoration: none;
+  margin-bottom: vars.$spacing-md;
+}
+
+.footer__logo-icon {
+  color: vars.$primary-color;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.footer__logo-text {
+  font-family: vars.$font-primary-italic;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 700;
+  color: vars.$text-primary;
+}
+
+.footer__tagline {
+  font-size: 14px;
+  color: vars.$text-secondary;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.footer__column-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: vars.$text-primary;
+  margin-bottom: vars.$spacing-md;
+}
+
+.footer__link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-sm + 4px;
+}
+
+.footer__link {
+  font-size: 14px;
+  color: vars.$text-secondary;
+  text-decoration: none;
+  transition: color vars.$transition-base;
+
+  &:hover {
+    color: vars.$text-primary;
+  }
+}
+
+.footer__bottom {
+  margin-top: vars.$spacing-xxl;
+  padding-top: vars.$spacing-xl;
+  border-top: 1px solid vars.$border-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: vars.$spacing-md;
+
+  @include mixins.respond-to(tablet) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.footer__copyright {
+  font-size: 12px;
+  color: vars.$text-secondary;
+}
+
+.footer__social {
+  display: flex;
+  gap: vars.$spacing-lg;
+}
+
+.footer__social-link {
+  font-size: 12px;
+  color: vars.$text-secondary;
+  text-decoration: none;
+  transition: color vars.$transition-base;
+
+  &:hover {
+    color: vars.$text-primary;
+  }
+}
+// feature/landing-page - MARSISCA - END 2026-02-13

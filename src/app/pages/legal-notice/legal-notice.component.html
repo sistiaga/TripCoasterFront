@@ -1,0 +1,97 @@
+<!-- feature/landing-page - MARSISCA - BEGIN 2026-02-13 -->
+<div class="legal-notice">
+  <!-- Header -->
+  <header class="legal-notice__header">
+    <div class="legal-notice__header-container">
+      <a routerLink="/" class="legal-notice__logo">
+        <mat-icon class="legal-notice__logo-icon">place</mat-icon>
+        <span class="legal-notice__logo-text">TripCoaster</span>
+      </a>
+      <a routerLink="/" class="legal-notice__back-link">
+        <mat-icon>arrow_back</mat-icon>
+        {{ 'LEGAL.BACK_TO_HOME' | translate }}
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="legal-notice__content">
+    <h1 class="legal-notice__title">{{ 'LEGAL.TITLE' | translate }}</h1>
+    <p class="legal-notice__site-name">TripCoaster.com</p>
+
+    <!-- Section 1: Identifying Data -->
+    <section class="legal-notice__section">
+      <h2 class="legal-notice__section-title">
+        <span class="legal-notice__section-number">1</span>
+        {{ 'LEGAL.SECTION1.TITLE' | translate }}
+      </h2>
+      <div class="legal-notice__card">
+        <p class="legal-notice__text legal-notice__text--muted">{{ 'LEGAL.SECTION1.INTRO' | translate }}</p>
+        <ul class="legal-notice__list">
+          <li class="legal-notice__list-item">
+            <span class="legal-notice__bullet"></span>
+            <p class="legal-notice__text"><strong>{{ 'LEGAL.SECTION1.OWNER_LABEL' | translate }}</strong> {{ 'LEGAL.SECTION1.OWNER_VALUE' | translate }}</p>
+          </li>
+          <li class="legal-notice__list-item">
+            <span class="legal-notice__bullet"></span>
+            <p class="legal-notice__text"><strong>{{ 'LEGAL.SECTION1.WEBSITE_LABEL' | translate }}</strong> TripCoaster.com</p>
+          </li>
+          <li class="legal-notice__list-item">
+            <span class="legal-notice__bullet"></span>
+            <p class="legal-notice__text">
+              <strong>{{ 'LEGAL.SECTION1.CONTACT_LABEL' | translate }}</strong>
+              <span class="legal-notice__text--muted legal-notice__text--italic"> {{ 'LEGAL.SECTION1.CONTACT_VALUE' | translate }}</span>
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 2: Intellectual Property -->
+    <section class="legal-notice__section">
+      <h2 class="legal-notice__section-title">
+        <span class="legal-notice__section-number">2</span>
+        {{ 'LEGAL.SECTION2.TITLE' | translate }}
+      </h2>
+      <div class="legal-notice__card">
+        <p class="legal-notice__text">{{ 'LEGAL.SECTION2.PARAGRAPH1' | translate }}</p>
+        <p class="legal-notice__text legal-notice__text--muted">{{ 'LEGAL.SECTION2.PARAGRAPH2' | translate }}</p>
+        <ul class="legal-notice__list">
+          <li class="legal-notice__list-item">
+            <span class="legal-notice__bullet"></span>
+            <p class="legal-notice__text">{{ 'LEGAL.SECTION2.CONDITION1' | translate }}</p>
+          </li>
+          <li class="legal-notice__list-item">
+            <span class="legal-notice__bullet"></span>
+            <p class="legal-notice__text">{{ 'LEGAL.SECTION2.CONDITION2' | translate }}</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section 3: Liability Disclaimer -->
+    <section class="legal-notice__section">
+      <h2 class="legal-notice__section-title">
+        <span class="legal-notice__section-number">3</span>
+        {{ 'LEGAL.SECTION3.TITLE' | translate }}
+      </h2>
+      <div class="legal-notice__card">
+        <p class="legal-notice__text">{{ 'LEGAL.SECTION3.PARAGRAPH' | translate }}</p>
+      </div>
+    </section>
+
+    <!-- Back link -->
+    <div class="legal-notice__back-bottom">
+      <a routerLink="/" class="legal-notice__back-bottom-link">
+        <mat-icon>arrow_back</mat-icon>
+        {{ 'LEGAL.BACK_TO_MAIN' | translate }}
+      </a>
+    </div>
+  </main>
+
+  <!-- Mini footer -->
+  <footer class="legal-notice__footer">
+    <p class="legal-notice__copyright">{{ 'FOOTER.COPYRIGHT' | translate:{ year: currentYear } }}</p>
+  </footer>
+</div>
+<!-- feature/landing-page - MARSISCA - END 2026-02-13 -->

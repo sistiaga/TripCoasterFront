@@ -1,0 +1,166 @@
+// feature/landing-page - MARSISCA - BEGIN 2026-02-13
+@use '../../../../styles/themes/variables' as vars;
+@use '../../../../styles/utilities/mixins' as mixins;
+
+.landing-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: vars.$z-fixed;
+  background-color: rgba(vars.$background-color, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid vars.$primary-color;
+  transition: background-color vars.$transition-base, box-shadow vars.$transition-base;
+
+  &--scrolled {
+    background-color: rgba(vars.$background-color, 0.95);
+    box-shadow: vars.$shadow-sm;
+  }
+}
+
+.landing-navbar__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: vars.$spacing-md 20px;
+
+  @include mixins.respond-to(desktop) {
+    padding: vars.$spacing-md vars.$spacing-xl;
+  }
+}
+
+.landing-navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.landing-navbar__logo-icon {
+  color: vars.$primary-color;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.landing-navbar__logo-text {
+  font-family: vars.$font-primary-italic;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 700;
+  color: vars.$text-primary;
+}
+
+.landing-navbar__links {
+  display: none;
+  align-items: center;
+  gap: vars.$spacing-xl;
+
+  @include mixins.respond-to(tablet) {
+    display: flex;
+  }
+}
+
+.landing-navbar__link {
+  font-size: 14px;
+  color: vars.$text-secondary;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color vars.$transition-base;
+
+  &:hover {
+    color: vars.$text-primary;
+  }
+}
+
+.landing-navbar__actions {
+  display: none;
+  align-items: center;
+  gap: vars.$spacing-sm + 4px;
+
+  @include mixins.respond-to(tablet) {
+    display: flex;
+  }
+}
+
+.landing-navbar__btn-ghost {
+  font-size: 14px !important;
+}
+
+.landing-navbar__btn-primary {
+  font-size: 14px !important;
+}
+
+.landing-navbar__mobile-toggle {
+  @include mixins.button-reset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: vars.$spacing-sm;
+
+  @include mixins.respond-to(tablet) {
+    display: none;
+  }
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: vars.$text-primary;
+  }
+}
+
+.landing-navbar__mobile-menu {
+  display: block;
+  border-top: 1px solid vars.$border-color;
+  background-color: vars.$background-color;
+  padding: vars.$spacing-lg 20px;
+
+  @include mixins.respond-to(tablet) {
+    display: none;
+  }
+}
+
+.landing-navbar__mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-md;
+}
+
+.landing-navbar__mobile-link {
+  font-size: 16px;
+  color: vars.$text-secondary;
+  text-decoration: none;
+  cursor: pointer;
+  padding: vars.$spacing-sm 0;
+  transition: color vars.$transition-base;
+
+  &:hover {
+    color: vars.$text-primary;
+  }
+}
+
+.landing-navbar__mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-sm + 4px;
+  padding-top: vars.$spacing-md;
+  margin-top: vars.$spacing-md;
+  border-top: 1px solid vars.$border-color;
+}
+
+.landing-navbar__mobile-btn {
+  min-height: 44px !important;
+  justify-content: flex-start !important;
+}
+
+.landing-navbar__mobile-btn-primary {
+  min-height: 44px !important;
+}
+// feature/landing-page - MARSISCA - END 2026-02-13
