@@ -1,18 +1,11 @@
-// master - MARSISCA - BEGIN 2025-10-18
+// feature/landing-page - MARSISCA - BEGIN 2026-02-14
+@use '../../../../styles/themes/variables' as vars;
+
 .world-map-wrapper {
   width: 100%;
   height: 100%;
   position: relative;
-  border-radius: 16px;
+  border-radius: vars.$radius-lg;
   overflow: hidden;
 }
-
-.map-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-  background-color: #aad3df;
-  border-radius: 16px;
-}
-// master - MARSISCA - END 2025-10-18
+// feature/landing-page - MARSISCA - END 2026-02-14

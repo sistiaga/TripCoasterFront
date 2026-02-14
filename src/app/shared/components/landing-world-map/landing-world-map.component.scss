@@ -122,46 +122,10 @@
   }
 }
 
-// Leaflet overrides (ViewEncapsulation.None)
-.world-map-section__map .leaflet-container {
-  background-color: #f0ebe6;
-}
-
-.world-map-section__map .leaflet-tile-pane,
-.world-map-section__map .leaflet-tile-container,
-.world-map-section__map .leaflet-grid-layer,
-.world-map-section__map .leaflet-map-pane > .leaflet-tile-pane {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-}
-
-// Prevent any grid/tile lines from showing
-.world-map-section__map .leaflet-pane img {
-  display: none !important;
-}
-
-// Ensure canvas fills entire viewport without gaps
-.world-map-section__map canvas {
-  image-rendering: auto;
-}
-
-.world-map-section__map .leaflet-control-zoom {
-  border: 1px solid vars.$border-color;
-  border-radius: vars.$radius-md;
-  overflow: hidden;
-  box-shadow: vars.$shadow-sm;
-
-  a {
-    color: vars.$text-primary;
-    background-color: vars.$background-color;
-    border-color: vars.$border-color;
-
-    &:hover {
-      background-color: vars.$surface-color;
-    }
-  }
-}
+// feature/landing-page - MARSISCA - BEGIN 2026-02-14
+// Leaflet overrides now shared via src/styles/components/_maps.scss
+// Classes .map-leaflet-themed and .map-canvas-mode applied in template
+// feature/landing-page - MARSISCA - END 2026-02-14
 
 .world-map-section__pills {
   padding: vars.$spacing-md;

@@ -1,0 +1,125 @@
+// feature/landing-page - MARSISCA - BEGIN 2026-02-14
+// =============================================================================
+// Shared Map Styles (Leaflet)
+// Used by: landing-world-map, world-map, trip-map, and future map components
+// =============================================================================
+
+@use '../themes/variables' as vars;
+
+// -----------------------------------------------------------------------------
+// Map Color Tokens
+// -----------------------------------------------------------------------------
+$map-ocean-color: #f0ebe6;
+$map-land-color: #E8E0DA;
+$map-land-opacity: 0.6;
+$map-visited-color: vars.$primary-color;
+$map-visited-hover-color: #C85A00;
+$map-visited-opacity: 0.85;
+$map-border-color: #FFFFFF;
+$map-border-weight: 0.5;
+$map-marker-color: vars.$primary-color;
+$map-marker-border-color: vars.$primary-hover;
+
+// -----------------------------------------------------------------------------
+// Map Container Base
+// -----------------------------------------------------------------------------
+.map-base-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  background-color: $map-ocean-color;
+  border-radius: vars.$radius-lg;
+  overflow: hidden;
+}
+
+// -----------------------------------------------------------------------------
+// Leaflet Container Overrides
+// -----------------------------------------------------------------------------
+.map-leaflet-themed {
+  .leaflet-container {
+    background-color: $map-ocean-color;
+  }
+
+  // Zoom controls
+  .leaflet-control-zoom {
+    border: 1px solid vars.$border-color;
+    border-radius: vars.$radius-md;
+    overflow: hidden;
+    box-shadow: vars.$shadow-sm;
+
+    a {
+      color: vars.$text-primary;
+      background-color: vars.$background-color;
+      border-color: vars.$border-color;
+
+      &:hover {
+        background-color: vars.$surface-color;
+      }
+    }
+  }
+
+  // Attribution
+  .leaflet-control-attribution {
+    background-color: rgba(vars.$background-color, 0.8);
+    color: vars.$text-secondary;
+    font-size: 10px;
+    backdrop-filter: blur(4px);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Warm Tile Mode (recolors OpenStreetMap tiles to match brand palette)
+// Applies sepia + hue rotation to transform blue ocean into warm beige tones
+// -----------------------------------------------------------------------------
+.map-warm-tiles {
+  .leaflet-tile-pane {
+    filter: saturate(0.3) sepia(0.4) hue-rotate(-10deg) brightness(1.05);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Canvas Map Mode (no tile layer, GeoJSON polygons)
+// Used by landing-world-map and similar vector-based maps
+// -----------------------------------------------------------------------------
+.map-canvas-mode {
+  .leaflet-tile-pane,
+  .leaflet-tile-container,
+  .leaflet-grid-layer,
+  .leaflet-map-pane > .leaflet-tile-pane {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  .leaflet-pane img {
+    display: none !important;
+  }
+
+  canvas {
+    image-rendering: auto;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Map Popup Styles
+// -----------------------------------------------------------------------------
+.map-leaflet-themed {
+  .leaflet-popup-content-wrapper {
+    border-radius: vars.$radius-md;
+    box-shadow: vars.$shadow-md;
+    border: 1px solid vars.$border-color;
+  }
+
+  .leaflet-popup-content {
+    font-family: vars.$font-family-base;
+    font-size: 14px;
+    color: vars.$text-primary;
+    margin: vars.$spacing-sm vars.$spacing-md;
+  }
+
+  .leaflet-popup-tip {
+    box-shadow: vars.$shadow-sm;
+  }
+}
+// feature/landing-page - MARSISCA - END 2026-02-14

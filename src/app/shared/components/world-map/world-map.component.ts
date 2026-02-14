@@ -1,5 +1,5 @@
-// master - MARSISCA - BEGIN 2026-01-02
-import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+// feature/landing-page - MARSISCA - BEGIN 2026-02-14
+import { Component, AfterViewInit, OnDestroy, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as L from 'leaflet';
 import { CountryService } from '../../../core/services/country.service';
@@ -27,9 +27,10 @@ L.Marker.prototype.options.icon = iconDefault;
   standalone: true,
   imports: [CommonModule],
   templateUrl: './world-map.component.html',
-  styleUrl: './world-map.component.scss'
+  styleUrl: './world-map.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
-// master - MARSISCA - END 2026-01-02
+// feature/landing-page - MARSISCA - END 2026-02-14
 export class WorldMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
 
@@ -90,14 +91,16 @@ export class WorldMapComponent implements AfterViewInit, OnDestroy {
 
     // Add markers for visited countries
     this.visitedCountries.forEach(country => {
+      // feature/landing-page - MARSISCA - BEGIN 2026-02-14
       const marker = L.circleMarker([country.latitude, country.longitude], {
         radius: 8,
-        fillColor: '#4CAF50',
-        color: '#2E7D32',
+        fillColor: '#FF7F00',
+        color: '#E67300',
         weight: 2,
         opacity: 1,
-        fillOpacity: 0.8
+        fillOpacity: 0.85
       }).addTo(this.map!);
+      // feature/landing-page - MARSISCA - END 2026-02-14
 
       const lang = localStorage.getItem('lang') || 'en';
       const countryName = lang === 'es' ? country.nameSpanish : country.nameEnglish;
